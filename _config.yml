@@ -1,0 +1,26 @@
+# Dependencies
+markdown:         redcarpet
+highligher:       pygments
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            Thom Wright
+tagline:          Because tomwright.co.uk wasn't available...
+description:      Because tomwright.co.uk wasn't available...
+
+url:              http://thomwright.co.uk
+shorturl:         thomwright.co.uk
+baseurl:          /
+
+paginate:         5
+
+author:
+  name:           Thom Wright
+
+version:          0.0.1
+
+github:
+  repo:           http://github.com/ThomWright/ThomWright.github.io
+
