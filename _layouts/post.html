@@ -4,6 +4,7 @@ layout: default
 
 <div class="post">
   <h1 class="post-title">{{ page.title }}</h1>
+  {% include guest_author.html guest=page.guest_author %}
   <span class="post-date">{{ page.date | date_to_string }}</span>
   {{ content }}
 </div>
