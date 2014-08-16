@@ -170,6 +170,10 @@ nines = fours vPlus fives
 console.log nines.get() # [9, 9]
 ```
 
-And there we have it. Would anyone really go to all this effort to remove the `.`?
+And there we have it. A beautifully readable (IMHO) API in CoffeeScript.
 
-Apparently I would. Something something pluggable operations.
+Now, why would anyone go to all this effort just to remove the `.`? I'll be honest, I did it simply because it looks nice.
+
+To my suprise though, it also creates a very flexible API that works for many operands (e.g. numbers, vectors) and allows pluggable user-supplied operations (addition, multiplication...).
+
+My only wish is for some kind of type system to check for silly things like using `vPlus` with ordinary numbers at compile time. Oh well.
