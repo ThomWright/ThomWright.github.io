@@ -131,7 +131,7 @@ plus = (number) ->
 
 times = (number) ->
   (otherNumber) ->
-    makeNumber number.get() * otherNumber()
+    makeNumber number() * otherNumber()
 
 nine = four plus five
 twenty = four times five
