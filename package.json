@@ -1,0 +1,21 @@
+{
+  "name": "ThomWright.github.io",
+  "version": "0.0.1",
+  "description": "Personal website for Thom Wright.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThomWright/ThomWright.github.io.git"
+  },
+  "author": "Thom Wright <npm@thomwright.co.uk> (http://thomwright.co.uk/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ThomWright/ThomWright.github.io/issues"
+  },
+  "homepage": "https://github.com/ThomWright/ThomWright.github.io",
+  "devDependencies": {
+    "bootstrap": "^3.3.2"
+  }
+}

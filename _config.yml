@@ -24,3 +24,6 @@ version:          0.0.1
 github:
   repo:           http://github.com/ThomWright/ThomWright.github.io
 
+exclude:
+                  - node_modules/
+                  - provision
