@@ -5,18 +5,21 @@ title: Home
 
 <div class="posts">
   {% for post in paginator.posts %}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ post.url }}">
-        {{ post.title }}
-      </a>
-    </h1>
+  <article class="post">
+    <header>
+      <h1 class="post-title">
+        <a href="{{ post.url }}">
+          {{ post.title }}
+        </a>
+      </h1>
 
-    {% include guest_author.html guest=post.guest_author %}
-    <span class="post-date">{{ post.date | date_to_string }}</span>
-
-    {{ post.content }}
-  </div>
+      {% include guest_author.html guest=post.guest_author %}
+      <span class="post-date">{{ post.date | date_to_string }}</span>
+    </header>
+    <div>
+      {{ post.content }}
+    </div>
+  </article>
   {% endfor %}
 </div>
 

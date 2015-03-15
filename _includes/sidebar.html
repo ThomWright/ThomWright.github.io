@@ -1,4 +1,4 @@
-<div class="sidebar">
+<header class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
       <h1>
@@ -27,9 +27,9 @@
       {% endfor %}
 
       <a class="sidebar-nav-item" href="{{ site.github.repo }}">GitHub project</a>
-      <span class="sidebar-nav-item">Currently v{{ site.version }}</span>
+      <span class="sidebar-nav-item">v{{ site.version }}</span>
     </nav>
 
     <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
   </div>
-</div>
+</header>
