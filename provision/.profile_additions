@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+
+source /vagrant/provision/constants.sh
+
+echo "Running addtions to .profile"
+
+source $PROVISION_DIR/rbenv_setup.sh
+
+# ensure we `vagrant ssh` into the project directory
+cd $PROJECT_DIR
