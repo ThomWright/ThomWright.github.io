@@ -1,0 +1,30 @@
+<article class="post">
+
+  {% if include.article %}
+    {% assign article = include.article %}
+  {% else %}
+    {% assign full_page = true %}
+    {% assign article = page %}
+  {% endif %}
+
+  <header>
+    <h1 class="post-title">
+      {% if full_page %}
+        {{ article.title }}
+      {% else %}
+        <a href="{{ post.url }}">
+          {{ article.title }}
+        </a>
+      {% endif %}
+    </h1>
+    {% include guest_author.html guest=article.guest_author %}
+    <span class="post-date">{{ article.date | date_to_string }}</span>
+  </header>
+  <div>
+    {% if full_page %}
+      {{ content }}
+    {% else %}
+      {{ article.content }}
+    {% endif %}
+  </div>
+</article>
