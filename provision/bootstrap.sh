@@ -53,8 +53,4 @@ echo_heading "Install Jekyll"
 cd $PROJECT_DIR
 bundle install > /dev/null
 
-echo -e "
-Finished provisioning
-
-Run 'jekyll serve --watch --drafts' or 'jekyll serve -wD' to serve the site on localhost:4000
-"
+echo -e "\nFinished provisioning"

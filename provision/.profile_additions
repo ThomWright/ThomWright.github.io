@@ -8,3 +8,7 @@ source $PROVISION_DIR/rbenv_setup.sh
 
 # ensure we `vagrant ssh` into the project directory
 cd $PROJECT_DIR
+
+echo -e "Run 'jekyll serve --watch --drafts' or 'jekyll serve -wD' to serve the site on localhost:4000
+NOTE: --watch doesn't seem to be working inside VirtualBox
+"
