@@ -25,3 +25,7 @@ github:
   repo:           http://github.com/ThomWright/ThomWright.github.io
 
 source:           ./source
+
+sass:
+    sass_dir: public/css/_sass
+    style: compressed
