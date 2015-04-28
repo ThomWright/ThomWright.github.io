@@ -5,3 +5,40 @@
 @import "base/grid-settings";
 @import "neat/neat";
 @import "base/base";
+
+// TODO - fonts
+
+/*
+  Main grid
+ */
+// $grid-columns : 12
+$header-columns: 3;
+$main-columns: $grid-columns - $header-columns;
+
+body {
+  @include outer-container(100%);
+
+  // TODO - change breakpoint size (larger)
+
+  > header {
+    @include fill-parent();
+
+    @include  media($large-screen-up) {
+      @include span-columns($header-columns);
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
+
+  > main,
+  > footer {
+    @include fill-parent();
+
+    @include media($large-screen-up) {
+      @include span-columns($main-columns);
+      @include shift($header-columns);
+    }
+  }
+}
