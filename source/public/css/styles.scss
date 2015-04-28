@@ -2,11 +2,21 @@
 ---
 
 @import "bourbon/bourbon";
-@import "base/grid-settings";
+// @import "base/grid-settings";
 @import "neat/neat";
 @import "base/base";
+@import "variables";
+@import "mixins";
 
 // TODO - fonts
+
+/*
+  Base
+ */
+body {
+  margin: 0;
+  padding: 0;
+}
 
 /*
   Main grid
@@ -20,23 +30,22 @@ body {
 
   // TODO - change breakpoint size (larger)
 
-  > header {
-    @include fill-parent();
+  > header,
+  > main,
+  > footer {
+    @include span-columns($grid-columns);
+  }
 
-    @include  media($large-screen-up) {
+  > header {
+    @include media($desktop-up) {
       @include span-columns($header-columns);
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
+      @include fix-left;
     }
   }
 
   > main,
   > footer {
-    @include fill-parent();
-
-    @include media($large-screen-up) {
+    @include media($desktop-up) {
       @include span-columns($main-columns);
       @include shift($header-columns);
     }

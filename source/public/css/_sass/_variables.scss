@@ -1,0 +1,7 @@
+
+// Grid
+$tablet-width: em(768);
+$desktop-width: em(992);
+
+$tablet-up: new-breakpoint(min-width $tablet-width 12);
+$desktop-up: new-breakpoint(min-width $desktop-width 12);
