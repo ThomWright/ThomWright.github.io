@@ -71,13 +71,18 @@ body {
     background-color: $header-bg;
     color: $header-text-color;
 
-    h1 > a {
-      color: white;
+    a,
+    a:hover {
+      color: $header-highlight;
     }
 
     nav {
       a {
         color: $header-text-color;
+        &.active {
+          font-weight: bold;
+          color: $header-highlight;
+        }
       }
     }
 
@@ -89,11 +94,20 @@ body {
   }
 }
 
-// Positioning
+// Positioning & Sizing
 body {
   > header {
-
     text-align: center;
+
+    @include vertical-padding(1.5rem);
+    h1 {
+      font-size: 2rem;
+    }
+
+    a {
+      display: block;
+      padding: 10px;
+    }
 
     nav {
       li {
@@ -101,10 +115,6 @@ body {
         @include media($desktop-up) {
           display: list-item;
         }
-      }
-
-      a {
-        @include horizontal-margin(5px);
       }
     }
   }
