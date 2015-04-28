@@ -19,6 +19,13 @@ body {
 
   background-color: $base-body-bg;
   color: $base-text-color;
+
+  main {
+    padding: $gutter;
+    @include media($desktop-up) {
+      padding-left: 0;
+    }
+  }
 }
 
 /*
@@ -85,6 +92,7 @@ body {
 // Positioning
 body {
   > header {
+
     text-align: center;
 
     nav {
@@ -96,8 +104,18 @@ body {
       }
 
       a {
-        @include margin(null 5px null 5px);
+        @include horizontal-margin(5px);
       }
     }
   }
+}
+
+/*
+  Articles
+ */
+article {
+  background-color: white;
+  @include card;
+  padding: $gutter;
+  margin-bottom: $gutter;
 }
