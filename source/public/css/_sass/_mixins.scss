@@ -5,3 +5,23 @@
   left: 0;
   bottom: 0;
 }
+
+@mixin brand-border($side) {
+  @include single-side-border($side, $brand-color);
+}
+
+@mixin single-side-border($side, $color) {
+  border: {
+    width: 0px;
+    radius: 0px;
+    #{$side}: {
+      width: 5px;
+      color: $color;
+      style: solid;
+    }
+  }
+}
+
+@mixin remove-border($side) {
+  border-#{$side}-style: none;
+}

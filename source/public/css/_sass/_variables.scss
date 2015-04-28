@@ -1,4 +1,22 @@
 
+// Colours
+$gray-base:               #000;
+$gray-darkest:            #222;
+$gray-darker:             #333;
+$gray-dark:               #555;
+$gray:                    #888;
+$gray-light:              #aaa;
+$gray-lighter:            #ccc;
+$gray-lightest:           #ddd;
+
+$brand-color:             #8800ff;
+
+$base-body-bg:            $gray-lightest;
+$base-text-color:         $gray-dark;
+
+$header-bg:               $gray-darker;
+$header-text-color:       $gray-lightest;
+
 // Grid
 $tablet-width: em(768);
 $desktop-width: em(992);

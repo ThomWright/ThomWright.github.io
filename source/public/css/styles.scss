@@ -16,6 +16,9 @@
 body {
   margin: 0;
   padding: 0;
+
+  background-color: $base-body-bg;
+  color: $base-text-color;
 }
 
 /*
@@ -48,6 +51,53 @@ body {
     @include media($desktop-up) {
       @include span-columns($main-columns);
       @include shift($header-columns);
+    }
+  }
+}
+
+/*
+  Header
+ */
+// Colours
+body {
+  > header {
+    background-color: $header-bg;
+    color: $header-text-color;
+
+    h1 > a {
+      color: white;
+    }
+
+    nav {
+      a {
+        color: $header-text-color;
+      }
+    }
+
+    @include brand-border(bottom);
+    @include media($desktop-up) {
+      @include brand-border(right);
+      @include remove-border(bottom);
+    }
+  }
+}
+
+// Positioning
+body {
+  > header {
+    text-align: center;
+
+    nav {
+      li {
+        display: inline-block;
+        @include media($desktop-up) {
+          display: list-item;
+        }
+      }
+
+      a {
+        @include margin(null 5px null 5px);
+      }
     }
   }
 }
