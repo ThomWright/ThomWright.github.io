@@ -17,7 +17,7 @@
         </a>
       {% endif %}
     </h1>
-    <small class="post-date">{{ article.date | date_to_string }}</small><br>
+    <small class="post-date"><time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time></small><br>
     {% include guest_author.html guest=article.guest_author %}
   </header>
   <div>
