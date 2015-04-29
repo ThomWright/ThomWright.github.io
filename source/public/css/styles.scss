@@ -1,12 +1,12 @@
 ---
 ---
 
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,700,300|Open+Sans+Condensed:700|Inconsolata:400,700);
+
 @import "bourbon/bourbon";
 @import "neat/neat";
 @import "variables";
 @import "mixins";
-
-// TODO - fonts
 
 /*
   Base
@@ -188,4 +188,18 @@ article {
   @include card;
   padding: $gutter;
   margin-bottom: $gutter;
+
+  h1 {
+    margin-bottom: 0;
+  }
+
+  header {
+    padding-bottom: $gutter;
+  }
+
+  .post-date,
+  .guest-author {
+    font-style: italic;
+    color: $gray;
+  }
 }

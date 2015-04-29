@@ -17,8 +17,8 @@
         </a>
       {% endif %}
     </h1>
+    <small class="post-date">{{ article.date | date_to_string }}</small><br>
     {% include guest_author.html guest=article.guest_author %}
-    <span class="post-date">{{ article.date | date_to_string }}</span>
   </header>
   <div>
     {% if full_page %}
