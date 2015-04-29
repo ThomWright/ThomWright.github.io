@@ -3,19 +3,23 @@
 $gray-darkest:            #222;
 $gray-darker:             #444;
 $gray-dark:               #666;
-$gray:                    #888;
-$gray-light:              #aaa;
+$gray:                    #787878;
+$gray-light:              #999;
 $gray-lighter:            #bbb;
 $gray-lightest:           #ddd;
 
 $brand-color:             #8800ff;
 
+$blue:                    #477dca;
+
 $base-body-bg:            $gray-lightest;
-$base-text-color:         $gray-darker;
+$base-font-color:         $gray-darker;
 
 $header-bg:               $gray-darker;
-$header-text-color:       $gray-lightest;
+$header-font-color:       $gray-lightest;
 $header-highlight:        white;
+
+$link-color:              $blue;
 
 // Grid
 $tablet-width: em(768);
@@ -23,3 +27,22 @@ $desktop-width: em(992);
 
 $tablet-up: new-breakpoint(min-width $tablet-width 12);
 $desktop-up: new-breakpoint(min-width $desktop-width 12);
+
+// Font
+$base-font-family: 'Open Sans', sans-serif;
+$heading-font-family: 'Open Sans Condensed', sans-serif;
+$mono-font-family: 'Inconsolata';
+
+// Font Sizes
+$base-font-size: 1em;
+$heading-font-size: golden-ratio($base-font-size,  1);
+
+// Line height
+$base-line-height: 1.5;
+$heading-line-height: 1.2;
+
+// Other Sizes
+$base-border-radius: 3px;
+$base-spacing: $base-line-height * 1em;
+$small-spacing: $base-spacing / 2;
+$base-z-index: 0;

@@ -2,9 +2,7 @@
 ---
 
 @import "bourbon/bourbon";
-// @import "base/grid-settings";
 @import "neat/neat";
-@import "base/base";
 @import "variables";
 @import "mixins";
 
@@ -18,14 +16,58 @@ body {
   padding: 0;
 
   background-color: $base-body-bg;
-  color: $base-text-color;
+  color: $base-font-color;
 
-  main {
-    padding: $gutter;
-    @include media($desktop-up) {
-      padding-left: 0;
-    }
+  font: {
+    family: $base-font-family;
+    weight: 300;
+    size: $base-font-size;
   }
+  @include font-feature-settings("kern", "liga", "pnum");
+  -webkit-font-smoothing: antialiased;
+  line-height: $base-line-height;
+}
+
+a {
+  color: $link-color;
+  text-decoration: none;
+  transition: color 0.15s linear;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: darken($link-color, 15%);
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font: {
+    family: $heading-font-family;
+    weight: 700;
+    size: $heading-font-size;
+  }
+
+  line-height: $heading-line-height;
+  margin: 0 0 $small-spacing;
+}
+
+p {
+  margin: 0 0 $small-spacing;
+}
+
+code {
+  font-family: $mono-font-family;
+  font-weight: 400;
 }
 
 /*
@@ -60,6 +102,13 @@ body {
       @include shift($header-columns);
     }
   }
+
+  > main {
+    padding: $gutter;
+    @include media($desktop-up) {
+      padding-left: 0;
+    }
+  }
 }
 
 /*
@@ -69,7 +118,7 @@ body {
 body {
   > header {
     background-color: $header-bg;
-    color: $header-text-color;
+    color: $header-font-color;
 
     a,
     a:hover {
@@ -78,7 +127,7 @@ body {
 
     nav {
       a {
-        color: $header-text-color;
+        color: $header-font-color;
         &.active {
           font-weight: bold;
           color: $header-highlight;
@@ -116,6 +165,17 @@ body {
           display: list-item;
         }
       }
+    }
+  }
+}
+
+// Other
+body {
+  > header {
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
     }
   }
 }
