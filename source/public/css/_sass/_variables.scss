@@ -30,12 +30,12 @@ $desktop-up: new-breakpoint(min-width $desktop-width 12);
 
 // Font
 $base-font-family: 'Open Sans', sans-serif;
-$heading-font-family: 'Open Sans Condensed', sans-serif;
+$heading-font-family: 'Lato', sans-serif;
 $mono-font-family: 'Inconsolata';
 
 // Font Sizes
 $base-font-size: 1em;
-$heading-font-size: golden-ratio($base-font-size,  1);
+$title-font-size: modular-scale(4);
 
 // Line height
 $base-line-height: 1.5;

@@ -1,7 +1,7 @@
 ---
 ---
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,700,300|Open+Sans+Condensed:700|Inconsolata:400,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,700,300|Lato:400,700,400italic|Inconsolata:400,700);
 
 @import "bourbon/bourbon";
 @import "neat/neat";
@@ -53,12 +53,48 @@ h5,
 h6 {
   font: {
     family: $heading-font-family;
-    weight: 700;
-    size: $heading-font-size;
   }
 
   line-height: $heading-line-height;
-  margin: 0 0 $small-spacing;
+  margin: modular-scale(1) 0 $small-spacing;
+}
+
+h1 {
+  font: {
+    weight: 700;
+    size: modular-scale(3);
+  }
+}
+
+h2 {
+  font: {
+    weight: 700;
+    size: modular-scale(2);
+  }
+  color: lighten($base-font-color, 5%);
+}
+
+h3 {
+  font: {
+    weight: 400;
+    size: modular-scale(1);
+  }
+  color: lighten($base-font-color, 10%);
+}
+
+h4 {
+  font: {
+    weight: 400;
+    size: modular-scale(1);
+    style: italic;
+  }
+  color: lighten($base-font-color, 20%);
+}
+
+ul {
+  li {
+    list-style-type: circle;
+  }
 }
 
 p {
@@ -79,8 +115,6 @@ $main-columns: $grid-columns - $header-columns;
 
 body {
   @include outer-container(100%);
-
-  // TODO - change breakpoint size (larger)
 
   > header,
   > main,
@@ -103,7 +137,8 @@ body {
     }
   }
 
-  > main {
+  > main,
+  > footer {
     padding: $gutter;
     @include media($desktop-up) {
       padding-left: 0;
@@ -149,9 +184,6 @@ body {
     text-align: center;
 
     @include vertical-padding(1.5rem);
-    h1 {
-      font-size: 2rem;
-    }
 
     a {
       display: block;
@@ -170,6 +202,10 @@ body {
 }
 
 // Other
+.site-title {
+  font-size: $title-font-size;
+}
+
 body {
   > header {
     ul {
@@ -189,12 +225,11 @@ article {
   padding: $gutter;
   margin-bottom: $gutter;
 
-  h1 {
-    margin-bottom: 0;
-  }
-
   header {
-    padding-bottom: $gutter;
+    h1 {
+      @include vertical-margin(0);
+    }
+    margin-bottom: $gutter;
   }
 
   .post-date,
