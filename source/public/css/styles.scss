@@ -184,7 +184,7 @@ body {
   > header {
     text-align: center;
 
-    @include vertical-padding(1.5rem);
+    // @include vertical-padding(1.5rem);
 
     a {
       display: block;
@@ -202,9 +202,25 @@ body {
   }
 }
 
+// Stickiness
+@include media($desktop-down) {
+  #affix-outer.affix {
+    position: fixed;
+    top: 0;
+
+    .affix-collapse {
+      display: none;
+    }
+  }
+}
+
 // Other
 .site-title {
   font-size: $title-font-size;
+  margin: modular-scale(-2) 0;
+  @include media($desktop-up) {
+    margin: modular-scale(1) 0 $small-spacing;
+  }
 }
 
 body {
@@ -226,6 +242,10 @@ article {
   padding: $gutter;
   margin-bottom: $gutter;
 
+  &:last-child {
+    margin-bottom: 0;
+  }
+
   header {
     h1 {
       @include vertical-margin(0);
@@ -237,5 +257,14 @@ article {
   .guest-author {
     font-style: italic;
     color: $gray;
+  }
+}
+
+/*
+  Footer
+ */
+body {
+  > footer {
+    padding-top: 0;
   }
 }

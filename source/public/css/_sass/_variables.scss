@@ -32,6 +32,7 @@ $desktop-width: em(992);
 
 $tablet-up: new-breakpoint(min-width $tablet-width 12);
 $desktop-up: new-breakpoint(min-width $desktop-width 12);
+$desktop-down: new-breakpoint(max-width $desktop-width 12);
 
 // Font
 $base-font-family: 'Open Sans', sans-serif;
