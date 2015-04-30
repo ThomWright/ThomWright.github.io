@@ -14,8 +14,6 @@ url:              http://thomwright.co.uk
 shorturl:         thomwright.co.uk
 baseurl:          /
 
-paginate:         5
-
 author:
   name:           Thom Wright
 

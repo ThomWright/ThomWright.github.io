@@ -4,24 +4,49 @@ title: Home
 ---
 
 <div class="posts">
-  {% for post in paginator.posts %}
+  {% comment %}
+    {% for post in paginator.posts %}
+      {% include article.html article=post %}
+    {% endfor %}
+  {% endcomment %}
+  {% for post in site.posts %}
     {% include article.html article=post %}
   {% endfor %}
 </div>
 
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="older" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
-  {% else %}
-    <span class="older">Older</span>
+{% comment %}
+  This is turned off until we actually need pagination.
+
+  {% if paginator.total_pages > 1 %}
+  <nav class="pagination">
+    <ul>
+      {% if paginator.previous_page %}
+        <li><a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">Newer</a></li>
+      {% else %}
+        <li><a class="disabled" href="javascript:void(0)">Newer</a></li>
+      {% endif %}
+
+      <li>
+        <ul>
+          {% for page in (1..paginator.total_pages) %}
+            {% if page == paginator.page %}
+              <li><a class="active disabled" href="#">{{ page }}</a></li>
+            {% elsif page == 1 %}
+              <li><a href="{{ site.baseurl }}">{{ page }}</a></li>
+            {% else %}
+              <li><a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </li>
+
+      {% if paginator.next_page %}
+        <li><a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older</a></li>
+      {% else %}
+        <li><a class="disabled" href="javascript:void(0)">Older</a></li>
+      {% endif %}
+    </ul>
+  </nav>
   {% endif %}
-  {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-      <a class="newer" href="{{ site.baseurl }}">Newer</a>
-    {% else %}
-      <a class="newer" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
-    {% endif %}
-  {% else %}
-    <span class="newer">Newer</span>
-  {% endif %}
-</div>
+
+{% endcomment %}

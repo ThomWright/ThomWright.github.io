@@ -14,10 +14,15 @@ $blue:                    #477dca;
 
 $base-body-bg:            $gray-lightest;
 $base-font-color:         $gray-darker;
+$base-font-highlight:     black;
 
-$header-bg:               $gray-darker;
-$header-font-color:       $gray-lightest;
-$header-highlight:        white;
+$inverse-body-bg:         invert($base-body-bg);
+$inverse-font-color:      invert($base-font-color);
+$inverse-font-highlight:  invert($base-font-highlight);
+
+$header-bg:               lighten($inverse-body-bg, 10%);
+$header-font-color:       lighten($inverse-font-color, 10%);
+$header-font-highlight:   $inverse-font-highlight;
 
 $link-color:              $blue;
 

@@ -1,12 +1,13 @@
 ---
 ---
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,700,300|Lato:400,700,400italic|Inconsolata:400,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,600,300|Lato:400,700,400italic|Inconsolata:400,700);
 
 @import "bourbon/bourbon";
 @import "neat/neat";
 @import "variables";
 @import "mixins";
+// @import "pagination"; turned off until we actually need it
 
 /*
   Base
@@ -157,7 +158,7 @@ body {
 
     a,
     a:hover {
-      color: $header-highlight;
+      color: $header-font-highlight;
     }
 
     nav {
@@ -165,7 +166,7 @@ body {
         color: $header-font-color;
         &.active {
           font-weight: bold;
-          color: $header-highlight;
+          color: $header-font-highlight;
         }
       }
     }
