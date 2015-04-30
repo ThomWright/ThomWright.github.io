@@ -22,7 +22,8 @@ version:          0.0.1
 github:
   repo:           http://github.com/ThomWright/ThomWright.github.io
 
-source:           ./source
+# Github can't cope with this :(
+# source:           ./source
 
 sass:
     sass_dir: public/css/_sass
