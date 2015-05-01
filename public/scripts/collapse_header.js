@@ -1,15 +1,26 @@
 $(document).ready(function () {
   var outer = $('#affix-outer'),
-      sticky = $('.affix-sticky');
+      collapse = $('#affix-collapse'),
+      sticky = $('#affix-sticky'),
+      wrapper = $('#affix-wrapper'),
+      setWrapperHeight = function() {
+        wrapper.css('min-height', sticky.height());
+      },
+      getOffset = function() {
+        return collapse.outerHeight(true/*include margin*/);
+      };
+
+  setWrapperHeight();
 
   outer.affix({
     offset: {
-      top: sticky.offset().top
+      top: getOffset()
     }
   });
 
   $(window).on("resize", function(){
-    outer.data('bs.affix').options.offset = sticky.offset().top;
+    setWrapperHeight();
+    outer.data('bs.affix').options.offset = getOffset();
   });
 });
 

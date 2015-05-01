@@ -153,28 +153,33 @@ body {
 // Colours
 body {
   > header {
-    background-color: $header-bg;
     color: $header-font-color;
 
-    a,
+    &,
+    nav {
+      background-color: $header-bg;
+    }
+
+    a {
+      color: $header-font-color;
+      &.active {
+        font-weight: bold;
+        color: $header-font-highlight;
+      }
+    }
+
+    h1 a,
     a:hover {
       color: $header-font-highlight;
     }
 
     nav {
-      a {
-        color: $header-font-color;
-        &.active {
-          font-weight: bold;
-          color: $header-font-highlight;
-        }
+      @include media($desktop-down) {
+        @include brand-border(bottom);
       }
     }
-
-    @include brand-border(bottom);
     @include media($desktop-up) {
       @include brand-border(right);
-      @include remove-border(bottom);
     }
   }
 }
@@ -205,11 +210,10 @@ body {
 // Stickiness
 @include media($desktop-down) {
   #affix-outer.affix {
-    position: fixed;
-    top: 0;
-
-    .affix-collapse {
-      display: none;
+    #affix-sticky {
+      position: fixed;
+      top: 0;
+      width: 100%;
     }
   }
 }
