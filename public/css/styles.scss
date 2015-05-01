@@ -107,6 +107,10 @@ code {
   font-weight: 400;
 }
 
+pre code {
+  border-radius: $base-border-radius;
+}
+
 /*
   Main grid
  */
