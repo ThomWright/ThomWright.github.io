@@ -37,13 +37,10 @@ a {
   &:active,
   &:focus,
   &:hover {
-    color: darken($link-color, 15%);
-  }
-
-  &:active,
-  &:focus {
+    color: $link-color-highlight;
     outline: none;
   }
+
 }
 
 h1,
@@ -173,6 +170,8 @@ body {
     }
 
     h1 a,
+    a:active,
+    a:focus,
     a:hover {
       color: $header-font-highlight;
     }
