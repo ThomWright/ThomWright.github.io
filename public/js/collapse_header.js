@@ -26,7 +26,7 @@ if (typeof jQuery === 'undefined') {
 
     $(window).on("resize", function(){
       setWrapperHeight();
-      outer.data('bs.affix').options.offset = getOffset();
+      outer.data('bs.affix').options.offset.top = getOffset();
     });
   });
 }(jQuery);
