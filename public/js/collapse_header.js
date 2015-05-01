@@ -10,7 +10,7 @@ if (typeof jQuery === 'undefined') {
         sticky = $('#affix-sticky'),
         wrapper = $('#affix-wrapper'),
         setWrapperHeight = function() {
-          wrapper.css('min-height', sticky.height());
+          wrapper.css('min-height', sticky.outerHeight());
         },
         getOffset = function() {
           return collapse.outerHeight(true/*include margin*/);
@@ -30,4 +30,5 @@ if (typeof jQuery === 'undefined') {
     });
   });
 }(jQuery);
+
 
