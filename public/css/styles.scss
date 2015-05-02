@@ -32,12 +32,13 @@ body {
 a {
   color: $link-color;
   text-decoration: none;
-  transition: color 0.15s linear;
+  transition: color 0.2s linear;
 
   &:active,
   &:focus,
   &:hover {
     color: $link-color-highlight;
+    transition: color 0.05s linear;
   }
 
 }
