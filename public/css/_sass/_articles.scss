@@ -1,0 +1,26 @@
+/*
+  Articles
+ */
+article {
+  background-color: white;
+  @include card;
+  padding: $gutter;
+  margin-bottom: $gutter;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  header {
+    h1 {
+      @include vertical-margin(0);
+    }
+    margin-bottom: $gutter;
+  }
+
+  .post-date,
+  .guest-author {
+    font-style: italic;
+    color: $gray;
+  }
+}

@@ -1,0 +1,39 @@
+/*
+  Main grid
+ */
+// $grid-columns : 12
+$header-columns: 3;
+$main-columns: $grid-columns - $header-columns;
+
+body {
+  @include outer-container(100%);
+
+  > header,
+  > main,
+  > footer {
+    @include span-columns($grid-columns);
+  }
+
+  > header {
+    @include media($desktop-up) {
+      @include span-columns($header-columns);
+      @include fix-left;
+    }
+  }
+
+  > main,
+  > footer {
+    @include media($desktop-up) {
+      @include span-columns($main-columns);
+      @include shift($header-columns);
+    }
+  }
+
+  > main,
+  > footer {
+    padding: $gutter;
+    @include media($desktop-up) {
+      padding-left: 0;
+    }
+  }
+}

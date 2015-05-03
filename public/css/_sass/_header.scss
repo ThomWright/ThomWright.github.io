@@ -1,0 +1,91 @@
+/*
+  Header
+ */
+// Colours
+body {
+  > header {
+    color: $header-font-color;
+
+    &,
+    nav {
+      background-color: $header-bg;
+    }
+
+    a {
+      color: $header-font-color;
+      &.active {
+        font-weight: bold;
+        color: $header-font-highlight;
+      }
+    }
+
+    h1 a,
+    a:active,
+    a:focus,
+    a:hover {
+      color: $header-font-highlight;
+    }
+
+    nav {
+      @include media($desktop-down) {
+        @include brand-border(bottom);
+      }
+    }
+    @include media($desktop-up) {
+      @include brand-border(right);
+    }
+  }
+}
+
+// Positioning & Sizing
+body {
+  > header {
+    text-align: center;
+
+    // @include vertical-padding(1.5rem);
+
+    a {
+      display: block;
+      padding: 10px;
+    }
+
+    nav {
+      li {
+        display: inline-block;
+        @include media($desktop-up) {
+          display: list-item;
+        }
+      }
+    }
+  }
+}
+
+// Stickiness
+@include media($desktop-down) {
+  #affix-outer.affix {
+    #affix-sticky {
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+  }
+}
+
+// Other
+.site-title {
+  font-size: $title-font-size;
+  margin: modular-scale(-2) 0;
+  @include media($desktop-up) {
+    margin: modular-scale(1) 0 $small-spacing;
+  }
+}
+
+body {
+  > header {
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
