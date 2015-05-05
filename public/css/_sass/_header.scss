@@ -52,8 +52,10 @@ body {
     nav {
       li {
         display: inline-block;
+        @include horizontal-margin(3%);
         @include media($desktop-up) {
           display: list-item;
+          margin: 10%;
         }
       }
     }
@@ -83,9 +85,12 @@ body {
 body {
   > header {
     ul {
-      list-style-type: none;
       margin: 0;
       padding: 0;
     }
   }
+}
+
+nav li {
+  list-style-type: none;
 }
