@@ -79,6 +79,11 @@ h4 {
   color: lighten($base-font-color, 20%);
 }
 
+h3 small {
+  font-family: $base-font-family;
+  color: $gray-dark;
+}
+
 ul {
   li {
     list-style-type: none;
