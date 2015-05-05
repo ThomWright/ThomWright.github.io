@@ -2,36 +2,6 @@
   Articles
  */
 article {
-  background-color: white;
-  @include card;
-
-  margin-bottom: $gutter;
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  > * {
-    @include horizontal-padding($gutter);
-    &:first-child {
-      padding-top: $gutter;
-    }
-    &:last-child {
-      padding-bottom: $gutter;
-    }
-  }
-
-  header {
-    h1 {
-      @include vertical-margin(0);
-    }
-    margin-bottom: $gutter;
-  }
-
-  footer {
-    background: darken(white, 2%);
-    border-top: 1px solid $gray-lightest;
-  }
-
   .post-date,
   .guest-author {
     font-style: italic;

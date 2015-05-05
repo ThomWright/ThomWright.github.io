@@ -62,7 +62,7 @@
 /// @link http://www.google.com/design/spec/layout/layout-principles.html#layout-principles-dimensionality Google Design
 /// @requires {function} top-shadow
 /// @requires {function} bottom-shadow
-@mixin card($depth: 1) {
+@mixin border-shadow($depth: 1) {
   @if $depth < 1 {
     box-shadow: none;
   } @else if $depth > 5 {
@@ -92,4 +92,36 @@
   $color: rgba(black, nth(.24 .23 .23 .22 .22, $depth));
 
   @return 0 $primary-offset $blur $color;
+}
+
+@mixin card {
+  @include border-shadow;
+  background-color: white;
+
+  margin-bottom: $gutter;
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  > * {
+    @include horizontal-padding($gutter);
+    &:first-child {
+      padding-top: $gutter;
+    }
+    &:last-child {
+      padding-bottom: $gutter;
+    }
+  }
+
+  header {
+    h1 {
+      @include vertical-margin(0);
+    }
+    margin-bottom: $gutter;
+  }
+
+  footer {
+    background: darken(white, 2%);
+    border-top: 1px solid $gray-lightest;
+  }
 }
