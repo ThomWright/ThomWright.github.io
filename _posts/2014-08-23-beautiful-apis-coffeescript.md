@@ -3,7 +3,7 @@ layout: post
 title: Beautiful APIs in CoffeeScript
 ---
 
-Let's say we want to make a maths library in CoffeeScript (e.g. a [Matrix library](github.com/ThomWright/matrixy)). We could easily write an API for addition that looks like:
+Let's say we want to make a maths library in CoffeeScript (e.g. a [Matrix library](https://github.com/ThomWright/matrixy)). We could easily write an API for addition that looks like:
 
 ```coffeescript
 nine = four.plus five
