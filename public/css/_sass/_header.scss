@@ -62,16 +62,7 @@ body {
   }
 }
 
-// Stickiness
-@include media($desktop-down) {
-  #affix-outer.affix {
-    #affix-sticky {
-      position: fixed;
-      top: 0;
-      width: 100%;
-    }
-  }
-}
+// TODO sticky header - maybe use `position: sticky;` when it's supported?
 
 // Other
 .site-title {

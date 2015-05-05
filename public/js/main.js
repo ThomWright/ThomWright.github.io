@@ -4,30 +4,8 @@ if (typeof jQuery === 'undefined') {
 
 +function ($) {
   'use strict';
-  $(document).ready(function () {
-    var outer = $('#affix-outer'),
-        collapse = $('#affix-collapse'),
-        sticky = $('#affix-sticky'),
-        wrapper = $('#affix-wrapper'),
-        setWrapperHeight = function() {
-          wrapper.css('min-height', sticky.outerHeight());
-        },
-        getOffset = function() {
-          return collapse.outerHeight(true/*include margin*/);
-        };
-
-    setWrapperHeight();
-
-    outer.affix({
-      offset: {
-        top: getOffset()
-      }
-    });
-
-    $(window).on("resize", function(){
-      setWrapperHeight();
-      outer.data('bs.affix').options.offset.top = getOffset();
-    });
+  // TODO custom JS
+  // TODO sticky header - maybe use `position: sticky;` when it's supported?
   });
 }(jQuery);
 
