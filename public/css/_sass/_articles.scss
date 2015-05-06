@@ -2,6 +2,11 @@
   Articles
  */
 article {
+
+  ul li {
+    list-style-type: disc;
+  }
+
   .post-date,
   .guest-author {
     font-style: italic;
