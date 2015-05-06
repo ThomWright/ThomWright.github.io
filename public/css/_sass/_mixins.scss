@@ -24,7 +24,8 @@
 
   &:active,
   &:focus,
-  &:hover {
+  &:hover,
+  a:focus>& {
     @each $type in $types {
       #{$type}: map-get(map-get($list, $type), hover);
     }
