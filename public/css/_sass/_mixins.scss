@@ -1,4 +1,37 @@
 
+/*
+  Example:
+
+  $transitions: (
+    box-shadow: (
+      normal: $normal-shadow,
+      hover : $hover-shadow
+    ),
+    color: (
+      normal: $normal-font-color,
+      hover : $hover-font-color
+    )
+  );
+  @include hover-transitions($transitions);
+ */
+@mixin hover-transitions($list) {
+  $types: map-keys($list);
+
+  @each $type in $types {
+    #{$type}: map-get(map-get($list, $type), normal);
+  }
+  transition: all 0.2s ease-out;
+
+  &:active,
+  &:focus,
+  &:hover {
+    @each $type in $types {
+      #{$type}: map-get(map-get($list, $type), hover);
+    }
+    transition: all 0.05s linear;
+  }
+}
+
 @mixin fix-left {
   position: fixed;
   top: 0;

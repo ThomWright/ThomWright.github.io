@@ -1,0 +1,29 @@
+/*
+  Icons
+ */
+
+.img-circle {
+  border-radius: 50%;
+}
+
+.mega-octicon {
+  font-size: 100px;
+}
+
+.round-icon {
+  color: $base-font-color;
+  vertical-align: bottom;
+  border-radius: 50%;
+
+  $transitions: (
+    box-shadow: (
+      normal: 2px 3px 3px rgba(0,0,0,0.2),
+      hover : 2px 3px 3px rgba(0,0,0,0.1)
+    ),
+    color: (
+      normal: $base-font-color,
+      hover : lighten($base-font-color, 2%)
+    )
+  );
+  @include hover-transitions($transitions);
+}

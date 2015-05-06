@@ -3,6 +3,8 @@
  */
 article {
 
+  @include card;
+
   ul li {
     list-style-type: disc;
   }
