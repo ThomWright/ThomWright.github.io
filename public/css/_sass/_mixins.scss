@@ -98,18 +98,18 @@
   @include border-shadow;
   background-color: white;
 
-  margin-bottom: $gutter;
+  margin-bottom: $base-padding;
   &:last-child {
     margin-bottom: 0;
   }
 
   > * {
-    @include horizontal-padding($gutter);
+    @include horizontal-padding($base-padding);
     &:first-child {
-      padding-top: $gutter;
+      padding-top: $base-padding;
     }
     &:last-child {
-      padding-bottom: $gutter;
+      padding-bottom: $base-padding;
     }
   }
 
@@ -117,7 +117,7 @@
     h1 {
       @include vertical-margin(0);
     }
-    margin-bottom: $gutter;
+    margin-bottom: $base-padding;
   }
 
   footer {
