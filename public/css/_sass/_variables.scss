@@ -30,10 +30,12 @@ $link-color-highlight:    darken($link-color, 15%);
 // Grid
 $tablet-width: em(768);
 $desktop-width: em(992);
+$large-desktop-width: em(1600);
 
 $tablet-up: new-breakpoint(min-width $tablet-width 12);
 $desktop-up: new-breakpoint(min-width $desktop-width 12);
 $desktop-down: new-breakpoint(max-width $desktop-width 12);
+$large-desktop-up: new-breakpoint(min-width $large-desktop-width 12);
 
 // Font
 $base-font-family: 'Open Sans', sans-serif;
