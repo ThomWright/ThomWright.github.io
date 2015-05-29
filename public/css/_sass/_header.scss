@@ -67,6 +67,7 @@ body {
 // Other
 .site-title {
   font-size: $title-font-size;
+  font-weight: 400;
   margin: modular-scale(-2) 0;
   @include media($desktop-up) {
     margin: modular-scale(1) 0 $small-spacing;
