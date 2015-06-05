@@ -5,11 +5,10 @@ title: Handling Events with React-Mainloop
 
 I recently created a [React.js](https://facebook.github.io/react/) component wrapper around [this main loop library](https://github.com/IceCreamYou/MainLoop.js). You can find it here: [react-mainloop](https://github.com/ThomWright/react-mainloop). Since then I've been working on finding a good way to handle events using this system. This is what I've come up with so far.
 
-Before we go any further, here's some suggested background reading:
+Before we go any further, it might be worth reading a bit about game loops:
 
-- [Game Loop](http://www.isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing)
-- [Event Queue pattern](http://gameprogrammingpatterns.com/event-queue.html)
-- [Command Pattern](http://gameprogrammingpatterns.com/command.html)
+- [A Detailed Explanation of JavaScript Game Loops and Timing](http://www.isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing)
+- [Game Programming Patterns - Game Loop](http://gameprogrammingpatterns.com/game-loop.html)
 
 ## First Attempt
 
@@ -21,7 +20,7 @@ Another good reason to decouple event handling from event listeners is separatio
 
 ## Implementation
 
-Here is an outline of my current implementation for event handling. *All code below should be treated as pseudo-code.*
+Here is an outline of my current implementation for event handling using the [Event Queue pattern](http://gameprogrammingpatterns.com/event-queue.html). *All code below should be treated as pseudo-code.*
 
 The React Components create `Event`s, in response to browser events. There are different event types for different things, for example: `BackgroundMouseDown`, or `EnemyClick`. These `Event`s are useful because they contain more information than the native browser event. For example, `EnemyClick` could contain an `enemyID` property to identify which enemy was clicked.
 
@@ -97,6 +96,8 @@ class Game extends React.Component {
 ```
 
 ## Optional Extras
+
+These extras made use of the well-known [Command Pattern](http://gameprogrammingpatterns.com/command.html).
 
 ### Injectable Event Handlers
 
@@ -178,8 +179,6 @@ new Exectutor().execute(new Command(damageEnemy, giveHealth);
 I'd like a better way of handling game state. Immutability would be great. An alternative to explicitly passing the state object around would be preferable.
 
 It would also be interesting to try out a [Flux](https://facebook.github.io/flux/docs/todo-list.html)-type system. I'm not sure how far this breaks down when we no longer update state or render in response to events.
-
-## Finally
 
 I'm considering adding support for event handling into [react-mainloop](https://github.com/ThomWright/react-mainloop), or maybe in a separate library. I'll probably update this post if/when I improve on these ideas.
 
