@@ -3,7 +3,9 @@ layout: post
 title: Handling Events with React-Mainloop
 ---
 
-I recently created a [React.js](https://facebook.github.io/react/) component wrapper around [this main loop library](https://github.com/IceCreamYou/MainLoop.js). You can find it here: [react-mainloop](https://github.com/ThomWright/react-mainloop). Since then I've been working on finding a good way to handle events using this system. This is what I've come up with so far.
+I recently created a [React.js](https://facebook.github.io/react/) component wrapper around [this main loop library](https://github.com/IceCreamYou/MainLoop.js). You can find it here: [react-mainloop](https://github.com/ThomWright/react-mainloop). It can be used to control a React component using a game loop. It uses an `update()` function to generate new props, and takes control of when rendering occurs. It's especially useful for animating games, or other interactive canvas-based apps.
+
+Since then I've been working on finding a good way to handle events using this system. This is what I've come up with so far.
 
 Before we go any further, it might be worth reading a bit about game loops:
 
