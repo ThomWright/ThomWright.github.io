@@ -12,3 +12,11 @@ Anyway, here's how to achieve that with [Mocha](http://mochajs.org/), my test ru
 ```
 
 Inspired by [this Gist](https://gist.github.com/timoxley/1721593).
+
+##### EDIT
+
+Alternatively, this is much simpler and seems to work:
+
+```json
+"mocha": "mocha **/*__tests__/* -R spec"
+```
