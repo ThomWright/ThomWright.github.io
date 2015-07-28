@@ -18,5 +18,5 @@ Inspired by [this Gist](https://gist.github.com/timoxley/1721593).
 Alternatively, this is much simpler and seems to work:
 
 ```json
-"mocha": "mocha **/*__tests__/* -R spec"
+"mocha": "mocha src/**/*__tests__/* -R spec"
 ```
