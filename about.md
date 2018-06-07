@@ -3,9 +3,14 @@ layout: page
 title: About
 ---
 
-<a href="//registry.jsonresume.org/thomwright" target="_blank">
-  <img class="img-circle round-icon" height="100" width="100" alt="Thom Wright" src="//www.gravatar.com/avatar/b5c94d56e4e52feeb6d6568c8450a6a0?s=100&amp;r=pg">
-</a> <a class="round-icon mega-octicon octicon-mark-github" href="//github.com/ThomWright" target="_blank"></a>
+<img class="img-circle round-icon" height="100" width="100" alt="Thom Wright" src="//www.gravatar.com/avatar/b5c94d56e4e52feeb6d6568c8450a6a0?s=100&amp;r=pg">
+
+## Links
+
+<a href="//www.linkedin.com/in/thomwright0/" target="_blank">
+  <img class="img-circle round-icon" height="100" width="100" alt="LinkedIn" src="{{ site.baseurl }}/public/imgs/linkedin.svg">
+</a>
+<a class="round-icon mega-octicon octicon-mark-github" href="//github.com/ThomWright" target="_blank"></a>
 
 ## Technologies
 This site has been lovingly made using the following technologies:
