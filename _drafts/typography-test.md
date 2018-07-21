@@ -6,15 +6,20 @@ guest_author:
   url: http://thomwright.co.uk
 ---
 
+# Main heading
+
 Some intro text with a [link](http://google.com).
 
 ## Sub-Heading
+
 This is text with some *italics*.
 
 ### Sub-Sub-Heading
+
 This is text with some **bold**.
 
 #### Sub-Sub-Sub-Heading
+
 A simple unordered list:
 
 - item
