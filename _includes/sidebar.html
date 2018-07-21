@@ -1,13 +1,13 @@
 <header>
   <h1 class="site-title">
-    <a href="{{ site.baseurl }}">
+    <a href="/{{ site.baseurl }}">
       {{ site.title }}
     </a>
   </h1>
 
   <nav>
     <ul>
-      <li><a class="{% if page.url == site.baseurl %}active{% endif %}" href="{{ site.baseurl }}">Home</a></li>
+      <li><a class="{% if page.url == site.baseurl %}active{% endif %}" href="/{{ site.baseurl }}">Home</a></li>
 
       {% comment %}
         The code below dynamically generates a sidebar nav of pages with

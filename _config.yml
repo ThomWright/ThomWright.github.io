@@ -12,7 +12,7 @@ description:      Because tomwright.co.uk wasn't available...
 
 url:              http://thomwright.co.uk
 shorturl:         thomwright.co.uk
-baseurl:          /
+baseurl:          ""
 
 author:
   name:           Thom Wright
