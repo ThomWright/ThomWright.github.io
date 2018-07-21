@@ -7,13 +7,16 @@ title: About
 
 ## Links
 
+<a href="//twitter.com/ThomWright0" target="/blank">
+  <img class="img-circle round-icon" height="100" width="100" alt="Twitter" src="{{ site.baseurl }}/public/imgs/twitter.svg">
+</a>
 <a href="//www.linkedin.com/in/thomwright0/" target="_blank">
   <img class="img-circle round-icon" height="100" width="100" alt="LinkedIn" src="{{ site.baseurl }}/public/imgs/linkedin.svg">
 </a>
 <a class="round-icon mega-octicon octicon-mark-github" href="//github.com/ThomWright" target="_blank"></a>
 
 ## Technologies
-This site has been lovingly made using the following technologies:
+This site has been made using the following technologies:
 
 - [Jekyll](http://jekyllrb.com/)
 - [GitHub Pages](https://pages.github.com/)
