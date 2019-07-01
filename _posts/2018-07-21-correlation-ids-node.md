@@ -237,7 +237,7 @@ Components should only have dependencies on other components with the same lifet
 
 ## Separating concerns
 
-Compare these two implementations ofthe business logic:
+Compare these two implementations of the business logic:
 
 ```js
 // manually passing to each function
@@ -367,7 +367,7 @@ To wire these up, we start at the leaf nodes (here that's `logger`) and work our
 
 We also use a [service chassis](http://microservices.io/patterns/microservice-chassis.html) called the `shell`. This gives developers easy access to a logger and HTTP client which already make use of the correlation ID.
 
-This post is long enough already, so I'm going to stop here. The next steps would be to think about how to propagate this correlation ID to another service through e.g. an HTTP request. This is an easy as creating a new `httpClient` component which takes a correlation ID, and wiring it in wherever it's needed.
+This post is long enough already, so I'm going to stop here. The next steps would be to think about how to propagate this correlation ID to another service through e.g. an HTTP request. This is as easy as creating a new `httpClient` component which takes a correlation ID, and wiring it in wherever it's needed.
 
 Once an application is architected this way, adding any other context propagation is much more straightforward. Moving to full [distributed tracing](http://microservices.io/patterns/observability/distributed-tracing.html) is a relatively easy step.
 
