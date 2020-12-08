@@ -108,3 +108,11 @@ code {
 pre code {
   border-radius: $base-border-radius;
 }
+
+blockquote {
+  font-style: italic;
+  border-left-color: $brand-color;
+  border-left-width: 4px;
+  border-left-style: solid;
+  padding-left: 1em;
+}
