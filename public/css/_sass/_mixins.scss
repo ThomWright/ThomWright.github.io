@@ -20,7 +20,7 @@
   @each $type in $types {
     #{$type}: map-get(map-get($list, $type), normal);
   }
-  transition: all 0.2s ease-out;
+  transition: all 0.1s ease-out;
 
   &:active,
   &:focus,
@@ -29,7 +29,7 @@
     @each $type in $types {
       #{$type}: map-get(map-get($list, $type), hover);
     }
-    transition: all 0.05s linear;
+    transition: all 0.04s linear;
   }
 }
 
