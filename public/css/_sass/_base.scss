@@ -111,8 +111,7 @@ pre code {
 
 blockquote {
   font-style: italic;
-  border-left-color: $brand-color;
-  border-left-width: 4px;
-  border-left-style: solid;
+  @include single-side-border(left, $blue);
   padding-left: 1em;
+  @include horizontal-margin(1em);
 }
