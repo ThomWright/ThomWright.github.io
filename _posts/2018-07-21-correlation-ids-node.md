@@ -3,7 +3,7 @@ layout: post
 title: Correlation IDs in NodeJS
 ---
 
-Much has already been written about the need for correlation IDs in microservice architectures. If this is a new concept for you, I encourage you to read [_Building Microservices_](http://shop.oreilly.com/product/0636920033158.do) by Sam Newman. Or if you want a quick intro, try [this blog post](http://hilton.org.uk/blog/microservices-correlation-id).
+Much has already been written about the need for correlation IDs in microservice architectures. If this is a new concept for you, I encourage you to read [_Building Microservices_](https://shop.oreilly.com/product/0636920033158.do) by Sam Newman. Or if you want a quick intro, try [this blog post](https://hilton.org.uk/blog/microservices-correlation-id).
 
 There are three ways I know of to pass a correlation ID around a NodeJS application:
 
@@ -365,10 +365,10 @@ Our component hierarchy now looks like:
 
 To wire these up, we start at the leaf nodes (here that's `logger`) and work our way to the root. The bigger your app, the more complicated your wiring. You might want to make this reusable, or even look into dependency injection systems. Personally, I think there are benefits to the explicit wiring shown here. Saying that, at [Candide](https://candide.eu/) we use a library I wrote called [`di-hard`](https://github.com/ThomWright/di-hard) which automatically wires our components together. It's not strictly necessary, but saves some boilerplate.
 
-We also use a [service chassis](http://microservices.io/patterns/microservice-chassis.html) called the `shell`. This gives developers easy access to a logger and HTTP client which already make use of the correlation ID.
+We also use a [service chassis](https://microservices.io/patterns/microservice-chassis.html) called the `shell`. This gives developers easy access to a logger and HTTP client which already make use of the correlation ID.
 
 This post is long enough already, so I'm going to stop here. The next steps would be to think about how to propagate this correlation ID to another service through e.g. an HTTP request. This is as easy as creating a new `httpClient` component which takes a correlation ID, and wiring it in wherever it's needed.
 
-Once an application is architected this way, adding any other context propagation is much more straightforward. Moving to full [distributed tracing](http://microservices.io/patterns/observability/distributed-tracing.html) is a relatively easy step.
+Once an application is architected this way, adding any other context propagation is much more straightforward. Moving to full [distributed tracing](https://microservices.io/patterns/observability/distributed-tracing.html) is a relatively easy step.
 
 I would strongly recommend using correlation IDs from the beginning if possible. Refactoring them into an existing application is a not a fun job!

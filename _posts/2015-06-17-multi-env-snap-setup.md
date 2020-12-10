@@ -7,7 +7,7 @@ I've been a big fan of [Travis](https://travis-ci.org/) for a while now. It runs
 
 One I'm trying at the moment is [Snap CI](https://snap-ci.com/).
 
-One thing that was really easy to do in Travis is running your tests in a number of different environments, using a [build matrix](http://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix). For example, if I wanted to run my JS tests on several versions of NodeJS, I could put the following in my `travis.yml`:
+One thing that was really easy to do in Travis is running your tests in a number of different environments, using a [build matrix](https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix). For example, if I wanted to run my JS tests on several versions of NodeJS, I could put the following in my `travis.yml`:
 
 ```yaml
 language: node_js
@@ -36,7 +36,7 @@ nvm install 0.12 2>/dev/null
 nvm use 0.12
 ```
 
-We can do this for each stage, but at some point we might want to put this into a script and version control it along with our code. Too much code in CI tools can be [considered a smell](http://www.thoughtworks.com/radar/techniques/programming-in-your-ci-cd-tool), and we probably want to avoid this.
+We can do this for each stage, but at some point we might want to put this into a script and version control it along with our code. Too much code in CI tools can be [considered a smell](https://www.thoughtworks.com/radar/techniques/programming-in-your-ci-cd-tool), and we probably want to avoid this.
 
 Now, a little script like this would do the trick:
 

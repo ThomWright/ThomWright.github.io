@@ -18,9 +18,9 @@ title: About
 ## Technologies
 This site has been made using the following technologies:
 
-- [Jekyll](http://jekyllrb.com/)
+- [Jekyll](https://jekyllrb.com/)
 - [GitHub Pages](https://pages.github.com/)
-- [Sass](http://sass-lang.com/)
-- [Bourbon](http://bourbon.io/) and [Neat](http://neat.bourbon.io/)
+- [Sass](https://sass-lang.com/)
+- [Bourbon](https://bourbon.io/) and [Neat](https://neat.bourbon.io/)
 - [highlight.js](https://highlightjs.org/)
 - [Vagrant](https://www.vagrantup.com/)

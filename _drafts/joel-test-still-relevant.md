@@ -6,15 +6,15 @@ guest_author:
   url: https://github.com/ishakir
 ---
 
-Many of you have probably seen [The Joel Test](http://www.joelonsoftware.com/articles/fog0000000043.html), Joel Spolsky's *"twelve-question measure of the quality of a software team"*. This is included as a metric for companies posting jobs on [careers.stackoverflow.com](careers.stackoverflow.com).
+Many of you have probably seen [The Joel Test](https://www.joelonsoftware.com/articles/fog0000000043.html), Joel Spolsky's *"twelve-question measure of the quality of a software team"*. This is included as a metric for companies posting jobs on [careers.stackoverflow.com](careers.stackoverflow.com).
 
-At the time (August 2000 - 14 years ago at time of writing!), this was probably a great list. Now though, we feel it's somewhat out of date. Even [Joel admits](http://meta.stackexchange.com/a/109363) he might write a different list if he was doing it today. 
+At the time (August 2000 - 14 years ago at time of writing!), this was probably a great list. Now though, we feel it's somewhat out of date. Even [Joel admits](https://meta.stackexchange.com/a/109363) he might write a different list if he was doing it today.
 
 Now, we're not the first to make this observation:
 
 - [Should the Joel Test on Careers be updated?](https://meta.stackexchange.com/questions/109280/should-the-joel-test-on-careers-be-updated)
-- [The Joel test is antiquated](http://www.coriandertech.com/2011/11/05/the-joel-test-is-antiquated/)
-- [The Joel Test - Updated for 2010](http://geekswithblogs.net/btudor/archive/2009/06/16/132842.aspx)
+- [The Joel test is antiquated](https://www.coriandertech.com/2011/11/05/the-joel-test-is-antiquated/)
+- [The Joel Test - Updated for 2010](https://geekswithblogs.net/btudor/archive/2009/06/16/132842.aspx)
 
 All excellent posts and worth reading. We're going to follow the trend and have a go at writing our own checklist, but first let's consider the original.
 
@@ -69,7 +69,7 @@ What we *don't* want is the development team 'throwing the code over the fence' 
 ### 11. Do new candidates write code during their interview?
 We have differing opinions on this one.
 
-Thom: Agreed. It's got to be done sensibly though. If you're looking for 100% correct syntax on a whiteboard, you're definitely doing it wrong. 
+Thom: Agreed. It's got to be done sensibly though. If you're looking for 100% correct syntax on a whiteboard, you're definitely doing it wrong.
 
 Imran: Mostly agree. An exception would be interviewing non-programmers with the intent to train them. In that case, test their aptitude for CS concepts without using code.
 

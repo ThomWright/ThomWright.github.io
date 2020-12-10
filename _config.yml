@@ -10,7 +10,7 @@ title:            Thom Wright
 tagline:          Because tomwright.co.uk wasn't available...
 description:      Because tomwright.co.uk wasn't available...
 
-url:              http://thomwright.co.uk
+url:              https://thomwright.co.uk
 shorturl:         thomwright.co.uk
 baseurl:          ""
 
@@ -20,7 +20,7 @@ author:
 version:          0.0.1
 
 github:
-  repo:           http://github.com/ThomWright/ThomWright.github.io
+  repo:           https://github.com/ThomWright/ThomWright.github.io
 
 # Github can't cope with this :(
 # source:           ./source

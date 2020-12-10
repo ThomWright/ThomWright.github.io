@@ -3,12 +3,12 @@ layout: post
 title: Typography Test
 guest_author:
   name: Me (Thom Wright)
-  url: http://thomwright.co.uk
+  url: https://thomwright.co.uk
 ---
 
 # Main heading
 
-Some intro text with a [link](http://google.com).
+Some intro text with a [link](https://google.com).
 
 ## Sub-Heading
 

@@ -9,8 +9,8 @@ Since then I've been working on finding a good way to handle events using this s
 
 Before we go any further, it might be worth reading a bit about game loops:
 
-- [A Detailed Explanation of JavaScript Game Loops and Timing](http://www.isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing)
-- [Game Programming Patterns - Game Loop](http://gameprogrammingpatterns.com/game-loop.html)
+- [A Detailed Explanation of JavaScript Game Loops and Timing](https://www.isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing)
+- [Game Programming Patterns - Game Loop](https://gameprogrammingpatterns.com/game-loop.html)
 
 ## First Attempt
 
@@ -22,7 +22,7 @@ Another good reason to decouple event handling from event listeners is separatio
 
 ## Implementation
 
-Here is an outline of my current implementation for event handling using the [Event Queue pattern](http://gameprogrammingpatterns.com/event-queue.html). *All code below should be treated as pseudo-code.*
+Here is an outline of my current implementation for event handling using the [Event Queue pattern](https://gameprogrammingpatterns.com/event-queue.html). *All code below should be treated as pseudo-code.*
 
 The React Components create `Event`s, in response to browser events. There are different event types for different things, for example: `BackgroundMouseDown`, or `EnemyClick`. These `Event`s are useful because they contain more information than the native browser event. For example, `EnemyClick` could contain an `enemyID` property to identify which enemy was clicked.
 
@@ -99,7 +99,7 @@ class Game extends React.Component {
 
 ## Optional Extras
 
-These extras made use of the well-known [Command Pattern](http://gameprogrammingpatterns.com/command.html).
+These extras made use of the well-known [Command Pattern](https://gameprogrammingpatterns.com/command.html).
 
 ### Injectable Event Handlers
 
