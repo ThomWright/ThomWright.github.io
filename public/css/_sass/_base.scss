@@ -115,3 +115,7 @@ blockquote {
   padding-left: 1em;
   @include horizontal-margin(1em);
 }
+
+strong {
+  font-weight: bold;
+}
