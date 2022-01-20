@@ -17,7 +17,7 @@ baseurl: ""
 author:
   name: Thom Wright
 
-version: 0.0.1
+version: 1.0.0
 
 github:
   repo: https://github.com/ThomWright/ThomWright.github.io
