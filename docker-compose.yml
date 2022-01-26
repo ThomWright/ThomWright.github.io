@@ -1,12 +1,10 @@
 version: '3'
 services:
-  jekyll:
-    image: starefossen/github-pages
-    command: jekyll serve -d /_site --drafts --watch --force_polling -H 0.0.0.0 -P 4000
-    environment:
-      - "JEKYLL_GITHUB_TOKEN:${JEKYLL_GITHUB_TOKEN}"
+  github-pages:
+    image: jekyll/jekyll:pages
+    command: jekyll serve --drafts --watch --force_polling -H 0.0.0.0 -P 4000
     ports:
       - "4000:4000"
     volumes:
-      - ./:/usr/src/app
+      - ./:/srv/jekyll
     tty: true

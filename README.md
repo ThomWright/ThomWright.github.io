@@ -15,12 +15,6 @@ gem install bundler
 bundle install
 ```
 
-### Updating the Gemfile.lock
-
-Try: `./scripts/run-script-in-docker.sh update-gem-lock.sh`
-
-I don't have the patience to figure out how to run Ruby locally, so I'm just mounting the files into a Docker container.
-
 ### Running
 
 On your machine:
@@ -33,4 +27,15 @@ Or in a VM (see `./provision/bootstrap.sh` for more details):
 
 Or in Docker:
 
-`docker-compose up` - you might need to remove the `Gemfile.lock` (ugh)
+`docker-compose up`
+
+Then go to `localhost:4000`.
+
+### Updating the Gemfile.lock
+
+```bash
+docker run --rm \
+  --volume="$PWD:/srv/jekyll" \
+  -it jekyll/jekyll:pages \
+  bundle update
+```
