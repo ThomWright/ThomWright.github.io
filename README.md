@@ -29,8 +29,8 @@ On your machine:
 
 Or in a VM (see `./provision/bootstrap.sh` for more details):
 
-`vagrant up`
+`vagrant up` - TODO how to use this?
 
 Or in Docker:
 
-`docker-compose up`
+`docker-compose up` - you might need to remove the `Gemfile.lock` (ugh)
