@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Microservice architectures
+title: Decomposition in microservice architectures
 ---
 
-This article is an adaptation of a bunch of advice I've written over the years about designing microservice architectures. There isn't much novel advice here, it's mainly just existing ideas rehashed in my own words. It's largely based on real-world problems I've encountered or discussed. The intended audience was for full-stack Node.js engineers with varying amounts of experience.
+This article is an adaptation of a bunch of advice I've written over the years about designing microservice architectures. There isn't much novel advice here, it's mainly just existing ideas rehashed in my own words. It's largely based on real-world problems I've encountered or discussed, but I don't claim to be an expert. This is an attempt to get some ideas out of my head and written down to more easily share and discuss them. The intended audience was full-stack Node.js engineers with varying amounts of experience.
 
-It isn't intended to talk about specifics such as monitoring, deployment, or about database choices. It's assumed that these kind of decisions have already been made and implemented. Instead, it's mainly aimed at answering a class of question I hear a lot, which is (in essence):
+Deliberately out of scope are aspects such as monitoring, deployment, or database choices. It's assumed that these kind of decisions have already been made and implemented. Instead, it's mainly aimed at answering a class of question I hear a lot, which is (in essence):
 
 > How do I decompose an application (or set of features) into one or more microservices?
 
@@ -26,18 +26,7 @@ Instead of designing applications as monoliths, they could instead be broken dow
 
 ## Dependencies
 
-- start with "minimise dependencies"? which implies:
-  - don't export internal services
-  - zero client knowledge
-  - DAG
-  - private databases
-  - isolate external services
-  - take care introducing dependencies
-- implementation details
-- API stability
-- resilience
-
-Dependencies are one of the primary ways I think about designing
+I often think about decomposing microservice architectures in terms of dependencies, and nearly all of the advice here relates to dependencies in some way.
 
 There are many ways to define a dependency. I’ll be using two main criteria here:
 
@@ -50,8 +39,8 @@ These dependency relationships are related to the ideas of coupling and cohesion
 
 Kent Beck has [a good talk discussion coupling and cohesion](httpes://hackmd.io/@pierodibello/Continued-Learning-The-Beauty-of-Maintenance---Kent-Beck---DDD-Europe-2020) with relevant definitions which I'll use here too:
 
-1. **Coupling** - A and B are coupled with respect to a particular change if changing A implies changing B.
-2. **Cohesion** - If I have an element E that have sub-elements, that element is cohesive to the degree that its sub-elements are coupled, meaning that if I have to change one of these sub-elements, I have to change the others sub-elements at the same time too.
+- **Coupling** - A and B are coupled with respect to a particular change if changing A implies changing B.
+- **Cohesion** - If I have an element E that have sub-elements, that element is cohesive to the degree that its sub-elements are coupled, meaning that if I have to change one of these sub-elements, I have to change the others sub-elements at the same time too.
 
 With these definitions in mind, let's go through some guidelines.
 
@@ -79,15 +68,19 @@ Related to the above, consider implementing a **one-to-one service-to-database m
 
 **API stability is tiered**. Some services are inherently difficult to change. For example, if they are depended on by a mobile app where years-old versions are still in use, or central internal services which are depended on my many other services. In general, external APIs should have the highest levels of stability. Private databases should (in theory!) be the most flexible, since they should only have a single internal client. Database migrations will still need to be backwards compatible, and might need to be done in several steps.
 
-A last note about dependencies: configuration. This is an exception to the service-to-service dependency we've mainly been discussing above, but the advice applies just as well.
+**Store environment-specific configuration separately**. This is slightly different to the service-to-service dependencies we've been discussing above, but the advice applies just as well.
 
-Our services are probably going to be running in several environments, e.g. staging and production. The configuration for your production environment knows which services run in it. In other words, the production environment depends on the service. Therefore, your service should know nothing about your production environment. In practice, this means your service’s code should not have production-specific configuration in it.
+As an example, our services are probably going to be running in several environments, e.g. staging and production. Assuming you are defining your infrastructure declaratively somehow, it's likely that you'll have some configuration for these environments somewhere, including which services should run and which versions of those services. In other words, the production environment knows about your service, and has a dependency on it. If the service codebase includes the configuration for a specific environment, then the service also knows about the environment, which is then a circular dependency.
 
-If the configuration for a specific environment is included in the service, then the service knows about the environment. If we want to change the configuration for an environment, we must change the service. If we keep environment-specific config out of the service, then it means we can change an environment without having to change the service itself. This seems like a Good Thing.
+In practice, this means the the environment and service are _coupled with respect to configuration changes_. If we want to change a log level, we would need to change that in the service, build a new version, then change the service version in the production environment.
+
+However, if we keep environment-specific configuration out of the service, then it means we can change this log level without having to change the service itself.
 
 See [The Twelve-Factor App - Config](https://12factor.net/config) for a deeper discussion of this concept.
 
-## Splitting and grouping (decomposition?)
+## Decomposition
+
+There are also other aspects to consider when decomposing services. I'll discuss a few here.
 
 If you're familiar with Object-Oriented Design practices, many of the concepts used for deciding how to group functionality into services might seem familiar. Microservices bring their own sets of additional challenges.
 
@@ -103,6 +96,8 @@ Some factors to consider when considering decomposing services, both when splitt
 - **Transactional boundaries and data consistency** - splitting up services involves splitting the data in these services, and this can lead to data inconsistency. Sometimes eventual consistency can be acceptable, but generally splitting things up can increase the risk not not-even-eventual consistency. This is partly due to losing the atomic, transactional nature of (some) databases. It is important to be aware of where this is and isn't acceptable, and the trade-off being made.
 
 Note that none of these are "size". Generally this is a proxy for other problems associated with the size, e.g. poor modularity, independent deployment or scaling.
+
+TODO: checklist:
 
 - Business context:
   - What is the high level business context of the proposed service(s)? E.g. ticketing for gardens for `membership`
