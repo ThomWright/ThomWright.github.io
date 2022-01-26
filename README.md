@@ -4,6 +4,8 @@
 
 ### Dependencies
 
+For running locally:
+
 * nodejs
 * ruby (v2.0)
 * bundler
@@ -13,8 +15,22 @@ gem install bundler
 bundle install
 ```
 
-See `./provision/bootstrap.sh` for more details.
+### Updating the Gemfile.lock
+
+Try: `./scripts/run-script-in-docker.sh update-gem-lock.sh`
+
+I don't have the patience to figure out how to run Ruby locally, so I'm just mounting the files into a Docker container.
 
 ### Running
 
+On your machine:
+
 `jekyll serve --drafts --baseurl ''`
+
+Or in a VM (see `./provision/bootstrap.sh` for more details):
+
+`vagrant up`
+
+Or in Docker:
+
+`docker-compose up`
