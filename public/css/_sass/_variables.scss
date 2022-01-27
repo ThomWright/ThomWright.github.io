@@ -20,7 +20,7 @@ $inverse-body-bg:         invert($base-body-bg);
 $inverse-font-color:      invert($base-font-color);
 $inverse-font-highlight:  invert($base-font-highlight);
 
-$header-bg:               lighten($inverse-body-bg, 10%);
+$header-bg:               lighten($inverse-body-bg, 15%);
 $header-font-color:       lighten($inverse-font-color, 15%);
 $header-font-highlight:   $inverse-font-highlight;
 
