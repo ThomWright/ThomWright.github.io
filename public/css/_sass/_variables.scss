@@ -6,7 +6,7 @@ $gray-dark:               #666;
 $gray:                    #787878;
 $gray-light:              #999;
 $gray-lighter:            #bbb;
-$gray-lightest:           #ddd;
+$gray-lightest:           #f0f0f0;
 
 $brand-color:             #8800ff;
 
@@ -21,7 +21,7 @@ $inverse-font-color:      invert($base-font-color);
 $inverse-font-highlight:  invert($base-font-highlight);
 
 $header-bg:               lighten($inverse-body-bg, 10%);
-$header-font-color:       lighten($inverse-font-color, 10%);
+$header-font-color:       lighten($inverse-font-color, 15%);
 $header-font-highlight:   $inverse-font-highlight;
 
 $link-color:              $blue;
