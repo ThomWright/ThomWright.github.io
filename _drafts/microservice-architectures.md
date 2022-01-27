@@ -33,16 +33,20 @@ There are many ways to define a dependency. I’ll be using two main criteria he
 1. A depends on B if when B changes, A must also change
 2. A depends on B if it has *some knowledge* of B
 
-Where A and B are services. Here, _some knowledge_ generally means that A knows B exists, how to contact B and what API B exposes. Honestly, the second can be considered a subset of the first, but I talk so often about services "knowing about each other" that it helps to call it out explicitly.
+_Some knowledge_ can mean a bunch of things, for example it might be that service A knows B exists, how to contact B and what API B exposes. Generally A will contain some explicit reference to B or B's API in the source code. Honestly, this can be considered a subset of the first criteria, but I talk so often about services "knowing about each other" that it helps to call it out explicitly.
 
-These dependency relationships are related to the ideas of coupling and cohesion. You might often hear that services (or any kind of module) should have "high cohesion, and low coupling to other services".
+Probably the most common dependency relationship is when A sends HTTP requests (or similar) to B. In this case A knows about B and if B's HTTP API changes then we might need to change A.
+
+These dependency relationships are closely related to the ideas of coupling and cohesion. You might often hear that services (or any kind of module) should have "high cohesion, and low coupling to other services".
 
 Kent Beck has [a good talk discussion coupling and cohesion](httpes://hackmd.io/@pierodibello/Continued-Learning-The-Beauty-of-Maintenance---Kent-Beck---DDD-Europe-2020) with relevant definitions which I'll use here too:
 
 - **Coupling** - A and B are coupled with respect to a particular change if changing A implies changing B.
 - **Cohesion** - If I have an element E that have sub-elements, that element is cohesive to the degree that its sub-elements are coupled, meaning that if I have to change one of these sub-elements, I have to change the others sub-elements at the same time too.
 
-With these definitions in mind, let's go through some guidelines.
+Notice the strong similarity between the "coupling" and "dependency" definitions.
+
+With these in mind, let's go through some guidelines.
 
 One of the overarching guidelines here is to **make services easy to change**. Change is (often) inevitable, however we generally don't know _how_ we will need to change our services in the future. There are a number of general principles we can follow to make this easier.
 
@@ -52,7 +56,7 @@ Not only do dependency relationships make it hard to make changes, they also ope
 
 Services do have to depend on each other at some point, they will not be completely independent. That said, we need to **be careful where we introduce new dependencies**. We have several strategies for reducing these relationships.
 
-I would generally recommend trying to **structure service dependencies as a [directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)** (DAG) - circular dependencies should be discouraged. This helps avoid high coupling between services. If you have a circular dependency between two services, consider whether their domains are tightly coupled enough that they should be consolidated into a single service. Also, if a circular dependency is making it hard to **independently deploy your services**, then strongly consider fixing it.
+I generally like the idea of trying to **structure service dependencies as a [directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)** (DAG) - and discouraging circular dependencies. This helps avoid high coupling between services. If you have a circular dependency between two services, consider whether their domains are tightly coupled enough that they should be consolidated into a single service. Also, if a circular dependency is making it hard to **independently deploy your services**, then strongly consider fixing it.
 
 As a consequence, **services should know nothing about their clients**. For example, if your `internal-x` service knows anything about one of its clients named `client-service-y` then something has gone wrong. If the name `client-service-y` appears anywhere in the `internal-x` codebase then it's an indicator that it knows too much. Even the existence of client services should be hidden. This means no special logic to change behaviour based on who is making the request.
 
@@ -70,55 +74,29 @@ Related to the above, consider implementing a **one-to-one service-to-database m
 
 **Store environment-specific configuration separately**. This is slightly different to the service-to-service dependencies we've been discussing above, but the advice applies just as well.
 
-As an example, our services are probably going to be running in several environments, e.g. staging and production. Assuming you are defining your infrastructure declaratively somehow, it's likely that you'll have some configuration for these environments somewhere, including which services should run and which versions of those services. In other words, the production environment knows about your service, and has a dependency on it. If the service codebase includes the configuration for a specific environment, then the service also knows about the environment, which is then a circular dependency.
+As an example, services are likely to be running in several environments, e.g. staging and production. Assuming you are defining your infrastructure declaratively somehow, it's likely you'll have some configuration for these environments somewhere, which will include which services should run and which versions of those services. In other words, the production environment knows about your service, and has a dependency on it. If the service codebase includes the configuration for a specific environment, then the service also knows about the environment, which is then a circular dependency.
 
 In practice, this means the the environment and service are _coupled with respect to configuration changes_. If we want to change a log level, we would need to change that in the service, build a new version, then change the service version in the production environment.
 
-However, if we keep environment-specific configuration out of the service, then it means we can change this log level without having to change the service itself.
+However, if we keep environment-specific configuration out of the service, then it means we can change this log level without having to change the service itself, or rebuild it. See [The Twelve-Factor App - Config](https://12factor.net/config) for a deeper discussion of this concept.
 
-See [The Twelve-Factor App - Config](https://12factor.net/config) for a deeper discussion of this concept.
+In truth, a lot of this advice about dependencies and coupling isn't just for microservices, it's generally applicable for many situations.
 
 ## Decomposition
 
-There are also other aspects to consider when decomposing services. I'll discuss a few here.
+There are also other aspects to consider when decomposing services, both when splitting up existing services and designing new ones. I'll discuss a few here.
 
-If you're familiar with Object-Oriented Design practices, many of the concepts used for deciding how to group functionality into services might seem familiar. Microservices bring their own sets of additional challenges.
+Consider the high level **business context** of the proposed service(s). I find this one hard to discuss without concrete examples, but if services are handling very different parts of the business then it's easier to justify splitting them.
 
-A quick guide to refactoring an existing service to split it up can be found [here](https://microservices.io/refactoring/index.html).
+You might also hear the related term **bounded context**. If you can design two services such that they have private, internal representations/models which only they know about and are not shared with other services, then that's a good sign.
 
-Some factors to consider when considering decomposing services, both when splitting up existing services and designing new ones:
+Related to business context, consider **team alignment and Conway's Law**. Teams should be aligned around business contexts rather than technical groupings (e.g. API layer, database layer). Your services should map reasonably well to this structure.
 
-- **Loose coupling, high cohesion** - how much do the services need to interact with each other? We want to keep this minimal. Services won't always be self-contained or completely independent, but it's a good rule of thumb.
-- **Bounded contexts** - good services are likely to have private, internal representations/models that only they know about, and are not shared with other services.
-- **Business capabilities** - does the service model a specific business function, rather than a technical one? E.g. news-feed = good, data-access = not so much.
-- **Team alignment and Conway's Law** - teams should be aligned around business contexts, and services should map nicely to this structure, simplifying ownership.
-- **Independent deployability** - when making changes, it should be possible to deploy a service on independently of any other service.
-- **Transactional boundaries and data consistency** - splitting up services involves splitting the data in these services, and this can lead to data inconsistency. Sometimes eventual consistency can be acceptable, but generally splitting things up can increase the risk not not-even-eventual consistency. This is partly due to losing the atomic, transactional nature of (some) databases. It is important to be aware of where this is and isn't acceptable, and the trade-off being made.
+Also consider **transactional boundaries and data consistency**. Splitting up services involves splitting the data in these services, and this can lead to data inconsistency. Sometimes eventual consistency can be acceptable, but generally splitting things up can increase the risk not not-even-eventual consistency. This is partly due to losing the atomic, transactional nature of (some) databases. It is important to be aware of where this is and isn't acceptable, and the trade-off being made. If you need to make atomic changes to a set of data, then try to group this inside a single service.
 
 Note that none of these are "size". Generally this is a proxy for other problems associated with the size, e.g. poor modularity, independent deployment or scaling.
 
-TODO: checklist:
-
-- Business context:
-  - What is the high level business context of the proposed service(s)? E.g. ticketing for gardens for `membership`
-- Team alignment:
-  - Will different teams be working on the proposed services?
-- Independent scaling:
-  - Do the services need to scale independently? (Probably not)
-- Independent deployability:
-  - Do you care about being able to deploy the features independently?
-- Shared internal models:
-  - Do the two proposed services have any shared internal models, including concepts in the code and/or database?
-- Transactionality/atomicity:
-  - Do we need to make atomic changes to data across the services?
-- Coupling with respect to change:
-  - If one changes, does the other need to change?
-  - (There might be a bunch of reasons why, document what they might be)
-- Coupling with respect to knowledge:
-  - Does one service (or both) need to know about the other?
-  - Or does one service (or both) have references to data in the other?
-- Change cadence:
-  - Will we be changing the services at a significantly different rate?
+This is by no means an exhaustive list. I haven't said much about scaling or independent deployability for example, but it's a start.
 
 ## Further reading
 
