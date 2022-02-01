@@ -9,10 +9,10 @@ article {
     list-style-type: disc;
   }
 
-  .post-date,
-  .guest-author {
+  .post-metadata {
+    padding-top: 1em;
     font-style: italic;
-    color: $gray;
+    color: $gray-dark;
   }
 
   max-width: $max-content-width;

@@ -17,8 +17,18 @@
         </a>
       {% endif %}
     </h1>
-    <small class="post-date"><time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time></small><br>
-    {% include guest_author.html guest=article.guest_author %}
+    <div class="post-metadata">
+      <time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time>
+      {% if article.guest_author %}
+      &middot; Guest Author: <a href="{{ article.guest_author.url }}">{{ article.guest_author.name }}</a>
+      {% endif %}
+      {% if article.canonical %}
+      &middot;
+      <a href="{{ post.canonical }}">
+        Original
+      </a>
+      {% endif %}
+    </div>
   </header>
 
   <div>
