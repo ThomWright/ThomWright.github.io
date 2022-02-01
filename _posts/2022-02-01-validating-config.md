@@ -4,7 +4,7 @@ title: Validating configuration with io-ts
 canonical: https://candide.com/GB/stories/70d34740-5130-4b1a-8971-ef60082036ba
 ---
 
-*How we ensure our services don't get deployed with invalid configuration*
+Something I wrote at Candide about how we ensured our services didn't get deployed with invalid configuration.
 
 ## Background
 
@@ -45,7 +45,7 @@ app.get("/", (req, res) =>
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 ```
 
-This would work, but there are several problems with this approach. Let's address some of them individually.
+Which would work, but there are several problems with this approach. Let's address some of them individually.
 
 ## Missing values
 
@@ -80,7 +80,7 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 Now, if we try to launch the service without a port, it will fail to start. The sooner we fail, the sooner we can find and fix the issue. Having a specific error emitted from this service (rather than from client services) makes it much quicker and easier to debug what the error is.
 
-What if we forget to supply `EXAMPLE_RESPONSE`? Well, again the server will start just fine, but every request to that endpoint will error. We won't see any problems until traffic has already started reaching the service. Doing a check at start up will make sure we fail before starting to receive traffic. Since we run on Kubernetes, no traffic will be routed to the service until it's ready.
+What if we forget to supply `EXAMPLE_RESPONSE`? Well, again, the server will start just fine, but every request to that endpoint will error. We won't see any problems until traffic has already started reaching the service. Doing a check at start-up will make sure we fail before starting to receive traffic. Since we run on Kubernetes, no traffic will be routed to the service until it's ready.
 
 Let's refactor like so:
 
@@ -109,21 +109,21 @@ OK, now we're checking that we have all of the required config values. But what 
 
 Let's say we set `EXAMPLE_PORT=eighty`, we might expect Express to reject that because it's obviously not a valid port number.
 
-Instead, when running it we see: `Example app listening on port eighty!`.
+Instead, when running it, we see: `Example app listening on port eighty!`.
 
 Oh.
-If you run `ls -ld *` you might see something like:
+If you run `ls -ld *`, you might see something like:
 
-```
+```plaintext
 $ ls -ld *
 srwxrwxr-x  1 thom thom     0 Mar  4 17:27  eighty=
 ```
 
-See that `s` before the file permissions? That means this is a [Unix socket](https://en.wikipedia.org/wiki/Unix_file_types#Socket). Under the covers, Express is using the Node.js net package which provides [IPC support](https://nodejs.org/api/net.html#net_ipc_support).
+See that `s` before the file permissions? That means this is a [Unix socket](https://en.wikipedia.org/wiki/Unix_file_types#Socket). Under the covers, Express is using the Node.js net package, which provides [IPC support](https://nodejs.org/api/net.html#net_ipc_support).
 
 This _probably_ isn't what we wanted. Again, the server appears to start up fine, but nothing will be able to connect.
 
-Let's do some more validation, to make sure the port is something valid:
+Let's do some more validation to make sure the port is something valid:
 
 ```typescript
 import * as express from "express";
@@ -161,7 +161,7 @@ Now we'll fail early if `EXAMPLE_PORT` isn't supplied or is invalid. Great.
 
 We can take this a step further using the excellent `io-ts` [library](https://github.com/gcanti/io-ts).
 
-Here is an example which uses `io-ts` to validate the config, convert the port to an integer, and give us a well-typed object we can pass around to the rest of our service.
+Here is an example that uses `io-ts` to validate the config, convert the port to an integer, and give us a well-typed object we can pass around to the rest of our service.
 
 ```typescript
 import * as express from "express";
@@ -203,6 +203,6 @@ app.listen(config.port, () =>
 );
 ```
 
-In a larger service, we would extract out the config validation into its own module. The rest of the service would use the `Config` object to access config, rather than `process.env` directly. In fact, we could use this [ESLint rule](https://eslint.org/docs/rules/no-process-env) to disallow direct use of `process.env` if we wanted.
+In a larger service, we would extract the config validation into its own module. The rest of the service would use the `Config` object to access configuration, rather than `process.env` directly. In fact, we could use this [ESLint rule](https://eslint.org/docs/rules/no-process-env) to disallow direct use of `process.env` if we wanted.
 
-For more on configuration see [The Twelve-Factor App](https://12factor.net/config).
+For more on configuration, see [The Twelve-Factor App](https://12factor.net/config).
