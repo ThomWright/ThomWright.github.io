@@ -138,12 +138,13 @@
   }
 
   > * {
-    @include horizontal-padding($base-padding);
+    @include horizontal-padding($base-padding * 2);
+    @include vertical-margin($base-padding);
     &:first-child {
-      padding-top: $base-padding;
+      padding-top: $base-padding * 2;
     }
     &:last-child {
-      padding-bottom: $base-padding;
+      padding-bottom: $base-padding * 2;
     }
   }
 
