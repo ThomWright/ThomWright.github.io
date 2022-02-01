@@ -46,6 +46,8 @@ A code block with no language: "string" 0.00
 A plaintext block quote
 ```
 
+Some `inline code`.
+
 > A block quote
 
 And that's it.
