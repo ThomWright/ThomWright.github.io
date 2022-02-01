@@ -3,13 +3,13 @@ layout: post
 title: Decomposition in microservice architectures
 ---
 
-This article is an adaptation of a bunch of advice I've written over the years about designing microservice architectures. There isn't much novel advice here, it's mainly just existing ideas rehashed in my own words. It's largely based on real-world problems I've encountered or discussed, but I don't claim to be an expert. This is an attempt to get some ideas out of my head and written down to more easily share and discuss them. The intended audience was full-stack Node.js engineers with varying amounts of experience.
+This article is an adaptation of some advice I've written over the years about designing microservice architectures. There isn't much novel advice here, it's mainly just existing ideas rehashed in my own words. It's largely based on real-world problems I've encountered or discussed, but I don't claim to be an expert. This is an attempt to get some ideas out of my head and written down to more easily share and discuss them. The intended audience was full-stack Node.js engineers with varying amounts of experience.
 
-Deliberately out of scope are aspects such as monitoring, deployment, or database choices. It's assumed that these kind of decisions have already been made and implemented. Instead, it's mainly aimed at answering a class of question I hear a lot, which is (in essence):
+Deliberately out of scope are aspects such as monitoring, deployment, or database choices. It's assumed that these kinds of decisions have already been made and implemented. Instead, it's mainly aimed at answering a class of question I hear a lot, which is (in essence):
 
 > How do I decompose an application (or set of features) into one or more microservices?
 
-I make liberal use of the word "should" where I think advice is generally applicable, but people can disagree and it is likely to depend on context. Also, many of the guidelines are _engineering ideals_, where aiming for 100% adherence will probably make things worse!
+I make liberal use of the word "should" where I think the advice is generally applicable, but people can disagree and it is likely to depend on context. Also, many of the guidelines are _engineering ideals_, where aiming for 100% adherence will probably make things worse!
 
 ## What are microservices?
 
@@ -26,12 +26,12 @@ Instead of designing applications as monoliths, they could instead be broken dow
 
 ## Dependencies
 
-I often think about decomposing microservice architectures in terms of dependencies, and nearly all of the advice here relates to dependencies in some way.
+I often think about decomposing microservice architectures in terms of dependencies, and nearly all the advice here relates to dependencies in some way.
 
 There are many ways to define a dependency. I’ll be using two main criteria here:
 
 1. A depends on B if when B changes, A must also change
-2. A depends on B if it has *some knowledge* of B
+2. A depends on B if it has _some knowledge_ of B
 
 _Some knowledge_ can mean a bunch of things, for example it might be that service A knows B exists, how to contact B and what API B exposes. Generally A will contain some explicit reference to B or B's API in the source code. Honestly, this can be considered a subset of the first criteria, but I talk so often about services "knowing about each other" that it helps to call it out explicitly.
 
@@ -58,7 +58,7 @@ Services do have to depend on each other at some point, they will not be complet
 
 I generally like the idea of trying to **structure service dependencies as a [directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)** (DAG) - and discouraging circular dependencies. This helps avoid high coupling between services. If you have a circular dependency between two services, consider whether their domains are tightly coupled enough that they should be consolidated into a single service. Also, if a circular dependency is making it hard to **independently deploy your services**, then strongly consider fixing it.
 
-As a consequence, **services should know nothing about their clients**. For example, if your `internal-x` service knows anything about one of its clients named `client-service-y` then something has gone wrong. If the name `client-service-y` appears anywhere in the `internal-x` codebase then it's an indicator that it knows too much. Even the existence of client services should be hidden. This means no special logic to change behaviour based on who is making the request.
+As a consequence, **services should know nothing about their clients**. For example, if your `internal-x` service knows anything about one of its clients named `client-service-y` then something has gone wrong. If the name `client-service-y` appears anywhere in the `internal-x` codebase, then it's an indicator that it knows too much. Even the existence of client services should be hidden. This means no special logic to change behaviour based on who is making the request.
 
 **Isolate third party dependencies behind a single service**. This makes changing and auditing integrations with external systems much easier. Note that "changing" here doesn't necessarily mean swapping out the third party service for another. It might just mean, for example, improving monitoring or upgrading to the latest version of their API (e.g. for security fixes).
 
@@ -76,7 +76,7 @@ Related to the above, consider implementing a **one-to-one service-to-database m
 
 As an example, services are likely to be running in several environments, e.g. staging and production. Assuming you are defining your infrastructure declaratively somehow, it's likely you'll have some configuration for these environments somewhere, which will include which services should run and which versions of those services. In other words, the production environment knows about your service, and has a dependency on it. If the service codebase includes the configuration for a specific environment, then the service also knows about the environment, which is then a circular dependency.
 
-In practice, this means the the environment and service are _coupled with respect to configuration changes_. If we want to change a log level, we would need to change that in the service, build a new version, then change the service version in the production environment.
+In practice, this means the environment and service are _coupled with respect to configuration changes_. If we want to change a log level, we would need to change that in the service, build a new version, then change the service version in the production environment.
 
 However, if we keep environment-specific configuration out of the service, then it means we can change this log level without having to change the service itself, or rebuild it. See [The Twelve-Factor App - Config](https://12factor.net/config) for a deeper discussion of this concept.
 
@@ -84,7 +84,7 @@ In truth, a lot of this advice about dependencies and coupling isn't just for mi
 
 ## Decomposition
 
-There are also other aspects to consider when decomposing services, both when splitting up existing services and designing new ones. I'll discuss a few here.
+There are other aspects to consider when decomposing services, both when splitting up existing services and designing new ones. I'll discuss a few here.
 
 Consider the high level **business context** of the proposed service(s). I find this one hard to discuss without concrete examples, but if services are handling very different parts of the business then it's easier to justify splitting them.
 
