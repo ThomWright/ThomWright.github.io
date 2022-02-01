@@ -1,8 +1,8 @@
 <li>
   <h3>
-    <a href="{{ post.url }}">
-      {{ post.title }}
-      <small>{{ post.date | date_to_string }}</small>
-    </a>
+    <a href="{{ post.url }}"
+      >{{ post.title }} &middot;
+      <small><time datetime="{{ post.date | date: "%Y-%m-%d" }}">{{ post.date | date_to_string }}</time></small></a
+    >
   </h3>
 </li>
