@@ -46,5 +46,5 @@ While running using docker-compose:
 
 ```bash
 docker exec -it thomwrightgithubio_github-pages_1 bash
-/usr/gem/gems/rouge-3.27.0/bin/rougify style thankful_eyes > public/css/syntax/highlight.css
+/usr/gem/bin/rougify style github > public/css/syntax/highlight.css
 ```
