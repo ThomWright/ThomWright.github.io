@@ -17,14 +17,14 @@ This is, as I'm sure is obvious to many, not how it works.
 
 To demonstrate, let's create a listening TCP socket using `nc -l 4433`, and have a look at the 'connection' (it's not really a connection is it, it isn't connected to anything) using `netstat -tan`.
 
-```txt
+```plaintext
 Proto Recv-Q Send-Q Local Address           Foreign Address         State
 tcp        0      0 0.0.0.0:4433            0.0.0.0:*               LISTEN
 ```
 
 Now, if we use `nc 127.0.0.1 4433` to connect to it, we see original LISTEN socket, plus a new ESTABLISHED connection. And also the client end of the connection, but you get the idea. The original socket is still there.
 
-```txt
+```plaintext
 Proto Recv-Q Send-Q Local Address           Foreign Address         State
 tcp        0      0 0.0.0.0:4433            0.0.0.0:*               LISTEN
 tcp        0      0 127.0.0.1:39770         127.0.0.1:4433          ESTABLISHED

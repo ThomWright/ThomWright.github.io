@@ -11,7 +11,7 @@ body {
 
   font: {
     family: $base-font-family;
-    weight: 300;
+    weight: 400;
     size: $base-font-size;
   }
   @include font-feature-settings("kern", "liga", "pnum");
@@ -95,18 +95,6 @@ ul {
 
 p {
   margin: 0 0 $small-spacing;
-}
-
-code {
-  font-family: $mono-font-family;
-  font-weight: 400;
-  background-color: darken(white, 5%);
-  border-radius: 3px;
-  border: 1px $gray-lightest solid;
-}
-
-pre code {
-  border-radius: $base-border-radius;
 }
 
 blockquote {

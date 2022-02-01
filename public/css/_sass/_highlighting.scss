@@ -1,0 +1,10 @@
+
+.highlight {
+  font-family: $mono-font-family;
+  font-weight: 400;
+  border-radius: $base-border-radius;
+}
+pre.highlight {
+  padding: 1em;
+  overflow-x: auto;
+}

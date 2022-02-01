@@ -30,7 +30,21 @@ And an ordered list:
 1. Apples
 2. Oranges
 
-Finally:
+```typescript
+const typescript = "code"
+
+function test() {
+  return "hello world"
+}
+```
+
+```
+A code block with no language: "string" 0.00
+```
+
+```plaintext
+A plaintext block quote
+```
 
 > A block quote
 

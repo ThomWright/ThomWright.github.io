@@ -39,3 +39,12 @@ docker run --rm \
   -it jekyll/jekyll:pages \
   bundle update
 ```
+
+### Generating the syntax highlighting styles
+
+While running using docker-compose:
+
+```bash
+docker exec -it thomwrightgithubio_github-pages_1 bash
+/usr/gem/gems/rouge-3.27.0/bin/rougify style thankful_eyes > public/css/syntax/highlight.css
+```

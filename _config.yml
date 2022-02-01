@@ -1,30 +1,27 @@
-# Dependencies
-markdown:         kramdown
-highligher:       pygments
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
 
-# Permalinks
-permalink:        pretty
+permalink: pretty
 
-# Setup
-title:            Thom Wright
-tagline:          Personal blog and website
-description:      Thom's blog and personal website
+title: Thom Wright
+tagline: Personal blog and website
+description: Thom's blog and personal website
 
-url:              https://thomwright.co.uk
-shorturl:         thomwright.co.uk
-baseurl:          ""
+url: https://thomwright.co.uk
+shorturl: thomwright.co.uk
+baseurl: ""
 
 author:
-  name:           Thom Wright
+  name: Thom Wright
 
-version:          0.0.1
+version: 0.0.1
 
 github:
-  repo:           https://github.com/ThomWright/ThomWright.github.io
-
-# Github can't cope with this :(
-# source:           ./source
+  repo: https://github.com/ThomWright/ThomWright.github.io
 
 sass:
-    sass_dir: public/css/_sass
-    style: compressed
+  sass_dir: public/css/_sass
+  style: compressed

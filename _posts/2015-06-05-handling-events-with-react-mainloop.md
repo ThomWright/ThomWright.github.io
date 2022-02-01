@@ -26,7 +26,7 @@ Here is an outline of my current implementation for event handling using the [Ev
 
 The React Components create `Event`s, in response to browser events. There are different event types for different things, for example: `BackgroundMouseDown`, or `EnemyClick`. These `Event`s are useful because they contain more information than the native browser event. For example, `EnemyClick` could contain an `enemyID` property to identify which enemy was clicked.
 
-```javascript
+```jsx
 class Enemy extends React.Component {
 
   constructor(props) {
@@ -54,7 +54,7 @@ class Enemy extends React.Component {
 
 These `Event`s are added to a queue, to be processed every time `update()` is called.
 
-```javascript
+```jsx
 // event queue
 let events = [];
 
@@ -81,7 +81,7 @@ const getUpdateFor = (componentRef) => {
 
 The `pushEvent` prop is passed down from the top level, like so:
 
-```javascript
+```jsx
 class Game extends React.Component {
 
   render() {
@@ -105,7 +105,7 @@ These extras made use of the well-known [Command Pattern](https://gameprogrammin
 
 In some cases, processing these events involves deciding what action to take in response to each event type. The action to perform might change depending on what state, or mode, the game is in. We could use an `EventProcessor` for this. It could be supplied with a mapping from event type to event handler. Here's a possible implementation:
 
-```javascript
+```jsx
 const normalHandler = function(event, gameState) {
   switch (event.type) {
     case `EnemyClick`: damageEnemy(event.enemyID, gameState);
@@ -138,7 +138,7 @@ new EventProcessor(normalHandler).process(events, gameState);
 
 This can easily be done with the Command Pattern. Event handlers could create a `Command` object with `execute()` and `undo()` methods. These commands are sent to an `Executor`, which stores previous commands in a stack. Again, an example implementation:
 
-```javascript
+```jsx
 const Executor = function() {
   const undoStack = [];
   const redoStack = [];
