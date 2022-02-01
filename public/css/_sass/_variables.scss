@@ -25,7 +25,7 @@ $header-font-color:       lighten($inverse-font-color, 15%);
 $header-font-highlight:   $inverse-font-highlight;
 
 $link-color:              $blue;
-$link-color-highlight:    darken($link-color, 20%);
+$link-color-highlight:    darken($link-color, 15%);
 
 // Grid
 $tablet-width: em(768);
