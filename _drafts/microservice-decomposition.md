@@ -62,7 +62,7 @@ As a consequence, **services should know nothing about their clients**. For exam
 
 **Isolate third party dependencies behind a single service**. This makes changing and auditing integrations with external systems much easier. Note that "changing" here doesn't necessarily mean swapping out the third party service for another. It might just mean, for example, improving monitoring or upgrading to the latest version of their API (e.g. for security fixes).
 
-**Don't expose internal implementation details**. There are several aspects of this, discussed further below. This goes for individual services (e.g. data structures, processes, which database they use, even which languages they're written in), and also our architecture at a higher level from a public point of view (e.g. the fact that we use microservices, what services which have, what they're called, APIs of internal services).
+**Don't expose internal implementation details**. There are several aspects of this, discussed further below. For individual services this might include internal data structures, which libraries they use, which database they use, even which language they're written in. This also applies to the public-facing APIs, for example even the fact that microservices are used should not be exposed. Internal service names and APIs should not be exposed. It should be clear which services are public-facing, and therefore which APIs are public and which aren't.
 
 **Services should only communicate over their APIs**, whether that be HTTP APIs, Pub/Sub messages or something else. Avoid using shared storage, e.g. databases or file systems. As with most of this advice, there will be exceptions; in this case large files might be transferred using a shared cloud storage, e.g. an S3 bucket.
 
@@ -92,9 +92,9 @@ You might also hear the related term **bounded context**. If you can design two 
 
 Related to business context, consider **team alignment and Conway's Law**. Teams should be aligned around business contexts rather than technical groupings (e.g. API layer, database layer). Your services should map reasonably well to this structure.
 
-Also consider **transactional boundaries and data consistency**. Splitting up services involves splitting the data in these services, and this can lead to data inconsistency. Sometimes eventual consistency can be acceptable, but generally splitting things up can increase the risk not not-even-eventual consistency. This is partly due to losing the atomic, transactional nature of (some) databases. It is important to be aware of where this is and isn't acceptable, and the trade-off being made. If you need to make atomic changes to a set of data, then try to group this inside a single service.
+**Transactional boundaries and data consistency** is another important consideration. Splitting up services involves splitting the data in these services, and this can lead to data inconsistency. Sometimes eventual consistency can be acceptable, but generally splitting things up can increase the risk not not-even-eventual consistency. This is partly due to losing the atomic, transactional nature of (some) databases. It is important to be aware of where this is and isn't acceptable, and the trade-off being made. If you need to make atomic changes to a set of data, then try to group this inside a single service.
 
-Note that none of these are "size". Generally this is a proxy for other problems associated with the size, e.g. poor modularity, independent deployment or scaling.
+Note that none of these are "size". Generally this is a proxy for other problems associated with the size, e.g. poor modularity, too many teams working on the same codebase, increased likelihood of deployments being blocked by failing tests, or scaling issues resulting from high traffic.
 
 This is by no means an exhaustive list. I haven't said much about scaling or independent deployability for example, but it's a start.
 
