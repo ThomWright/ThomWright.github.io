@@ -1,7 +1,7 @@
 version: '3'
 services:
   github-pages:
-    image: jekyll/jekyll:pages
+    image: jekyll/jekyll:4.2.0
     command: jekyll serve --drafts --watch --force_polling -H 0.0.0.0 -P 4000
     ports:
       - "4000:4000"
