@@ -69,7 +69,9 @@ So, we’ve decided that using maps is a good choice, but we still haven’t gua
 }
 ```
 
-Is our final choice an efficient data structure? Yes! Both of the operations we want to perform are `O(1)`. Does this matter? Well, not really, but I don’t think it’s a coincidence. When a data structure is designed to be efficient for an operation, the API is also likely to be designed to be simple to use. Looking up a value in a map is generally simpler than iterating through to find a value in a list.
+Is our final choice an efficient data structure? Yes! Both of the operations we want to perform are `O(1)`. Does this matter? Well, not really, but I don’t think it’s a coincidence. When a data structure is designed to be efficient for an operation, the API is also likely to be designed to be simple to use. Looking up a value in a map is generally simpler than iterating through a list to find a value.
+
+Often choosing an appropriate data structure can be the difference between code which is difficult to both write and read, and code which seems almost trivial.
 
 ## Further reading
 
