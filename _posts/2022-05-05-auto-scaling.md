@@ -3,7 +3,7 @@ layout: post
 title: How many chairs do I need?
 ---
 
-<!-- markdownlint-disable MD036 -->
+<!-- markdownlint-disable MD036 MD033 -->
 
 Let’s imagine a scenario where I’m trying to decide how many chairs I need for my new flat. In this imaginary scenario I live with a partner, and I have two types of chair to choose from:
 
@@ -76,7 +76,7 @@ That is, until we DoSed ourselves by accident by aggressively crawling the websi
 
 Now you may be thinking "I don't over-provision like that" or "I run MySQL, it doesn't have that problem". Sure, maybe you don't have this particular risk. Personally though, I wouldn't feel confident unless I'd load tested to see what happens when maxing out my resources (whatever they happen to be). We'll always have to make judgements about risks, but known risks are preferable to unknown risks.
 
-Let's look at a couple of examples. We'll keep things simple by just considering CPU utilisation. We'll assume we're running a minimum of three pods for redundancy, each pod has a CPU limit of one CPU core, and CPU utilisation is directly proportional to the incoming traffic.
+Let's look at a couple of examples. We'll keep things simple by just considering CPU utilisation. We'll assume we're running a minimum of three pods for redundancy and each pod has a CPU limit of one CPU core, for a minimum CPU capacity of three cores. We'll also assume CPU utilisation is directly proportional to incoming traffic.
 
 In this first example, we're using very little CPU, generally around 0.01 CPU cores on average. Weekly peaks reach 0.03 cores. If things go wild and hit 10x our weekly peak, then that's still only 0.3 cores. If we get 100x our weekly peak, then we start to hit the limit.
 
@@ -87,7 +87,7 @@ Should we auto-scale? That depends on how likely the traffic is to increase 100x
   <figcaption>CPU load for a quiet service over one week</figcaption>
 </figure>
 
-In this next example we see that the CPU utilisation is getting pretty close to capacity, but only for a few peaks over the week. Again, should we auto-scale? Again, the answer is: how much of a buffer is needed? How predictable is the traffic? The maximum traffic would have to be pretty damn predictable to sustain 90% CPU utilisation without worrying. Plus, high [CPU utilisation affects request latency](https://www.usenix.org/conference/srecon19asia/presentation/plenz), and maybe that's undesirable.
+In this next example we see that the CPU utilisation is getting pretty close to capacity, but only for a few peaks over the week. Again, should we auto-scale? Again, the answer is: how much of a buffer is needed? How predictable is the traffic? The maximum traffic would have to be pretty damn predictable to sustain 90% CPU utilisation without worrying. Plus, high [CPU utilisation affects request latency](https://www.usenix.org/conference/srecon19asia/presentation/plenz), and maybe that's undesirable. We probably want more pods to handle this traffic, and since most of the week the traffic is much lower we can probably scale down most of the time. This looks like a good candidate for auto-scaling.
 
 <figure>
   <img src="/public/assets/auto-scale-high.png" alt="High load chart"/>
