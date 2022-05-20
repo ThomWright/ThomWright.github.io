@@ -102,7 +102,7 @@ blockquote {
   font-style: italic;
   @include single-side-border(left, $blue);
   padding-left: 1em;
-  @include horizontal-margin(1em);
+  @include horizontal-margin(0);
 }
 
 strong {
