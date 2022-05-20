@@ -120,6 +120,8 @@ Perfect! Well... not quite:
 
 We can reduce the likelihood of publishing the message twice, but not prevent it entirely. This is the essence of at-least-once message processing.
 
+## Design questions
+
 Questions to ask when designing systems like this:
 
 - Can these operations be made idempotent?
