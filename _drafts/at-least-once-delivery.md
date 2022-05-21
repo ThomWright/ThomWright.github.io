@@ -38,9 +38,21 @@ Consider a magical function-calling-engine which calls a function on receipt of 
 
 It could not guarantee both, because it doesn't know what will happen inside the function, and someone might power off the machine in the middle of it executing anyway. In 1 the intended operation might happen one or zero times (at-once-once). In 2 the operation might happen one or more times (at-least-once).
 
-"How likely is it that someone will power off my production machine?" I hear you ask. Well, firstly, probably more likely than you think. Secondly, how likely it is isn't the point. The point is that it's possible. As well as all the other unlikely horrible things that can happen with real, non-magical systems.
+"How likely is it that someone will power off my production machine?" I hear you ask. Well, firstly, probably more likely than you think. Secondly, how likely it is isn't the point. The point is that it's possible. As well as all the other "unlikely" horrible things that can happen with real, non-magical systems.
 
-## Some scenarios
+The machine losing power is my go-to example, but other problems include:
+
+- The function doesn't complete because an exception was thrown.
+- The function ends up in an infinite loop.
+- The function does finish, but an unknown amount of time later.
+- The function cannot access the resources it needs e.g. sockets, database connections.
+- The process exits because of an uncaught exception or panic.
+- The OS kills the process because it was out of memory or segfaulted.
+- The OS kills the process in response to a SIGKILL signal.
+
+Have fun coming up with more examples!
+
+## Some real scenarios
 
 Let's consider two scenarios.
 
@@ -56,10 +68,10 @@ If the operation is not naturally idempotent (e.g. sending an email or increment
 Using sending an email as an example, and assuming the provider does not use an [idempotency key system](https://brandur.org/idempotency-keys):
 
 1. 🔒 Try acquiring a lock for the message.
-    1. Nack the message if lock already taken.
+    1. Nack the message if the lock is already taken.
     2. Otherwise continue.
 2. Check if the message has already been processed.
-    1. Ack message and release lock if so.
+    1. Ack message and release the lock if so.
     2. Otherwise continue.
 3. 📨 Send email.
 4. Record the message as having been processed.
