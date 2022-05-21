@@ -7,7 +7,7 @@ I've been a big fan of [Travis](https://travis-ci.org/) for a while now. It runs
 
 One I'm trying at the moment is [Snap CI](https://snap-ci.com/).
 
-One thing that was really easy to do in Travis is running your tests in a number of different environments, using a [build matrix](https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix). For example, if I wanted to run my JS tests on several versions of NodeJS, I could put the following in my `travis.yml`:
+One thing that was really easy to do in Travis is running your tests in a number of different environments, using a [build matrix](https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix). For example, if I wanted to run my JS tests on several versions of Node.js, I could put the following in my `travis.yml`:
 
 ```yaml
 language: node_js
