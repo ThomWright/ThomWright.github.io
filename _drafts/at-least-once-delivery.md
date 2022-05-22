@@ -130,11 +130,11 @@ Perfect! Well... not quite:
 
 **Result**: the message get published multiple times. _At-least-once_.
 
-We can reduce the likelihood of publishing the message twice, but not prevent it entirely. This is the essence of at-least-once message processing.
+There's always _somewhere_ you can insert a process crash to derail any attempt at emitting a non-idempotent side-effect exactly once. We can reduce the likelihood of this side effect happening twice, but not prevent it entirely. This is the essence of at-least-once message processing.
 
 ## Design questions
 
-Questions to ask when designing systems like this:
+When designing systems like this, it can help to ask ourselves these questions:
 
 - Can these operations be made idempotent?
 - Is it acceptable for the non-idempotent side-effects to happen more than once?
@@ -150,5 +150,6 @@ The answers will influence the design of the system.
 - [Microservice patterns: Messaging](https://microservices.io/patterns/communication-style/messaging.html)
 - [Microservice patterns: Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html)
 - [Publish-subscribe pattern](https://www.enterpriseintegrationpatterns.com/patterns/messaging/PublishSubscribeChannel.html)
+- [Stripe: Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency)
 - [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
 - [Akka: Message Delivery](https://doc.akka.io/docs/akka/current/general/message-delivery-reliability.html#discussion-what-does-at-most-once-mean-)
