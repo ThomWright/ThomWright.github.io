@@ -132,7 +132,9 @@ Perfect! Well... not quite:
 
 There's always _somewhere_ you can insert a process crash to derail any attempt at emitting a non-idempotent side-effect exactly once. We can reduce the likelihood of this side effect happening twice, but not prevent it entirely. This is the essence of at-least-once message processing.
 
-## Design questions
+## So what do we do?
+
+Well, chances are you either don't need exactly-once processing 100% of the time (sending someone the same email twice is probably OK), or it's possible to make the operation you're performing idempotent.
 
 When designing systems like this, it can help to ask ourselves these questions:
 
