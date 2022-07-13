@@ -55,3 +55,5 @@ This is just one use for `git rebase --onto`. See the links below for more infor
 
 - [`git-rebase` docs](https://git-scm.com/docs/git-rebase)
 - [Git rebase --onto an overview](https://womanonrails.com/git-rebase-onto)
+- [Stacked Diffs Versus Pull Requests](https://jg.gg/2018/09/29/stacked-diffs-versus-pull-requests/) for an alternative solution
+  - [Graphite](https://graphite.dev/) as a tool for using stacked diffs on GitHub
