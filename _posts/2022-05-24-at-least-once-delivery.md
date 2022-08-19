@@ -36,7 +36,7 @@ Consider a magical function-calling-engine which calls a function on receipt of 
 1. the function will be called (will begin) exactly once, or
 2. the function will return (will finish) exactly once.
 
-It could not guarantee both, because it doesn't know what will happen inside the function, and someone might power off the machine in the middle of it executing anyway. In 1 the intended operation might happen one or zero times (at-once-once). In 2 the operation might happen one or more times (at-least-once).
+It could not guarantee both, because it doesn't know what will happen inside the function, and someone might power off the machine in the middle of it executing anyway. In 1 the intended operation might happen one or zero times (at-most-once). In 2 the operation might happen one or more times (at-least-once).
 
 "How likely is it that someone will power off my production machine?" I hear you ask. Well, firstly, probably more likely than you think. Secondly, how likely it is isn't the point. The point is that it's possible. As well as all the other "unlikely" horrible things that can happen with real, non-magical systems.
 
