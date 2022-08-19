@@ -7,7 +7,7 @@ title: More autoscaling perils
 
 [No chairs this time](/2022/05/05/auto-scaling/).
 
-Consider a scenario where we have two services, A and B. A is consuming messages from a queue and sending requests to B. The message queue backing up. There is a growing number of pending messages which Service A hasn’t received yet.
+Consider a scenario where we have two services, A and B. A is consuming messages from a queue and sending requests to B. The message queue is backing up. There is a growing number of pending messages which Service A hasn’t received yet.
 
 <figure>
   <img src="/public/assets/auto-scale-services.png" alt="Service diagram"/>
@@ -28,7 +28,7 @@ In this case, a sensible course of action is to provision more CPU resources, ei
 
 But this isn’t the only possible root cause.
 
-**Case 2:** Again, we look at the metrics and see increased latency for Service A. But we don’t see any increased CPU use. Instead we look at some traces and see some requests to Service B which are taking a long time. Look like Service A is slow because Service B is slow. Why is service B slow?
+**Case 2:** Again, we look at the metrics and see increased latency for Service A. But we don’t see any increased CPU use. Instead we look at some traces and see some requests to Service B which are taking a long time. Looks like Service A is slow because Service B is slow. Why is service B slow?
 
 Again, increased CPU usage. So Service B can’t handle the load, every request is contending for CPU, requests slow down, which slows down Service A, which results in increasing numbers of pending messages on the queue.
 
