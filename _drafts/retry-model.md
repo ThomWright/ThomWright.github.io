@@ -116,7 +116,7 @@ Going back to the original point of this article, what if we have several server
 
 Regardless of the end result in terms of latency/availability, I think there are good reasons for choosing option 2. The top-most server knows the high-level operation being performed, and what latency/availability characteristics are appropriate. Lower down servers probably don't know this, and might get called in different contexts with different requirements. It follows that the best place to make these decisions is the top-most server.
 
-Let's see how they compare. First: **latency**. There doesn't seem to be a big different here, except at the high percentiles. What happens here is cascading retries. If the dependency is very unresponsive then Server 3 will retry a few times. When then fails, the Server 2 will retry, triggering a whole new set of retries from Server 3. And so on.
+Let's see how they compare. First: **latency**.
 
 <figure>
   <img class="small-img" src="/public/assets/retries/4-all-latency-by-failure-rate.png" alt="Latency by failure rate"/>
@@ -124,25 +124,31 @@ Let's see how they compare. First: **latency**. There doesn't seem to be a big d
   <figcaption>Left: all servers retry. Right: top only</figcaption>
 </figure>
 
-Next, **availability**. Because these cascading retries are so damn persistent, we do see increased availability. Note that this is based on the assumption that the dependency failure is short-lived.
+There doesn't seem to be a big different here, except at the high percentiles. What happens here is cascading retries. If the dependency is very unresponsive then Server 3 will retry a few times. When then fails, the Server 2 will retry, triggering a whole new set of retries from Server 3. And so on.
+
+Next, **availability**.
 
 <figure>
   <img class="small-img" src="/public/assets/retries/4-all-success-by-failure-rate.png" alt="Success by failure rate"/>
   <img class="small-img" src="/public/assets/retries/4-top-only-success-by-failure-rate.png" alt="Success by failure rate"/>
 </figure>
 
-Finally, **load**. This is the fun one. Note the difference in scale on the y axes. If we do up to 3 retries, the maximum number of requests we can send to the dependency is:
+Because these cascading retries are so damn persistent, we do see increased availability. Note that this is based on the assumption that the dependency failure is short-lived.
+
+Finally, **load**.
+
+<figure>
+  <img class="small-img" src="/public/assets/retries/4-all-load-by-failure-rate.png" alt="Load by failure rate"/>
+  <img class="small-img" src="/public/assets/retries/4-top-only-load-by-failure-rate.png" alt="Load by failure rate"/>
+</figure>
+
+This is the fun one. Note the difference in scale on the y axes. If we do up to 3 retries, the maximum number of requests we can send to the dependency is:
 
 ```text
 incoming_requests * (1 + num_retries) ^ num_servers = 10,000 * 4 ^ 3 = 640,000
 ```
 
 From 10,000 incoming requests we can end up sending over half a million requests to the dependency. If it was failing because it was overloaded, it ain't recovering anytime soon.
-
-<figure>
-  <img class="small-img" src="/public/assets/retries/4-all-load-by-failure-rate.png" alt="Load by failure rate"/>
-  <img class="small-img" src="/public/assets/retries/4-top-only-load-by-failure-rate.png" alt="Load by failure rate"/>
-</figure>
 
 Notably, at low failure rates they both behave pretty similarly. Choosing between the two, I'd pick the one which doesn't behave pathologically at high failure rates.
 
