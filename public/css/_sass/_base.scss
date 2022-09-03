@@ -109,7 +109,26 @@ strong {
   font-weight: bold;
 }
 
-figcaption {
-  font-style: italic;
+figure {
+  display: flex;
+  flex-wrap: wrap;
   text-align: center;
+  flex-direction: row;
+  justify-content: space-around;
+  @include horizontal-margin(0);
+
+  text-align: center;
+}
+figcaption {
+  font-size: 15px;
+  padding-top: 1em;
+  flex-basis: 100%;
+  font-style: italic;
+}
+
+.small-img {
+  max-width: 320px;
+}
+.med-img {
+  max-width: 500px;
 }

@@ -3,7 +3,9 @@ layout: post
 title: Choosing appropriate data structures
 ---
 
-> "Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won't usually need your flowchart; it'll be obvious." -- *Fred Brooks, The Mythical Man Month*
+> "Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won't usually need your flowchart; it'll be obvious."
+>
+> -- *Fred Brooks, The Mythical Man Month*
 
 How do we choose which data structures to use in our code? In some instances it’s fairly obvious. When the amount of data we’re working with is the primary constraint, we probably need to choose the most efficient structure for what we’re trying to achieve.
 
