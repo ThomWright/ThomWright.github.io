@@ -9,9 +9,9 @@ title: Retries upon retries
 >
 > -- Homer Simpson
 
-Retries are used to increase availability in the presence of dependency failures at the cost of increased latency. The concept seems simple at a high level, but there is a fair amount of complexity hidden inside it. How effective any particular approach is will depend on context, including the pattern of incoming requests and the pattern of failure.
+Retries are used to increase availability in the presence of errors at the cost of increased latency. The concept seems simple at a high level, but there is a fair amount of complexity hidden inside it. How effective any particular approach is will depend on context, including the pattern of incoming requests and the pattern of failure causing the errors.
 
-Incoming requests might be bursty or consistent, responsive to backpressure or uncontrollable. Failures could be short, transient events or a long-lived outage, they could be load-dependent or they could have another cause. These can all have an effect.
+Incoming requests might be bursty or consistent, responsive to backpressure or uncontrollable. Failure could be random and transient, or a long-lived correlated outage. It could be caused by the rate of incoming requests (a load-dependent failure) or there could be another cause. These can all have an effect.
 
 I've been reading articles by [Ted Kaminski](https://www.tedinski.com) and [Marc Brooker](https://brooker.co.za/blog/) recently, both of which have wise words on the matter. I was specifically thinking about a case where we have a few services calling each other in series, and what effect retries might have in this scenario. I had an intuition for how this system would behave, but wanted a bit more rigour in my approach. Inspired by [Marc Brooker](https://brooker.co.za/blog/2022/04/11/simulation.html), I thought it would be fun to make a model to investigate.
 
@@ -114,7 +114,7 @@ Going back to the original point of this article, what if we have several server
 1. every server retries
 2. only the top-most server retries
 
-Regardless of the end result in terms of latency/availability, I think there are good reasons for choosing option 2. The top-most server knows the high-level operation being performed, and what latency/availability characteristics are appropriate. Lower down servers probably don't know this, and might get called in different contexts with different requirements. It follows that the best place to make these decisions is the top-most server.
+Regardless of the end result in terms of latency/availability, I think there are good reasons for choosing option 2. The top-most server knows the high-level operation being performed, and what latency/availability characteristics are appropriate. Lower down servers probably don't know this, and might get called in different contexts with different requirements. It follows that the best place to make these decisions is in the top-most server.
 
 Let's see how they compare. First: **latency**.
 
@@ -148,7 +148,7 @@ This is the fun one. Note the difference in scale on the y axes. If we do up to 
 incoming_requests * (1 + num_retries) ^ num_servers = 10,000 * 4 ^ 3 = 640,000
 ```
 
-From 10,000 incoming requests we can end up sending over half a million requests to the dependency. If it was failing because it was overloaded, it ain't recovering anytime soon.
+From 10,000 incoming requests we can end up sending over half a million requests to the dependency. If it was failing because it was overloaded, it ain't recovering anytime soon. It also introduces a higher risk of [metastability problems](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf).
 
 Notably, at low failure rates they both behave pretty similarly. Choosing between the two, I'd pick the one which doesn't behave pathologically at high failure rates.
 
@@ -166,3 +166,4 @@ Notably, at low failure rates they both behave pretty similarly. Choosing betwee
   - [Will circuit breakers solve my problems?](https://brooker.co.za/blog/2022/02/16/circuit-breakers.html)
   - [Simple Simulations for System Builders](https://brooker.co.za/blog/2022/04/11/simulation.html)
   - [Retries, not even once](https://twitter.com/marcjbrooker/status/1489651911640825858)
+- [Metastable Failures in Distributed Systems](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf)
