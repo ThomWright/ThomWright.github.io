@@ -155,3 +155,4 @@ The answers will influence the design of the system.
 - [Stripe: Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency)
 - [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
 - [Akka: Message Delivery](https://doc.akka.io/docs/akka/current/general/message-delivery-reliability.html#discussion-what-does-at-most-once-mean-)
+- [Exactly-Once Delivery May Not Be What You Want](https://brooker.co.za/blog/2014/11/15/exactly-once.html) (Edited to add this link, which covers similar content)
