@@ -112,12 +112,15 @@ strong {
 figure {
   display: flex;
   flex-wrap: wrap;
-  text-align: center;
   flex-direction: row;
   justify-content: space-around;
   @include horizontal-margin(0);
 
   text-align: center;
+
+  img {
+    min-width: 0;
+  }
 }
 figcaption {
   font-size: 15px;
