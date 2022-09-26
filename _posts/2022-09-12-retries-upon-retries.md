@@ -11,9 +11,9 @@ title: Retries upon retries
 
 Retries are used to increase availability in the presence of errors at the cost of increased latency. The concept seems simple at a high level, but there is a fair amount of complexity hidden inside it. How effective any particular approach is will depend on context, including the pattern of incoming requests and the pattern of failure causing the errors.
 
-Incoming requests might be bursty or consistent, responsive to backpressure or uncontrollable. Failure could be random and transient, or a long-lived correlated outage. It could be caused by the rate of incoming requests (a load-dependent failure) or there could be another cause. These can all have an effect.
+Incoming requests might be bursty or consistent, responsive to backpressure or uncontrollable. Failure could be random and transient, or a long-lived correlated outage. It could be caused by the rate of incoming requests (a load-dependent failure) or there could be another cause. These can all have an effect on how retries behave.
 
-I've been reading articles by [Ted Kaminski](https://www.tedinski.com) and [Marc Brooker](https://brooker.co.za/blog/) recently, both of which have wise words on the matter. I was specifically thinking about a case where we have a few services calling each other in series, and what effect retries might have in this scenario. I had an intuition for how this system would behave, but wanted a bit more rigour in my approach. Inspired by [Marc Brooker](https://brooker.co.za/blog/2022/04/11/simulation.html), I thought it would be fun to make a model to investigate.
+I've been reading articles by [Ted Kaminski](https://www.tedinski.com) and [Marc Brooker](https://brooker.co.za/blog/) recently, both of which have wise words on the matter. I was specifically thinking about a case where we have a few **services calling each other in series**, and what effect retries might have in this scenario. I had an intuition for how this system would behave, but wanted a bit more rigour in my approach. Inspired by [Marc Brooker](https://brooker.co.za/blog/2022/04/11/simulation.html), I made a model to investigate.
 
 ## Modelling retries
 
@@ -151,6 +151,8 @@ incoming_requests * (1 + num_retries) ^ num_servers = 10,000 * 4 ^ 3 = 640,000
 From 10,000 incoming requests we can end up sending over half a million requests to the dependency. If it was failing because it was overloaded, it ain't recovering anytime soon. It also introduces a higher risk of [metastability problems](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf).
 
 Notably, at low failure rates they both behave pretty similarly. Choosing between the two, I'd pick the one which doesn't behave pathologically at high failure rates.
+
+While retries are often considered to be a Good Thing, we don't want them everywhere. In fact, sometimes we don't want them at all. It can help to zoom out and take a bird's eye view of a system before choosing whether to introduce them to a service.
 
 ## Further reading
 
