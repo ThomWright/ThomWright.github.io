@@ -70,8 +70,7 @@ h3 {
 h4 {
   font: {
     weight: 400;
-    size: modular-scale(1);
-    style: italic;
+    size: modular-scale(0);
   }
   color: lighten($base-font-color, 20%);
 }
