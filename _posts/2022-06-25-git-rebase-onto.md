@@ -5,6 +5,8 @@ title: Git rebase --onto
 
 <!-- markdownlint-disable MD033 -->
 
+*EDIT (November 2022): There is now another (better?) way! Using the new `--update-refs` flag, as shown [here](https://adamj.eu/tech/2022/10/15/how-to-rebase-stacked-git-branches/).*
+
 I generally prefer to keep my git history as a straight line. And my branches (when I have to use them) based on the HEAD of **main**. I pull **main** and rebase my branch onto it fairly often to keep up to date with the latest changes.
 
 Recently I’ve been in the unfortunate position where it made sense to use a branch off a branch. This can be a pain to keep up to date with the latest changes on **main**.
@@ -57,3 +59,4 @@ This is just one use for `git rebase --onto`. See the links below for more infor
 - [Git rebase --onto an overview](https://womanonrails.com/git-rebase-onto)
 - [Stacked Diffs Versus Pull Requests](https://jg.gg/2018/09/29/stacked-diffs-versus-pull-requests/) for an alternative solution
   - [Graphite](https://graphite.dev/) as a tool for using stacked diffs on GitHub
+- [How to rebase stacked Git branches](https://adamj.eu/tech/2022/10/15/how-to-rebase-stacked-git-branches/)
