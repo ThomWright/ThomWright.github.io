@@ -60,11 +60,11 @@ Now, let’s imagine another example where we already have lots of chairs in the
 
 For a total of 11 seats. Based on expected use we worked out we only need 8 chairs to handle all of our expected visitors, including a reasonable buffer for unexpected visitors.
 
-Do we need any magic folding chairs? No. In this case we already have enough to need our needs. In fact, in we do get an extra, unnecessary, magic chair, we face the risk that we won’t be able to fit it in. Which doesn’t sound so bad, so instead imagine if these chairs were *really heavy*, and when we got it out to use it the floor collapsed. The point is, if we don’t test it then it’s a risk.
+Do we need any magic folding chairs? No. In this case we already have enough to need our needs. In fact, if we do get an extra, unnecessary, magic chair, we face the risk that we won’t be able to fit it in. Which doesn’t sound so bad. But instead imagine if these chairs were *really heavy*, and when we got it out to use the floor collapsed. The point is, if we don’t test it then it’s a risk because we don't know what will happen.
 
 Alright, the analogy is breaking down a bit by now. In case you hadn’t guessed, I’m not really talking about chairs here. I’m talking about auto-scaling. Specifically, [horizontal pod auto-scaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) in Kubernetes.
 
-I think many people think about auto-scaling as in the original example, but there are several problems with this:
+I think many people think about auto-scaling as in the original example, where we use an HPA with a high maximum pod count, *just in case*. But there are several problems with this:
 
 1. Pods aren’t free. They use resources including CPU, memory, file descriptors, maybe database connections. We need to make sure we have enough of these resources to support the number of pods we want to scale up to. Importantly, we need to test these cases. There are often unknown limits in our infrastructure. We want to find these in a controlled way, not hit them in an uncontrolled way while under peak levels of traffic.
 2. It’s not based on the reality of expected load. The numbers were arbitrary. We should really be thinking in terms of how many resources we need to handle our expected traffic. We should also be prepared for a reasonable amount of unexpected traffic. How much buffer is needed will be context-dependent.
