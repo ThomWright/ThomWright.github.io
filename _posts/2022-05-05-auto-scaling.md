@@ -18,7 +18,7 @@ Well, I live with my partner so clearly I need two, at least. That’s the minim
 
 We might invite friends or family over for dinner occasionally, so we decide to also get 15 magic chairs. That’s a total of of 17 chairs. More is better, right?
 
-One day we think: “let’s put out all the chairs, just to see what it looks like”. While putting out the chairs, we realise we can’t actually fit them all in. We can only fit 12 unfolded chars in the flat. Whoops.
+One day we invite round as many friends and family as we can and start putting out the chairs, only to realise we can’t actually fit them all in. We can only fit 12 unfolded chars in the flat. Whoops.
 
 **Max. chairs the flat can support: 12**
 
