@@ -22,7 +22,7 @@ One day we invite round as many friends and family as we can and start putting o
 
 **Max. chairs the flat can support: 12**
 
-What did we do wrong here?
+*What went wrong?*
 
 - We didn’t consider how many chairs we actually need, based on expected number of visitors. We just chose an arbitrary number.
 - We didn’t test how many chairs we can actually fit.
@@ -62,19 +62,27 @@ For a total of 11 seats. Based on expected use we worked out we only need 8 chai
 
 Do we need any magic folding chairs? No. In this case we already have enough to need our needs. In fact, if we do get an extra, unnecessary, magic chair, we face the risk that we won’t be able to fit it in. Which doesn’t sound so bad. But instead imagine if these chairs were *really heavy*, and when we got it out to use the floor collapsed. The point is, if we don’t test it then it’s a risk because we don't know what will happen.
 
+## Auto-scaling
+
 Alright, the analogy is breaking down a bit by now. In case you hadn’t guessed, I’m not really talking about chairs here. I’m talking about auto-scaling. Specifically, [horizontal pod auto-scaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) in Kubernetes.
 
-I think many people think about auto-scaling as in the original example, where we use an HPA with a high maximum pod count, *just in case*. But there are several problems with this:
+I often see auto-scaling being thought of as a technique to increase resources when under load, with the intention of increasing reliability. However, when misused it can sometimes have the opposite effect of decreasing reliability. Arguably it is better thought of as a way to reduce resource usage when under-utilised, as a way to save costs.
+
+I also see HPAs with arbitrarily high maximum replicas configured, *just in case* there is a big spike in load. I see several problems with this approach:
 
 1. Pods aren’t free. They use resources including CPU, memory, file descriptors, maybe database connections. We need to make sure we have enough of these resources to support the number of pods we want to scale up to. Importantly, we need to test these cases. There are often unknown limits in our infrastructure. We want to find these in a controlled way, not hit them in an uncontrolled way while under peak levels of traffic.
-2. It’s not based on the reality of expected load. The numbers were arbitrary. We should really be thinking in terms of how many resources we need to handle our expected traffic. We should also be prepared for a reasonable amount of unexpected traffic. How much buffer is needed will be context-dependent.
-3. Simply saying “more is better” is an infinite argument that never ends. One can say: “we have 3 pods, let’s have 2 more on standby just in case”. However the obvious next step is: “we have 5 pods maximum, let’s add another 2 on standby just in case”. Ad infinitum. Again, it is not possible to decide on a sensible maximum without considering the reality of expected load.
+2. The numbers aren't based on the reality of expected load. The numbers in the example above were arbitrary. We should really be thinking in terms of how many resources we need to handle our expected traffic. We should also be prepared for a reasonable amount of unexpected traffic. How much buffer is needed will be context-dependent.
+3. Simply saying "more is better" is an infinite argument that never ends. One can say: "we have 3 pods, let’s have 2 more on standby just in case". However the obvious next step is: "we have 5 pods maximum, let’s add another 2 on standby just in case". Ad infinitum. Again, it is not possible to decide on a sensible maximum without considering the reality of expected load.
 
-To elaborate on 1: I worked on a system built on top of PostgreSQL. PostgreSQL can be fairly constrained when it comes to connections, and from memory we had a limit of 300 on the instance. Each pod had a default limit of 10 connections, each service ran a minimum of three pods for redundancy. We ran more than 10 services. This was a potential problem and we knew it: if every pod filled up its pool of connections we would have problems. We were happy enough with this risk because traffic was a) quite low, and b) generally uncorrelated between services. The business had multiple products which were related but marketed fairly separately. Some services ran the social network, some served buying tickets, some backed an encyclopedia, and some handled a B2C marketplace. It was possible we'd hit a spike in traffic from all at once, but it never really happened.
+To elaborate on 1: I worked on a system built on top of PostgreSQL. PostgreSQL can be fairly constrained when it comes to connections, and from memory we had a limit of 300 on the instance. Each pod had a default limit of 10 connections, each service ran a minimum of three pods for redundancy. We ran more than 10 services. This was a potential problem and we knew it: if every pod filled up its pool of connections then we'd see a lot of errors.
+
+We were happy enough with this risk because traffic was a) quite low, and b) generally uncorrelated between services. The business had multiple products which were related but marketed fairly separately. Some services ran the social network, some served buying tickets, some backed an encyclopedia, and some handled a B2C marketplace. It was possible we'd hit a spike in traffic from all at once, but it never really happened.
 
 That is, until we DoSed ourselves by accident by aggressively crawling the website. Whoops. Predictably, we ran out of connections to the database, with new connections being rejected. If we had auto-scaled on CPU/memory, it would only have made the problem worse had it kicked in.
 
 Now you may be thinking "I don't over-provision like that" or "I run MySQL, it doesn't have that problem". Sure, maybe you don't have this particular risk. Personally though, I wouldn't feel confident unless I'd load tested to see what happens when maxing out my resources (whatever they happen to be). We'll always have to make judgements about risks, but known risks are preferable to unknown risks.
+
+## Examples
 
 Let's look at a couple of examples. We'll keep things simple by just considering CPU utilisation. We'll assume we're running a minimum of three pods for redundancy and each pod has a CPU limit of one CPU core, for a minimum CPU capacity of three cores. We'll also assume CPU utilisation is directly proportional to incoming traffic.
 
@@ -94,4 +102,14 @@ In this next example we see that the CPU utilisation is getting pretty close to 
   <figcaption>CPU load for a busy service over one week</figcaption>
 </figure>
 
-My point is, I think "should we add auto-scaling?" is an interesting question which deserves a better answer than "sure, why not?". Instead of thinking “we have X pods provisioned, let’s add auto-scaling to *scale up*, just in case”, I prefer the mental model of “based on expected load we need X pods maximum, can we *scale down* sometimes to save costs?”. I think this mindset shift is important, and approaching the problem from this perspective encourages us to build more appropriate systems for the context we're working in.
+## Conclusion
+
+Instead of thinking "we have X pods provisioned, let’s add auto-scaling to *scale up*, just in case", I prefer the mental model of "based on expected load we need X pods maximum, can we *scale down* sometimes to save costs?".
+
+To summarise:
+
+- Use auto-scaling to scale *down*, not up
+- Base your replica count on real world resource usage
+- Consider your maximum replicas to be your default, and *test* it
+
+I think this mindset shift is helpful, and approaching the problem from this perspective encourages us to build more appropriately scaled systems.
