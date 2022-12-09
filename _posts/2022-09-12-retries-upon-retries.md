@@ -162,6 +162,7 @@ While retries are often considered to be a Good Thing, we don't want them everyw
   - [The end-to-end principle in distributed systems](https://www.tedinski.com/2019/02/27/end-to-end-principle.html)
   - [Backpressure](https://www.tedinski.com/2019/03/05/backpressure.html)
 - By Marc Brooker:
+  - [Timeouts, retries, and backoff with jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/)
   - [Exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/)
   - [What is backoff for?](https://brooker.co.za/blog/2022/08/11/backoff.html)
   - [Fixing retries with token buckets and circuit breakers](https://brooker.co.za/blog/2022/02/28/retries.html)
