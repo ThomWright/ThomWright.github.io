@@ -25,3 +25,8 @@ github:
 sass:
   sass_dir: public/css/_sass
   style: compressed
+
+collections:
+  patterns:
+    output: true
+    sort_by: sort_key
