@@ -19,7 +19,7 @@ bundle install
 
 On your machine:
 
-`jekyll serve --drafts --baseurl ''`
+`jekyll serve --incremental --watch --drafts -H 127.0.0.1 -P 4000`
 
 Or in a VM (see `./provision/bootstrap.sh` for more details):
 
@@ -36,7 +36,7 @@ Then go to `localhost:4000`.
 ```bash
 docker run --rm \
   --volume="$PWD:/srv/jekyll" \
-  -it jekyll/jekyll:pages \
+  -it jekyll/jekyll:4.2.0 \
   bundle update
 ```
 
