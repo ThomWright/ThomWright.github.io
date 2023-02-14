@@ -48,7 +48,7 @@ For the most part we’ll be using definition 1 (side effects), with perhaps som
 
 Before starting a design it’s worth taking some time to identify what properties we want our system to have, and also what it is capable of: its constraints. In other words: what it *must* and *must not* do, and also what it *can* and *cannot* do.
 
-To give an example, if we need to write some data to two or more systems, we might say it *cannot* achieve perfect consistency, but ****must**** be eventually consistent.
+To give an example, if we need to write some data to two or more systems, we might say it *cannot* achieve perfect consistency, but **must** be eventually consistent.
 
 We’ll be using the following constraints to help us understand which patterns are appropriate for a given problem:
 
@@ -75,7 +75,7 @@ Rather than internal details, these patterns describe the API as seen by clients
 
 {% assign api_design = site.patterns | where: 'group', 'api-design' | sort: "sort_key" %}
 {% for pattern in api_design %}
-- [{{ pattern.title }}]({{ pattern.url }}) - {{ pattern.tagline }}
+- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
 ### Writing to a single system
@@ -84,7 +84,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 
 {% assign single_system = site.patterns | where: 'group', 'single-system' %}
 {% for pattern in single_system %}
-- [{{ pattern.title }}]({{ pattern.url }}) - {{ pattern.tagline }}
+- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
 ### Writing to multiple systems
@@ -93,5 +93,13 @@ When writing to a single ACID database, we get atomicity and consistency built i
 
 {% assign multiple_systems = site.patterns | where: 'group', 'multiple-systems' %}
 {% for pattern in multiple_systems %}
-- [{{ pattern.title }}]({{ pattern.url }}) - {{ pattern.tagline }}
+- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
+
+## Further reading
+
+- [Pattern language](https://en.wikipedia.org/wiki/Pattern_language)
+- [A pattern language for microservices](https://microservices.io/patterns/index.html)
+- [An In-Depth Introduction To Idempotency](https://www.lpalmieri.com/posts/idempotency/)
+- [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
+- [Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency)
