@@ -39,19 +39,15 @@ If the Accept queue fills up, new incoming SYNs and ACKs will be dropped. If the
 
 So it seems like one of the following happened:
 
-1. Something in the network was slow for some reason, and delayed either the outgoing SYN or incoming SYN ACK. In which case, we’d expect to see similar delays for packets _other) than SYN or SYN ACK.
-2. Something else in the network was dropping packets for some reason. Again, we’d expect to see correlated packet loss across all packet types.
-3. The SYN queue on the remote host was full. In which case we’d expect to see SYN Cookies being used.
-4. The Accept queue on the remote was full.
+1. The SYN queue on the remote host was full. In which case either we’d expect to see SYN Cookies being used, or the remote isn't using SYN Cookies.
+2. The Accept queue on the remote was full.
+3. Something in the network was slow for some reason, and delayed either the outgoing SYN or incoming SYN ACK. In which case, we’d expect to see similar delays for packets _other) than SYN or SYN ACK.
+4. Something in the network was dropping packets for some reason. Again, we’d expect to see correlated packet loss across all packet types.
 5. Something else I haven't considered.
-
-I saw no SYN Cookies, so 3 can be ruled out.
 
 Honestly, 5 isn't unlikely.
 
-As for the rest, I still don’t know. I have a TCP dump, and I do see some strange delays and packet loss. We were also making way more connections than we should have been, but I’d be surprised if the remote applications weren’t able to handle it. We weren’t sending _that_ much traffic, and the remote hosts _should_ be very used to high traffic clients.
-
-I’m going to keep investigating. I’m quite stubborn.
+As for the rest, I still don’t know. I have seen some strange delays and packet loss, but haven't come to any conclusions yet. We were also making way more connections than we should have been, but I’d be surprised if the remote applications weren’t able to handle it. We weren’t sending _that_ much traffic, and the remote hosts _should_ be very used to high traffic clients. More investigation needed.
 
 What I do know is that a contributing factor was a lack of TCP connection pooling. At least two of these services were not reusing TCP connections when they should have been. That is, they had connection pools but were seemingly not using them, creating new connections for every outgoing request request instead.
 
