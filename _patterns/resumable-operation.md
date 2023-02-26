@@ -41,8 +41,7 @@ This is arguably not idempotent, because retries can cause more side-effects and
 - [Passive recovery](https://www.lpalmieri.com/posts/idempotency/#10-3-forward-recovery)
 - [Recovery points](https://brandur.org/idempotency-keys#recovery-points)
 
-{% include related_patterns.html %}
-
 ## See also
 
-- [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys) - especially atomic phases and recovery points
+- [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
+  - Especially the parts about atomic phases and recovery points.

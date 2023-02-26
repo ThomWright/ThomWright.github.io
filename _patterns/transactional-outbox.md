@@ -30,8 +30,6 @@ Write one or more messages to a database in an **Atomic transaction** describing
 
 A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS.
 
-{% include related_patterns.html %}
-
 ## See also
 
 - [Microservice patterns: Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html)

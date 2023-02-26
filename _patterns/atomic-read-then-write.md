@@ -38,8 +38,6 @@ Do the read-then-write operation atomically. There are various techniques availa
 
 Read-then-write isn’t the only problematic access pattern to watch out for. See [The Zoo of Transaction Phenomena](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#the-zoo-of-transaction-phenomena) for more.
 
-{% include related_patterns.html %}
-
 ## See also
 
 - [Atomicity (database systems)](https://en.wikipedia.org/wiki/Atomicity_(database_systems))

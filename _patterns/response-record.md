@@ -25,5 +25,3 @@ How do we return the same response, even when the underlying state changes?
 ## Solution
 
 Record the response before sending it to the client. On subsequent retries, return this response. This could be indexed by an idempotency key.
-
-{% include related_patterns.html %}

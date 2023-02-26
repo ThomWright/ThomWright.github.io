@@ -32,5 +32,3 @@ Polling is another solution to this problem, though has several drawbacks. Polli
 ## Also known as
 
 - Webhooks
-
-{% include related_patterns.html %}

@@ -22,8 +22,6 @@ How do we ensure the system does not get left in an inconsistent state when the 
 
 Perform all writes inside a transaction. Either all writes will succeed or none of them will.
 
-{% include related_patterns.html %}
-
 ## See also
 
 - [Atomicity (database systems)](https://en.wikipedia.org/wiki/Atomicity_(database_systems))

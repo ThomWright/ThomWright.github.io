@@ -1,8 +1,10 @@
 {% assign related = site.patterns | where_exp: "short", "page.related contains short.short" %}
 {% if related != empty %}
-## Related
+<h2 id="related">Related</h2>
 
+<ul>
 {% for r in related %}
-- [{{ r.title }}]({{ r.url }}) — {{ r.tagline }}
+  <li><p><a href="{{ r.url }}">{{ r.title }}</a> — {{ r.tagline }}</p></li>
 {% endfor %}
+</ul
 {% endif %}

@@ -33,5 +33,3 @@ Write a record to a database before performing the operation. If the record alre
 The existence of the record means “the operation was attempted”,  but does not give any information about success or failure. It can be helpful to combine with a Post-operation record or a Response record to signify “the operation was completed, and the result was X”.
 
 Since the system might crash before writing one of these records, their absence does not necessarily mean the operation failed or did not occur. If a retry sees the pre-operation record but no post-operation or response record, it should respond with appropriate uncertainty.
-
-{% include related_patterns.html %}

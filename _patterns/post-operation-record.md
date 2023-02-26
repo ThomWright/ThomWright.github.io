@@ -36,8 +36,6 @@ Write a record to a database after successfully performing the operation. If the
 - Checkpoint
 - Recovery point
 
-{% include related_patterns.html %}
-
 ## See also
 
 - [Recovery points](https://brandur.org/idempotency-keys#recovery-points)

@@ -22,5 +22,3 @@ How do we determine whether two requests have the same identity?
 ## Solution
 
 Send a unique value, called an idempotency key, along with the request. This same value is sent with any retries, so the server can identify which requests are the same.
-
-{% include related_patterns.html %}

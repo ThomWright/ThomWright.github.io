@@ -96,6 +96,15 @@ When writing to a single ACID database, we get atomicity and consistency built i
 - [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
+### Background processes
+
+Sometimes inconsistency is unavoidable, whether by design, or simply because of a buggy implementation. Background processes can identify these inconsistencies and handle them in various ways.
+
+{% assign background_processes = site.patterns | where: 'group', 'background-processes' %}
+{% for pattern in background_processes %}
+- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% endfor %}
+
 ## Further reading
 
 - [Pattern language](https://en.wikipedia.org/wiki/Pattern_language)

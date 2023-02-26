@@ -29,8 +29,6 @@ How do we prevent dangling references if writing the data fails?
 
 First store the data, then store the reference.
 
-{% include related_patterns.html %}
-
 ## See also
 
 - [Pragmatic Formal Modelling: Coordinating a Database and Blob Store](https://elliotswart.github.io/pragmaticformalmodeling/database-blob/)
