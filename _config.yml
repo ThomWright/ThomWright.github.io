@@ -30,3 +30,15 @@ collections:
   patterns:
     output: true
     sort_by: sort_key
+
+exclude:
+- _config.yml
+- .editorconfig
+- .gitignore
+- CNAME
+- docker-compose.yml
+- Gemfile
+- Gemfile.lock
+- provision
+- README.md
+- Vagrantfile
