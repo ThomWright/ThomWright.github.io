@@ -43,8 +43,11 @@ So it seems like one of the following happened:
 2. Something else in the network was dropping packets for some reason. Again, we’d expect to see correlated packet loss across all packet types.
 3. The SYN queue on the remote host was full. In which case we’d expect to see SYN Cookies being used.
 4. The Accept queue on the remote was full.
+5. Something else I haven't considered.
 
 I saw no SYN Cookies, so 3 can be ruled out.
+
+Honestly, 5 isn't unlikely.
 
 As for the rest, I still don’t know. I have a TCP dump, and I do see some strange delays and packet loss. We were also making way more connections than we should have been, but I’d be surprised if the remote applications weren’t able to handle it. We weren’t sending _that_ much traffic, and the remote hosts _should_ be very used to high traffic clients.
 
@@ -67,3 +70,9 @@ Now, why was connection pooling broken? Two reasons:
 2. The other was more interesting. For most requests this application doesn’t care about response bodies. It does a POST to create the thing, gets a 200/201 status in response and off it goes. However, when [`hyper`](https://github.com/hyperium/hyper) sees that the HTTP response body hasn’t been consumed, instead of returning the connection to the pool it will shut down the connection. If this body data (well, any data) is still in the TCP receive buffer, then the socket will send a RST instead of a FIN. Today I learned.
 
 Number 2 was fun to debug. Looking at a TCP dump and thinking “why are there so many RSTs?!” is a sign of an interesting few hours (or more) to come.
+
+## Further reading
+
+- [SYN packet handling in the wild](https://blog.cloudflare.com/syn-packet-handling-in-the-wild/)
+- [When TCP sockets refuse to die](https://blog.cloudflare.com/when-tcp-sockets-refuse-to-die/)
+- [RFC 9293 - Transmission Control Protocol (TCP)](https://datatracker.ietf.org/doc/rfc9293/)
