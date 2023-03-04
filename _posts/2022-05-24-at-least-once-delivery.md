@@ -156,3 +156,9 @@ The answers will influence the design of the system.
 - [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
 - [Akka: Message Delivery](https://doc.akka.io/docs/akka/current/general/message-delivery-reliability.html#discussion-what-does-at-most-once-mean-)
 - [Exactly-Once Delivery May Not Be What You Want](https://brooker.co.za/blog/2014/11/15/exactly-once.html) (Edited to add this link, which covers similar content)
+
+EDIT: I found an [article](https://exactly-once.github.io/posts/exactly-once-delivery/) claiming that **exactly-once processing is possible**, but **exactly-once delivery** is not. I think we have the same conclusions but with different definitions. Definitions are hard. Their definition of **message processing**:
+
+> A message is processed when all side-effects of the procedure used to handle that message are durably persisted.
+
+My definition of processing was more about "the bit between the start and the end". While no message delivery system can guarantee that this happens exactly once, it is indeed perfectly possible in many (but not all) cases to produce side-effects exactly once (if the delivery system willing to keep retrying long enough), and often this is all that is needed.
