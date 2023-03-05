@@ -60,13 +60,14 @@ Before starting a design it’s worth taking some time to identify what [invaria
 
 For example, imagine a scenario where we need to write some data to two systems, and it is required that either both are written to once or neither. The operation *cannot* guarantee it'll successfully write to both before responding or crashing. But we might decide that it *must* eventually write to both, and *can* defer some writes until after sending a response.
 
-We’ll be using the following constraints to help us understand which patterns are appropriate for a given problem:
+We can use the following constraints to help us understand which patterns are appropriate for a given problem:
 
 - **Idempotency (side effects)** — Is it required that retries cause no additional state changes? Even when a subset of the desired side effects failed? Is it required that a side effect happens at most once, exactly once or at least once? (See [Why can't we have exactly-once message processing?](https://thomwright.co.uk/2022/05/24/at-least-once-delivery/))
 - **Idempotency (response)** — Is it required that retries always receive the same response? Even when the operation failed?
 - **Consistency** — Is it required that the system is always in a consistent state? Is eventual consistency acceptable? Are there acceptable inconsistent states?
 - **Asynchronicity** — Is it required that all writes are done synchronously before returning a response? Can any be deferred until later?
 - **Atomicity** — Is it possible to do all writes atomically? Is it possible to do some subsets atomically?
+- **Client behaviour** — Are we in control of the client? Will it reliably retry until success?
 
 For the previous example, we could say: the operation *cannot* be atomic, *must* be idempotent and eventually consistent, and *can* be asynchronous.
 
@@ -84,7 +85,7 @@ By no means complete. I expect I'll continue expanding and editing these.
 
 Rather than internal details, these patterns describe the API as seen by clients.
 
-{% assign api_design = site.failure-patterns | where: 'group', 'api-design' | sort: "sort_key" %}
+{% assign api_design = site.failure-patterns | where: 'group', 'api-design' | sort: "sort_key", "last" %}
 {% for pattern in api_design %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
@@ -92,7 +93,7 @@ Rather than internal details, these patterns describe the API as seen by clients
 
 Patterns for writing to a single system. Most patterns assume this system is an ACID database.
 
-{% assign single_system = site.failure-patterns | where: 'group', 'single-system' %}
+{% assign single_system = site.failure-patterns | where: 'group', 'single-system' | sort: "sort_key", "last" %}
 {% for pattern in single_system %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
@@ -100,7 +101,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 
 When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don’t have these guarantees: we might not be able to perform all writes atomically, and so can end up in an inconsistent state.
 
-{% assign multiple_systems = site.failure-patterns | where: 'group', 'multiple-systems' %}
+{% assign multiple_systems = site.failure-patterns | where: 'group', 'multiple-systems' | sort: "sort_key", "last" %}
 {% for pattern in multiple_systems %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
@@ -108,7 +109,7 @@ When writing to a single ACID database, we get atomicity and consistency built i
 
 Sometimes inconsistency is unavoidable, whether by design, or simply because of a buggy implementation. Background processes can identify these inconsistencies and handle them in various ways.
 
-{% assign background_processes = site.failure-patterns | where: 'group', 'background-processes' %}
+{% assign background_processes = site.failure-patterns | where: 'group', 'background-processes' | sort: "sort_key", "last" %}
 {% for pattern in background_processes %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 

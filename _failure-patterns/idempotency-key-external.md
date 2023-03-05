@@ -4,6 +4,7 @@ title: Idempotency key (external)
 short: idempotency-key-external
 group: single-system
 tagline: Send a request to an external system at-least-once with only a single side effect
+sort_key: 3
 related:
   - idempotency-key
   - recovery-point

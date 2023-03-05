@@ -7,6 +7,7 @@ tagline: Prevent dangling references
 related:
   - recovery-point
   - garbage-collection
+  - resumable-operation
 ---
 
 ## Context
@@ -15,9 +16,9 @@ Some operations need to write data to an external system, and write a reference 
 
 ## Prerequisites
 
-It is acceptable to end up with “garbage” un-referenced data.
+It is acceptable to end up with “garbage” un-referenced data. The data should not be accessed without a reference.
 
-## Example
+## Examples
 
 Uploading a profile image on a social network.
 
@@ -27,7 +28,11 @@ How do we prevent dangling references if writing the data fails?
 
 ## Solution
 
-First store the data, then store the reference.
+First store the data, then store the reference. Any updates to this data should be written separately, rather than overwriting the original, in an [append-only](https://en.wikipedia.org/wiki/Append-only) manner.
+
+This can be thought of similarly to [Multiversion Concurrency Control (MVCC)](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) in databases.
+
+This operation is naturally [resumable](../resumable-operation). [Garbage collection](../garbage-collection) can be used to clean up stale, unreferenced data.
 
 ## See also
 

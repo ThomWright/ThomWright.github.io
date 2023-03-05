@@ -4,6 +4,7 @@ title: Recovery point
 short: recovery-point
 group: multiple-systems
 tagline: Record current progress to allow recovery with minimal rework
+sort_key: 2
 related:
   - pre-operation-record
   - store-then-reference

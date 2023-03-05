@@ -4,6 +4,7 @@ title: Atomic read-then-write
 short: atomic-read-then-write
 group: single-system
 tagline: Concurrently write data based on current state
+sort_key: 2
 related:
   - atomic-transaction
   - idempotency-key

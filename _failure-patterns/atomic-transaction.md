@@ -30,3 +30,5 @@ Perform all writes inside a transaction. Either all writes will succeed or none 
 ## See also
 
 - [Atomicity (database systems)](https://en.wikipedia.org/wiki/Atomicity_(database_systems))
+- [PostgreSQL: Transactions](https://www.postgresql.org/docs/15/tutorial-transactions.html)
+- [Amazon DynamoDB Transactions: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html)

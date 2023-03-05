@@ -29,7 +29,6 @@ sass:
 collections:
   failure-patterns:
     output: true
-    sort_by: sort_key
 
 exclude:
 - _config.yml

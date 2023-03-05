@@ -4,6 +4,7 @@ title: Transactional outbox
 short: transactional-outbox
 group: multiple-systems
 tagline: Transactionally write a description of work to be carried out later
+sort_key: 1
 related:
   - atomic-transaction
 ---
