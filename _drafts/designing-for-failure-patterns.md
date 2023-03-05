@@ -52,7 +52,7 @@ Given these, I see two properties one might expect from an idempotent API:
 
 I think 1 is what most people mean most of the time, but I often see 2 being expected as well. HTTP semantics do not require 2, and it would be strange if they did. A GET request which always returned the same response would not be very useful if the underlying resource changes.
 
-For the most part we’ll be using definition 1 (side effects), with perhaps some variation in certain cases, e.g. partially failed operations where we might want retries to produce any remaining side effects.
+For the most part I'll be using definition 1 (side effects), with perhaps some variation in certain cases, e.g. partially failed operations where we might want retries to produce any remaining side effects.
 
 ## Constraints
 
@@ -76,6 +76,10 @@ For the previous example, we could say: the operation *cannot* be atomic, *must*
 
 ## Patterns
 
+Reusable building blocks to help design systems which are reliable in the presence of failures.
+
+By no means complete. I expect I'll continue expanding and editing these.
+
 ### API design
 
 Rather than internal details, these patterns describe the API as seen by clients.
@@ -94,7 +98,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 
 ### Writing to multiple systems
 
-When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don’t have these guarantees: we might not be able to perform all writes atomically, and so end up in an inconsistent state.
+When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don’t have these guarantees: we might not be able to perform all writes atomically, and so can end up in an inconsistent state.
 
 {% assign multiple_systems = site.failure-patterns | where: 'group', 'multiple-systems' %}
 {% for pattern in multiple_systems %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}

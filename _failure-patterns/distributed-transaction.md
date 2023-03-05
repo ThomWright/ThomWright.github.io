@@ -6,7 +6,6 @@ group: multiple-systems
 tagline: Write to multiple systems transactionally
 related:
   - atomic-transaction
-published: false
 ---
 
 ## Context
