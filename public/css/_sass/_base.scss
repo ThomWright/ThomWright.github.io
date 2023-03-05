@@ -93,6 +93,12 @@ ul {
   padding-left: 2em;
 }
 
+ul.no-bullets {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
 p {
   margin: 0 0 $small-spacing;
 }

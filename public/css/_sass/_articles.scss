@@ -5,7 +5,7 @@ article {
 
   @include card;
 
-  ul li {
+  .article-content ul li {
     list-style-type: disc;
   }
 
