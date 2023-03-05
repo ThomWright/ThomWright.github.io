@@ -3,7 +3,7 @@ layout: pattern
 title: Transactional outbox
 short: transactional-outbox
 group: multiple-systems
-tagline: Transactionally write a description of work to be carried out later
+tagline: Transactionally write a description of work to be performed asynchronously
 sort_key: 1
 related:
   - atomic-transaction
