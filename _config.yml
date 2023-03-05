@@ -27,7 +27,7 @@ sass:
   style: compressed
 
 collections:
-  patterns:
+  failure-patterns:
     output: true
     sort_by: sort_key
 

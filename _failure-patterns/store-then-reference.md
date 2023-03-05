@@ -5,7 +5,7 @@ short: store-then-reference
 group: multiple-systems
 tagline: Prevent dangling references
 related:
-  - post-operation-record
+  - recovery-point
   - garbage-collection
 ---
 

@@ -1,4 +1,4 @@
-{% assign related = site.patterns | where_exp: "short", "page.related contains short.short" %}
+{% assign related = site.failure-patterns | where_exp: "short", "page.related contains short.short" %}
 {% if related != empty %}
 <h2 id="related">Related</h2>
 

@@ -4,6 +4,7 @@ title: Atomic transaction
 short: atomic-transaction
 group: single-system
 tagline: Perform multiple writes, such that either all of them or none of them succeed
+sort_key: 1
 ---
 
 ## Context
@@ -21,6 +22,10 @@ How do we ensure the system does not get left in an inconsistent state when the 
 ## Solution
 
 Perform all writes inside a transaction. Either all writes will succeed or none of them will.
+
+## Also known as
+
+- [Atomic phases](https://brandur.org/idempotency-keys#atomic-phases)
 
 ## See also
 

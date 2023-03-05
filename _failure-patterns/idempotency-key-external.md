@@ -6,7 +6,7 @@ group: single-system
 tagline: Send a request to an external system at-least-once with only a single side effect
 related:
   - idempotency-key
-  - post-operation-record
+  - recovery-point
 ---
 
 ## Context

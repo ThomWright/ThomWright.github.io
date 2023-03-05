@@ -7,7 +7,7 @@ tagline: Return the same response for every retry
 related:
   - atomic-transaction
   - idempotency-key
-  - post-operation-record
+  - recovery-point
 ---
 
 ## Context

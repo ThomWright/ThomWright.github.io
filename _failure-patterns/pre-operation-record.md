@@ -5,7 +5,7 @@ short: pre-operation-record
 group: multiple-systems
 tagline: Write to an external system at-most-once
 related:
-  - post-operation-record
+  - recovery-point
   - response-record
 ---
 
@@ -30,6 +30,6 @@ How do we ensure that we perform an external operation at most once?
 
 Write a record to a database before performing the operation. If the record already exists, do not perform the operation. The operation will either succeed or fail. Subsequent retries will not attempt it again.
 
-The existence of the record means “the operation was attempted”,  but does not give any information about success or failure. It can be helpful to combine with a Post-operation record or a Response record to signify “the operation was completed, and the result was X”.
+The existence of the record means “the operation was attempted”,  but does not give any information about success or failure. It can be helpful to combine with a Recovery point or a Response record to signify “the operation was completed, and the result was X”.
 
 Since the system might crash before writing one of these records, their absence does not necessarily mean the operation failed or did not occur. If a retry sees the pre-operation record but no post-operation or response record, it should respond with appropriate uncertainty.

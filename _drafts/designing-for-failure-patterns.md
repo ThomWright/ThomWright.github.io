@@ -80,7 +80,7 @@ For the previous example, we could say: the operation *cannot* be atomic, *must*
 
 Rather than internal details, these patterns describe the API as seen by clients.
 
-{% assign api_design = site.patterns | where: 'group', 'api-design' | sort: "sort_key" %}
+{% assign api_design = site.failure-patterns | where: 'group', 'api-design' | sort: "sort_key" %}
 {% for pattern in api_design %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
@@ -88,7 +88,7 @@ Rather than internal details, these patterns describe the API as seen by clients
 
 Patterns for writing to a single system. Most patterns assume this system is an ACID database.
 
-{% assign single_system = site.patterns | where: 'group', 'single-system' %}
+{% assign single_system = site.failure-patterns | where: 'group', 'single-system' %}
 {% for pattern in single_system %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
@@ -96,7 +96,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 
 When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don’t have these guarantees: we might not be able to perform all writes atomically, and so end up in an inconsistent state.
 
-{% assign multiple_systems = site.patterns | where: 'group', 'multiple-systems' %}
+{% assign multiple_systems = site.failure-patterns | where: 'group', 'multiple-systems' %}
 {% for pattern in multiple_systems %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
@@ -104,7 +104,7 @@ When writing to a single ACID database, we get atomicity and consistency built i
 
 Sometimes inconsistency is unavoidable, whether by design, or simply because of a buggy implementation. Background processes can identify these inconsistencies and handle them in various ways.
 
-{% assign background_processes = site.patterns | where: 'group', 'background-processes' %}
+{% assign background_processes = site.failure-patterns | where: 'group', 'background-processes' %}
 {% for pattern in background_processes %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
