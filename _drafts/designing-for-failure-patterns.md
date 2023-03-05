@@ -7,7 +7,16 @@ Systems fail. Processes crash unexpectedly, network partitions happen, operation
 
 Complete failure to perform an operation is never ideal, but often less of a problem than a partial failure which could leave a system in an inconsistent state. Either way, when a client sees a failure it might retry, which can cause its own set of problems: any side effects might be executed twice (or more).
 
-In this post I’m going to talk about how I think about designing systems to gracefully handle these kinds of failure cases and avoid common problems. I’ll start by giving some context on what properties we might want a system to have, and how it might violate these. After that, I’ll present a set of patterns for maintaining these properties in the face of failures.
+Even when there are no obvious failures, inconsistencies can arise from bugs. Systems which are large, involve concurrency, or are undergoing rapid change are particularly at risk.
+
+In general, when designing a system we might need to consider the following:
+
+- **Crash-safety** — What happens if the service crashes part way through handling a request?
+- **Network-partition-safety** — What happens if a network partition occurs while e.g. the client is sending a request, the server is processing a request, or the server is sending a response?
+- **Retry-safety** — What happens if the client sees a request fail and sends a retry?
+- **Concurrency-safety** — What happens if a retry arrives while the previous request is still being processed? Or what if several different requests try to write the same data?
+
+In this post I’m going to talk about how I think about designing systems to gracefully handle these kinds of failure cases and avoid common problems. I’ll discuss what properties we might want a system to have, and present a set of patterns for maintaining these properties, even in the presence of failures.
 
 ## Terminology
 
@@ -18,6 +27,7 @@ Most of the time, we’ll be considering a generic client sending a request to a
 - **Write** — an operation which changes state, e.g. of a database, file system, message queue, or even the physical world.
 - **Read** — an operation which inspects state but does not change it.
 - **Side effect** — an observable state change caused by a write.
+- **Crash** — A shorthand for various issues including unexpected process termination and network partitions which result in an operation never finishing.
 
 ### Idempotency
 
@@ -46,26 +56,23 @@ For the most part we’ll be using definition 1 (side effects), with perhaps som
 
 ## Constraints
 
-Before starting a design it’s worth taking some time to identify what properties we want our system to have, and also what it is capable of: its constraints. In other words: what it *must* and *must not* do, and also what it *can* and *cannot* do.
+Before starting a design it’s worth taking some time to identify what [invariants](https://en.wikipedia.org/wiki/Invariant_(mathematics)#Invariants_in_computer_science) we want our system to have, and also what it is capable of: its constraints. In other words: what it *must* and *must not* do, and also what it *can* and *cannot* do.
 
-To give an example, if we need to write some data to two or more systems, we might say it *cannot* achieve perfect consistency, but **must** be eventually consistent.
+For example, imagine a scenario where we need to write some data to two systems, and it is required that either both are written to once or neither. The operation *cannot* guarantee it'll successfully write to both before responding or crashing. But we might decide that it *must* eventually write to both, and *can* defer some writes until after sending a response.
 
 We’ll be using the following constraints to help us understand which patterns are appropriate for a given problem:
 
 - **Idempotency (side effects)** — Is it required that retries cause no additional state changes? Even when a subset of the desired side effects failed? Is it required that a side effect happens at most once, exactly once or at least once? (See [Why can't we have exactly-once message processing?](https://thomwright.co.uk/2022/05/24/at-least-once-delivery/))
 - **Idempotency (response)** — Is it required that retries always receive the same response? Even when the operation failed?
 - **Consistency** — Is it required that the system is always in a consistent state? Is eventual consistency acceptable? Are there acceptable inconsistent states?
-- **Asynchronicity** — Is it required that we do all work synchronously before returning a response? Can we defer any until later?
-- **Atomicity** — Is it possible to do all writes atomically? Is it possible to do certain subsets atomically?
+- **Asynchronicity** — Is it required that all writes are done synchronously before returning a response? Can any be deferred until later?
+- **Atomicity** — Is it possible to do all writes atomically? Is it possible to do some subsets atomically?
 
-When designing a system we might also need to consider the following:
+For the previous example, we could say: the operation *cannot* be atomic, *must* be idempotent and eventually consistent, and *can* be asynchronous.
 
-- **Crash-safety** — What happens if the service crashes part way through handling a request?
-- **Network-partition-safety** — What happens if a network partition occurs while e.g. the client is sending a request, the server is processing a request, or the server is sending a response?
-- **Retry-safety** — What happens if the client sees a request fail and sends a retry?
-- **Concurrency-safety** — What happens if a retry arrives while the previous request is still being processed?
+**TODO:** consider [safety and liveness](https://en.wikipedia.org/wiki/Safety_and_liveness_properties)?
 
-I’ll be using the term “crash” as a shorthand for various issues including unexpected process termination and network partitions which result in an operation never finishing.
+**TODO:** consider whether rollbacks are required? Comes under the **Consistency** heading, I guess.
 
 ## Patterns
 
@@ -74,8 +81,7 @@ I’ll be using the term “crash” as a shorthand for various issues including
 Rather than internal details, these patterns describe the API as seen by clients.
 
 {% assign api_design = site.patterns | where: 'group', 'api-design' | sort: "sort_key" %}
-{% for pattern in api_design %}
-- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in api_design %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
 ### Writing to a single system
@@ -83,8 +89,7 @@ Rather than internal details, these patterns describe the API as seen by clients
 Patterns for writing to a single system. Most patterns assume this system is an ACID database.
 
 {% assign single_system = site.patterns | where: 'group', 'single-system' %}
-{% for pattern in single_system %}
-- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in single_system %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
 ### Writing to multiple systems
@@ -92,8 +97,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don’t have these guarantees: we might not be able to perform all writes atomically, and so end up in an inconsistent state.
 
 {% assign multiple_systems = site.patterns | where: 'group', 'multiple-systems' %}
-{% for pattern in multiple_systems %}
-- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in multiple_systems %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
 ### Background processes
@@ -101,14 +105,14 @@ When writing to a single ACID database, we get atomicity and consistency built i
 Sometimes inconsistency is unavoidable, whether by design, or simply because of a buggy implementation. Background processes can identify these inconsistencies and handle them in various ways.
 
 {% assign background_processes = site.patterns | where: 'group', 'background-processes' %}
-{% for pattern in background_processes %}
-- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in background_processes %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
 {% endfor %}
 
 ## Further reading
 
 - [Pattern language](https://en.wikipedia.org/wiki/Pattern_language)
 - [A pattern language for microservices](https://microservices.io/patterns/index.html)
+- [The Seven Most Classic Patterns for Distributed Transactions](https://medium.com/@dongfuye/the-seven-most-classic-solutions-for-distributed-transaction-management-3f915f331e15)
 - [An In-Depth Introduction To Idempotency](https://www.lpalmieri.com/posts/idempotency/)
 - [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
 - [Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency)

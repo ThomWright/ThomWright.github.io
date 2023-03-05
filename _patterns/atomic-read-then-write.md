@@ -3,7 +3,7 @@ layout: pattern
 title: Atomic read-then-write
 short: atomic-read-then-write
 group: single-system
-tagline: TODO
+tagline: Concurrently write data based on current state
 related:
   - atomic-transaction
   - idempotency-key
@@ -28,7 +28,7 @@ How do we prevent problems caused by concurrent read-then-writes?
 
 ## Solution
 
-Do the read-then-write operation atomically. There are various techniques available, including:
+Do the read-then-write operation [atomically](https://en.wikipedia.org/wiki/Linearizability). There are various techniques available, including:
 
 1. **Using atomic ([linear](https://en.wikipedia.org/wiki/Linearizability)) database operations**, such as the following for PostgreSQL. Check your database documentation for equivalents and atomicity guarantees.
     1. `ON CONFLICT DO NOTHING` for unique atomic inserts and `ON CONFLICT DO UPDATE` for atomic upserts. Use a unique ID associated with the request. This could be a client-supplied ID for the resource, but often this isn’t desirable so an idempotency key could be used instead. Insert this ID into a unique column in the same table as the resource data. No duplicate records will be created, and the operation will succeed when retried.
