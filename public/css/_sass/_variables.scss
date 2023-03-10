@@ -8,9 +8,20 @@ $gray-light:              #999;
 $gray-lighter:            #ebebeb;
 $gray-lightest:           #f0f0f0;
 
-$blue:                    #477dca;
+// https://coolors.co/477dca-6190d1-a5c882-f3cb2b-ed6145
+$blue:                    #477dca; // Glaucous
+$lighter-blue:            #6190d1; // Cornflower blue
+$yellow:                  #f3cb2b; // Jonquil
+$green:                   #a5c882; // Pistachio
+$red:                     #ed6145; // Tomato
+$dark-purple:             #1e152a;
 
 $brand-color:             $blue;
+
+$info:                    $lighter-blue;
+$warning:                 $yellow;
+$alert:                   $red;
+$success:                 $green;
 
 $base-body-bg:            $gray-lightest;
 $base-highlight:          $gray-lightest;

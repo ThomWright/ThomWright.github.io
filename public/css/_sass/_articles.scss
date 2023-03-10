@@ -20,4 +20,42 @@ article {
   }
 
   max-width: $max-content-width;
+
+  aside {
+    display: flex;
+
+    padding: $base-padding * 0.75;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+
+    @include vertical-margin($base-padding);
+
+    p {
+      margin: 0px;
+    }
+
+    @mixin color($c) {
+      border-color: $c;
+      // border-color: scale-color($c, $alpha: -50%);
+      background-color: scale-color($c, $alpha: -95%);
+
+      .icon {
+        color: $c;
+      }
+    }
+
+    &.info {
+      @include color($info)
+    }
+    &.warning {
+      @include color($warning)
+    }
+    &.alert {
+      @include color($alert)
+    }
+    &.success {
+      @include color($success)
+    }
+  }
 }

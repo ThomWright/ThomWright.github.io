@@ -38,6 +38,7 @@ function test() {
 }
 ```
 
+<!-- markdownlint-disable-next-line MD040 -->
 ```
 A code block with no language: "string" 0.00
 ```
@@ -49,5 +50,22 @@ A plaintext block quote
 Some `inline code`.
 
 > A block quote
+
+{% include figure.html
+  img_src="/public/assets/one-second/tcp-keepalive-race.png"
+  caption="A small image with a caption"
+  small="true"
+%}
+
+{% assign types = "success info warning alert" | split: " " %}
+{% for type in types %}
+  {% capture text_content %}
+  A call out: *{{type}}*
+  {% endcapture %}
+  {% include call-out.html
+    type=type
+    content=text_content
+  %}
+{% endfor %}
 
 And that's it.

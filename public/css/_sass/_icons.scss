@@ -1,0 +1,38 @@
+
+.icon {
+  padding-right: 0.75em;
+}
+
+.icon::before {
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+
+  min-width: 1em;
+  text-align: center;
+}
+
+.info {
+  .icon::before {
+    font: var(--fa-font-solid);
+    content: "\f05a";
+  }
+}
+.warning {
+  .icon::before {
+    font: var(--fa-font-solid);
+    content: "\f071";
+  }
+}
+.alert {
+  .icon::before {
+    font: var(--fa-font-solid);
+    content: "\21";
+  }
+}
+.success {
+  .icon::before {
+    font: var(--fa-font-solid);
+    content: "\f14a";
+  }
+}

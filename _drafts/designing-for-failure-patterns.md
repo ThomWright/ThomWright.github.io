@@ -79,7 +79,10 @@ For the previous example, we could say: the operation *cannot* be atomic, *must*
 
 Reusable building blocks to help design systems which are reliable in the presence of failures.
 
-By no means complete. I expect I'll continue expanding and editing these.
+{% include call-out.html
+  type="info"
+  content="These patterns are still a work in progress. Ship early and iterate, right?"
+%}
 
 ### API design
 

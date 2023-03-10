@@ -1,0 +1,14 @@
+
+{% comment %}
+Values:
+- info
+- warning
+- alert
+- success
+{% endcomment %}
+{% assign type = include.type %}
+{% assign content = include.content %}
+
+<aside class="{{ type }}">
+  <div class="icon"></div>{{ content | markdownify }}
+</aside>
