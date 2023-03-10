@@ -105,9 +105,14 @@ p {
 
 blockquote {
   font-style: italic;
-  @include single-side-border(left, $blue);
+  @include single-side-border(left, $lighter-blue);
   padding-left: 1em;
   @include horizontal-margin(0);
+
+  p {
+    margin: 0;
+    @include vertical-padding(0.5em);
+  }
 }
 
 strong {
