@@ -1,0 +1,18 @@
+
+{% assign img_src = include.img_src %}
+{% assign caption = include.caption %}
+{% if include.alt %}
+  {% assign alt = include.alt %}
+{% else %}
+  {% assign alt = include.caption %}
+{% endif %}
+{% assign small = include.small %}
+
+<figure>
+  <img
+    {% if small %} class="small-img" {% endif %}
+    src="{{ img_src }}"
+    alt="{{ alt }}"
+  />
+  <figcaption>{{ caption }}</figcaption>
+</figure>

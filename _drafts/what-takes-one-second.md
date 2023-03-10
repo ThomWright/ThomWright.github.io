@@ -48,10 +48,11 @@ So for now, a mitigation is to fix the TCP connection pooling and re-use the con
 
 TCP connection reuse isn’t without its own potential problems, such as the classic keepalive race condition. This tends to happen when the client and server both have the same keepalive timeout durations. If the client sends a new request just before the timeout fires, but the server receives the request _after_ its own timeout fires, then we have a problem. We can mitigate this by setting the server’s timeout to a suitably higher value than the client’s, but this becomes harder when you don’t control both!
 
-<figure>
-  <img class="small-img" src="/public/assets/one-second/tcp-keepalive-race.png" alt="TCP keepalive race condition"/>
-  <figcaption>TCP keepalive race condition</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/one-second/tcp-keepalive-race.png"
+  caption="TCP keepalive race condition"
+  small="true"
+%}
 
 It seems to be helping though.
 
