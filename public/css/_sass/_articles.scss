@@ -37,7 +37,6 @@ article {
 
     @mixin color($c) {
       border-color: $c;
-      // border-color: scale-color($c, $alpha: -50%);
       background-color: scale-color($c, $alpha: -95%);
 
       .icon {

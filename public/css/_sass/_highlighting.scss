@@ -3,19 +3,55 @@ code {
   font-weight: 400;
 }
 
-code.language-plaintext {
-  background-color: $base-highlight;
-  border-radius: $base-border-radius;
-  padding: 0.2em 0.4em;
-}
-
 .highlight {
   font-family: $mono-font-family;
   font-weight: 400;
+}
+
+div.highlight {
   border-radius: $base-border-radius;
 }
 
 pre.highlight {
   padding: 1em;
+
   overflow-x: auto;
+  width: 100%;
+}
+
+$languages: (
+  rust: "Rust",
+  typescript: "TypeScript",
+  ts: "TypeScript",
+  javascript: "JavaScript",
+  js: "JavaScript",
+  jsx: "JSX",
+  json: "JSON",
+  bash: "Bash",
+  coffeescript: "CoffeeScript",
+);
+
+@each $lang, $name in $languages {
+  .language-#{$lang} {
+
+    div {
+      &.highlight::before {
+        content: $name;
+
+        @include horizontal-padding(1em);
+        @include vertical-padding(0.5em);
+
+        background-color: $gray-lighter;
+        border-top-left-radius: $base-border-radius;
+
+        font-family: $mono-font-family;
+        font-weight: bold;
+        font-size: smaller;
+      }
+
+      pre {
+        margin-top: 0px;
+      }
+    }
+  }
 }

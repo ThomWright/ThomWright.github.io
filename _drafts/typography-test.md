@@ -33,10 +33,15 @@ And an ordered list:
 ```typescript
 const typescript = "code"
 
+// Long and scrollable
+const randomInteger = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
+
 function test() {
-  return "hello world"
+  return `Hello world ${randomInteger(1, 10)}`
 }
 ```
+
+And:
 
 <!-- markdownlint-disable-next-line MD040 -->
 ```
@@ -44,7 +49,7 @@ A code block with no language: "string" 0.00
 ```
 
 ```plaintext
-A plaintext block quote
+A plaintext code block
 ```
 
 Some `inline code`.
