@@ -30,11 +30,11 @@ How do we increase the proportion of operations which eventually succeed, even w
 
 ## Solution
 
-Design your operation such that repeated attempts to perform the operation do not fail, and use retries or a [Completer](../completer) to drive the operation to completeness.
+Design your operation such that repeated attempts to perform the operation do not fail, and use retries or a [Completer]({% link _failure-patterns/completer.md %}) to drive the operation to completeness.
 
 If relying on retries, be aware that most clients won't retry forever, and so the operation might end up incomplete indefinitely.
 
-Designing operations to be continued can be tricky. Consider using [Recovery points](../recovery-point) to make this easier and avoid repeating work.
+Designing operations to be continued can be tricky. Consider using [Recovery points]({% link _failure-patterns/recovery-point.md %}) to make this easier and avoid repeating work.
 
 One technique I use is to write out each atomic step as a series of bullet points. I then ask myself: "What would happen if the operation failed before completing each step? What would happen when a retry arrives after that failure?".
 

@@ -32,7 +32,7 @@ First store the data, then store the reference. Any updates to this data should 
 
 This can be thought of similarly to [Multiversion Concurrency Control (MVCC)](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) in databases.
 
-This operation is naturally [resumable](../resumable-operation). [Garbage collection](../garbage-collection) can be used to clean up stale, unreferenced data.
+This operation is naturally [resumable]({% link _failure-patterns/resumable-operation.md %}). [Garbage collection]({% link _failure-patterns/garbage-collection.md %}) can be used to clean up stale, unreferenced data.
 
 ## See also
 

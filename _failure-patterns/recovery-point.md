@@ -14,7 +14,8 @@ related:
 
 ## Context
 
-When implementing a [Resumable operation](../resumable-operation), it can be desirable to minimise rework, either because the operations are expensive or might produce repeated side effects. In which case we would want to perform each sub-operation at least once, while minimising the frequency of any happening more than once.
+When implementing a [Resumable operation]({% link _failure-patterns/resumable-operation.md %}
+), it can be desirable to minimise rework, either because the operations are expensive or might produce repeated side effects. In which case we would want to perform each sub-operation at least once, while minimising the frequency of any happening more than once.
 
 ## Prerequisites
 
@@ -34,7 +35,7 @@ Write a record to a database after successfully performing a part of the operati
 
 When handling a request, start by fetching the latest recovery point associated with the idempotency key, and continue from that point.
 
-A [Response record](../response-record) is a special type of Recovery point.
+A [Response record]({% link _failure-patterns/response-record.md %}) is a special type of Recovery point.
 
 ## Also known as
 
