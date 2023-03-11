@@ -59,7 +59,7 @@ Some `inline code`.
 {% include figure.html
   img_src="/public/assets/one-second/tcp-keepalive-race.png"
   caption="A small image with a caption"
-  small="true"
+  size="small"
 %}
 
 {% assign types = "success info warning alert" | split: " " %}

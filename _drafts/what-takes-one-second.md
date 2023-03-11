@@ -51,7 +51,7 @@ TCP connection reuse isn’t without its own potential problems, such as the cla
 {% include figure.html
   img_src="/public/assets/one-second/tcp-keepalive-race.png"
   caption="TCP keepalive race condition"
-  small="true"
+  size="small"
 %}
 
 It seems to be helping though.

@@ -9,10 +9,11 @@ title: "Auto-scaling: positive feedback loops"
 
 Consider a scenario where we have two services, A and B. A is consuming messages from a queue and sending requests to B. The message queue is backing up. There is a growing number of pending messages which Service A hasn’t received yet.
 
-<figure>
-  <img src="/public/assets/auto-scale-services.png" alt="Service diagram"/>
-  <figcaption>A queue backing up</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/auto-scale-services.png"
+  caption="A queue backing up"
+  alt="Service diagram of a queue backing up"
+%}
 
 This is a sign that the consuming service can’t keep up with the rate of messages arriving through the queue. One might be tempted to scale up Service A by adding more replicas. Perhaps even doing this automatically. After all, it isn’t keeping up, surely if there are more replicas then it will do a better job at handling more messages?
 

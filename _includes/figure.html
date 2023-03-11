@@ -6,13 +6,13 @@
 {% else %}
   {% assign alt = include.caption %}
 {% endif %}
-{% assign small = include.small %}
+{% assign size = include.size %}
 
 <figure>
   <img
-    {% if small %} class="small-img" {% endif %}
+    {% if size %} class="{{size}}-img" {% endif %}
     src="{{ img_src }}"
     alt="{{ alt }}"
   />
-  <figcaption>{{ caption }}</figcaption>
+  <figcaption>{{ caption | markdownify }}</figcaption>
 </figure>

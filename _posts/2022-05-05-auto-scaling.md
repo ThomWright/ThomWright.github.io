@@ -90,17 +90,19 @@ In this first example, we're using very little CPU, generally around 0.01 CPU co
 
 Should we auto-scale? That depends on how likely the traffic is to increase 100x unexpectedly. That informs how much of a buffer is needed. Maybe the load is fairly steady, and 2x the normal peak would be a big event. In which case auto-scaling seems unnecessary. On the other hand, if 100x growth is the goal then it makes sense to prepare for it.
 
-<figure>
-  <img src="/public/assets/auto-scale-low.png" alt="Low load chart"/>
-  <figcaption>CPU load for a quiet service over one week</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/auto-scale-low.png"
+  caption="CPU load for a quiet service over one week"
+  alt="Low load chart"
+%}
 
 In this next example we see that the CPU utilisation is getting pretty close to capacity, but only for a few peaks over the week. Again, should we auto-scale? Again, the answer is: how much of a buffer is needed? How predictable is the traffic? The maximum traffic would have to be pretty damn predictable to sustain 90% CPU utilisation without worrying. Plus, high [CPU utilisation affects request latency](https://www.usenix.org/conference/srecon19asia/presentation/plenz), and maybe that's undesirable. We probably want more pods to handle this traffic, and since most of the week the traffic is much lower we can probably scale down most of the time. This looks like a good candidate for auto-scaling.
 
-<figure>
-  <img src="/public/assets/auto-scale-high.png" alt="High load chart"/>
-  <figcaption>CPU load for a busy service over one week</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/auto-scale-high.png"
+  caption="CPU load for a busy service over one week"
+  alt="High load chart"
+%}
 
 ## Conclusion
 

@@ -19,10 +19,12 @@ I've been reading articles by [Ted Kaminski](https://www.tedinski.com) and [Marc
 
 Let's start with the simplest version of this [model](https://github.com/ThomWright/retry-model). We have a client sending requests to a server, as in the diagram below. Let's assume we're providing a service to this client and we can't control its behaviour. The client is very simple and just sends requests, it doesn't retry on failure.
 
-<figure>
-  <img class="small-img" src="/public/assets/retries/diagram-1-service.png" alt="Single service diagram"/>
-  <figcaption>Sending requests to a server</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/retries/diagram-1-service.png"
+  caption="Sending requests to a server"
+  alt="Single service diagram"
+  size="small"
+%}
 
 We'll start off by defining how this server responds to requests. The response times follow an [Erlang probability distribution](https://newrelic.com/blog/best-practices/expected-distributions-website-response-times), with a mean of **5ms**. Running 10,000 requests we see something like this:
 
@@ -35,10 +37,12 @@ We'll start off by defining how this server responds to requests. The response t
 
 What if that server also sends requests to a dependency, like this:
 
-<figure>
-  <img class="med-img" src="/public/assets/retries/diagram-1-dependency.png" alt="Server with dependency"/>
-  <figcaption>A server with a dependency</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/retries/diagram-1-dependency.png"
+  caption="A server with a dependency"
+  alt="Service with dependency"
+  size="med"
+%}
 
 The latencies from the client's perspective then look like so:
 
@@ -104,10 +108,12 @@ It's worth noting that the decreased latency has two benefits. The first is that
 
 ### More dependencies
 
-<figure>
-  <img class="med-img" src="/public/assets/retries/diagram-3-dependencies.png" alt="Server with dependencies"/>
-  <figcaption>A server with three dependencies</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/retries/diagram-3-dependencies.png"
+  caption="A server with three dependencies"
+  alt="Server with dependencies"
+  size="med"
+%}
 
 Going back to the original point of this article, what if we have several servers being called in series? I'd like to show what happens using two different strategies:
 

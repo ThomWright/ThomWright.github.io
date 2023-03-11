@@ -11,10 +11,11 @@ I generally prefer to keep my git history as a straight line. And my branches (w
 
 Recently I’ve been in the unfortunate position where it made sense to use a branch off a branch. This can be a pain to keep up to date with the latest changes on **main**.
 
-<figure>
-  <img src="/public/assets/branch-off-branch.excalidraw.png" alt="A branch off a branch"/>
-  <figcaption>Branching off an existing branch</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/branch-off-branch.excalidraw.png"
+  caption="Branching off an existing branch"
+  alt="A branch off a branch"
+%}
 
 Fortunately, a colleague introduced me to `git rebase --onto` which (while still a faff) made this process much easier.
 
@@ -42,10 +43,11 @@ We start with our two branches, and a new commit on **main** which we’ve recen
 
 In many cases `git rebase B1 B2` will work, which makes this tempting. However, if there was a merge conflict when rebasing **B1** onto **main**, then the text diffs between the *Old* and *New* commits might differ. In which case, you’ll end up with some unwanted commits on your new **B2** branch. If you had a lot of commits on **B1**, this could get very messy!
 
-<figure>
-  <img src="/public/assets/git-rebase-onto.excalidraw.png" alt="git rebase --onto"/>
-  <figcaption>Using <code>git rebase --onto</code></figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/git-rebase-onto.excalidraw.png"
+  caption="Using `git rebase --onto`"
+  alt="git rebase --onto"
+%}
 
 (You might want to open the image in a new tab to see it full size.)
 
