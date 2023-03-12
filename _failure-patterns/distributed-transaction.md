@@ -16,6 +16,8 @@ Some operations need to write to two or more transactional systems.
 
 Eventual consistency is acceptable.
 
+It is worth the complexity.
+
 ## Example
 
 TODO:

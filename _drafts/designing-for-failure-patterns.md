@@ -22,12 +22,23 @@ In this post I’m going to talk about how I think about designing systems to gr
 
 First, I’ll be using these terms a lot and I think it’s worth defining what I mean by them.
 
-- **Operation** — a logical unit of work from the perspective of some actor. An operation might consist of several read or write sub-operations. For example, from the point of view of a user, updating their profile picture is an operation they might request a system to perform. To achieve this, the system might perform several operations on other systems.
-Most of the time, we’ll be considering a generic client sending a request to a server to perform an operation.
-- **Write** — an operation which changes state, e.g. of a database, file system, message queue, or even the physical world.
-- **Read** — an operation which inspects state but does not change it.
-- **Side effect** — an observable state change caused by a write.
+- **Operation** — A logical unit of work. Operations form a tree, and might consist of several read or write sub-operations.
+
+    This is quite generic, so I'll often just use the term **request** instead, especially for top-level operations.
+- **Write** — An operation which changes state, e.g. of a database, file system, message queue, or even the physical world.
+- **Read** — An operation which inspects state but does not change it.
+- **Side effect** — An observable state change caused by a write.
 - **Crash** — A shorthand for various issues including unexpected process termination and network partitions which result in an operation never finishing.
+
+A quick example: updating a username. This is a *write operation*. The system performing this operation might need to *read* from another system (to e.g. check authentication/authorisation) and then *write* the new username to a database. It would look like this, where each `|- X -|` span is an operation:
+
+```text
+Application |-- Request ---------------|
+             |- Read ------||- Write -|
+              v           ^
+Auth system   |- Request -|
+               |- Read --|
+```
 
 ### Idempotency
 
@@ -62,7 +73,7 @@ For example, imagine a scenario where we need to write some data to two systems,
 
 We can use the following constraints to help us understand which patterns are appropriate for a given problem:
 
-- **Idempotency (side effects)** — Is it required that retries cause no additional state changes? Even when a subset of the desired side effects failed? Is it required that a side effect happens at most once, exactly once or at least once? (See [Why can't we have exactly-once message processing?](https://thomwright.co.uk/2022/05/24/at-least-once-delivery/))
+- **Idempotency (side effects)** — Is it required that retries cause no additional state changes? Even when a subset of the desired side effects failed? Is it required that a side effect happens at most once, exactly once or at least once? (See [Why can't we have exactly-once message processing?]({% post_url 2022-05-24-at-least-once-delivery %}))
 - **Idempotency (response)** — Is it required that retries always receive the same response? Even when the operation failed?
 - **Consistency** — Is it required that the system is always in a consistent state? Is eventual consistency acceptable? Are there acceptable inconsistent states?
 - **Asynchronicity** — Is it required that all writes are done synchronously before returning a response? Can any be deferred until later?
@@ -77,7 +88,7 @@ For the previous example, we could say: the operation *cannot* be atomic, *must*
 
 ## Patterns
 
-Reusable building blocks to help design systems which are reliable in the presence of failures.
+Reusable building blocks to help design reliable systems in the presence of failures.
 
 {% include call-out.html
   type="info"
@@ -89,7 +100,7 @@ Reusable building blocks to help design systems which are reliable in the presen
 Rather than internal details, these patterns describe the API as seen by clients.
 
 {% assign api_design = site.failure-patterns | where: 'group', 'api-design' | sort: "sort_key", "last" %}
-{% for pattern in api_design %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in api_design %}- **[{{ pattern.title }}]({{ pattern.url }})** — {{ pattern.tagline }}
 {% endfor %}
 
 ### Writing to a single system
@@ -97,7 +108,7 @@ Rather than internal details, these patterns describe the API as seen by clients
 Patterns for writing to a single system. Most patterns assume this system is an ACID database.
 
 {% assign single_system = site.failure-patterns | where: 'group', 'single-system' | sort: "sort_key", "last" %}
-{% for pattern in single_system %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in single_system %}- **[{{ pattern.title }}]({{ pattern.url }})** — {{ pattern.tagline }}
 {% endfor %}
 
 ### Writing to multiple systems
@@ -105,7 +116,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don’t have these guarantees: we might not be able to perform all writes atomically, and so can end up in an inconsistent state.
 
 {% assign multiple_systems = site.failure-patterns | where: 'group', 'multiple-systems' | sort: "sort_key", "last" %}
-{% for pattern in multiple_systems %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in multiple_systems %}- **[{{ pattern.title }}]({{ pattern.url }})** — {{ pattern.tagline }}
 {% endfor %}
 
 ### Background processes
@@ -113,13 +124,14 @@ When writing to a single ACID database, we get atomicity and consistency built i
 Sometimes inconsistency is unavoidable, whether by design, or simply because of a buggy implementation. Background processes can identify these inconsistencies and handle them in various ways.
 
 {% assign background_processes = site.failure-patterns | where: 'group', 'background-processes' | sort: "sort_key", "last" %}
-{% for pattern in background_processes %}- [{{ pattern.title }}]({{ pattern.url }}) — {{ pattern.tagline }}
+{% for pattern in background_processes %}- **[{{ pattern.title }}]({{ pattern.url }})** — {{ pattern.tagline }}
 {% endfor %}
 
 ## Further reading
 
 - [Pattern language](https://en.wikipedia.org/wiki/Pattern_language)
 - [A pattern language for microservices](https://microservices.io/patterns/index.html)
+- [Messaging Patterns](https://www.enterpriseintegrationpatterns.com/)
 - [The Seven Most Classic Patterns for Distributed Transactions](https://medium.com/@dongfuye/the-seven-most-classic-solutions-for-distributed-transaction-management-3f915f331e15)
 - [An In-Depth Introduction To Idempotency](https://www.lpalmieri.com/posts/idempotency/)
 - [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)

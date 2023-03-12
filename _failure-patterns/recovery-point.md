@@ -6,10 +6,13 @@ group: multiple-systems
 tagline: Record current progress to allow recovery with minimal rework
 sort_key: 2
 related:
+  - transactional-outbox
   - pre-operation-record
   - store-then-reference
   - response-record
   - resumable-operation
+  - completer
+  - reconciliation
 ---
 
 ## Context
@@ -23,19 +26,34 @@ It is acceptable to perform each sub-operation at least once, and for retries to
 
 ## Example
 
-TODO: sending an email?
+Purchasing some products on an e-commerce site. The *Complete purchase* operation might need to save the order details, update stock availability, take payment, and schedule some later work such as getting the products packaged and delivered. It is desired for the API to do this synchronously and respond with either: `Success`, `OutOfStock` or `PaymentFailed`.
 
 ## Problem
 
-How do we ensure that a sub-operation is performed at least once (if the overall operation succeeds), but make a best effort to prevent it from being performed more than once?
+How do we allow operations to continue from a known state after a failure?
 
 ## Solution
 
-Write a record to a database after successfully performing a part of the operation, identifying the completed operation, and included any necessary data needed for the next steps. Associate the record with the idempotency key.
+Model the operation as a state machine. Write a record to a database after successfully performing a part of the operation. This record should identify the operation (probably using an [Idempotency key]({% link _failure-patterns/idempotency-key.md %})), which state it is in, and include any necessary data needed for the next steps.
 
-When handling a request, start by fetching the latest recovery point associated with the idempotency key, and continue from that point.
+When handling a request, start by fetching the latest recovery point associated with the operation, and continue from that point.
 
-A [Response record]({% link _failure-patterns/response-record.md %}) is a special type of Recovery point.
+For the example above, we might have three states: `OrderReceived`, `PaymentSuccess` and `OrderFinished` (ignoring error cases, which I realise goes against the narrative of this whole post), and the steps would be:
+
+1. Transaction:
+    - Insert recovery point - state: `OrderReceived`
+    - Insert order details
+    - Update stock availability
+2. Take payment
+3. Update recovery point - state: `PaymentSuccess`
+4. Publish `NewOrder` message
+    - In the background work will be scheduled to email the customer and start the shipping process
+5. Update recovery point - state: `OrderFinished`
+    - Perhaps a [Response record]({% link _failure-patterns/response-record.md %})
+
+Steps 3-5 could be consolidated into a single step using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
+
+This operation might leave the system in an inconsistent state if e.g. the process crashes while taking the payment, and the client stops retrying. Pair with a [Completer]({% link _failure-patterns/completer.md %}) or [Reconciliation system]({% link _failure-patterns/reconciliation.md %}) to handle this.
 
 ## Also known as
 
@@ -45,4 +63,4 @@ A [Response record]({% link _failure-patterns/response-record.md %}) is a specia
 
 ## See also
 
-- [Recovery points](https://brandur.org/idempotency-keys#recovery-points)
+- [Recovery points and Atomic phases](https://brandur.org/idempotency-keys#recovery-points)

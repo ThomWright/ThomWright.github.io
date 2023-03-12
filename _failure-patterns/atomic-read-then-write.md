@@ -17,11 +17,11 @@ Some write operations depend on the result of a previous read. Concurrent reques
 
 ## Examples
 
-**Creating a post in a social network.** A new post should only be created once. Retries should succeed but not create new posts. Imagine two concurrent requests try to create the post. First, both reads might see no post already exists. Then there are two possible error cases: both writes succeed and two posts are created, or one write fails with a uniqueness error.
+**Creating a post in a social network.** A new post should only be created once. Retries should succeed but not create duplicate posts. Imagine two concurrent requests try to create the post. First, both reads might see no post already exists. Then there are two possible error cases: both writes succeed and two posts are created, or one write fails with a uniqueness error.
 
 **An app which aggregates a user’s bank account data.** When refreshing the account data, each account should be updated if it already exists in the database, otherwise a new row should be inserted. Concurrent refreshes could cause the same problem as above.
 
-**Adding an amount to an account balance.** This needs to read the current balance, add the amount required, then write the result. Concurrent requests could cause a [lost update](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#lost-update).
+**Debiting an account balance.** This needs to read the current balance, add the amount being debited, then write the result. Concurrent requests could cause a [lost update](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#lost-update), resulting in one of the debits being overwritten and money being lost.
 
 ## Problem
 
@@ -46,6 +46,6 @@ Read-then-write isn’t the only problematic access pattern to watch out for. Se
 - [Linearizability](https://en.wikipedia.org/wiki/Linearizability)
 - [Consistency Models](https://jepsen.io/consistency)
 - [Practical Guide to SQL Transaction Isolation](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html)
-- [Transaction isolation in PostgreSQL](https://thomwright.co.uk/2022/01/11/postgres-isolation-levels/)
+- [Transaction isolation in PostgreSQL]({% post_url 2022-01-11-postgres-isolation-levels %})
 - [PostgreSQL anti-patterns: read-modify-write cycles](https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/)
   - Seems to have disappeared since EDB acquired 2ndQuadrant, so here’s [an archive](https://web.archive.org/web/20220827020902/https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/).
