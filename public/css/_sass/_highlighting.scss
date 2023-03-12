@@ -3,6 +3,13 @@ code {
   font-weight: 400;
 }
 
+// Inline
+code.language-plaintext {
+  background-color: $base-highlight;
+  border-radius: $base-border-radius;
+  padding: 0.2em 0.4em;
+}
+
 .highlight {
   font-family: $mono-font-family;
   font-weight: 400;
@@ -12,7 +19,7 @@ code {
 }
 
 div.highlight {
-  background-color: $gray-lightest;
+  background-color: $base-highlight;
 
   margin-bottom: $base_padding * 0.75;
 }
@@ -51,7 +58,7 @@ $languages: (
         @include horizontal-padding(1em);
         @include vertical-padding(0.5em);
 
-        background-color: $gray-light;
+        background-color: $base-highlight;
         border-top-left-radius: $base-border-radius;
 
         font-family: $mono-font-family;
