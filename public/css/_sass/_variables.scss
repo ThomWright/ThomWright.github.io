@@ -3,10 +3,10 @@
 $gray-darkest:            #222;
 $gray-darker:             #444;
 $gray-dark:               #666;
-$gray:                    #777;
-$gray-light:              #999;
-$gray-lighter:            #ebebeb;
-$gray-lightest:           #f0f0f0;
+$gray-mid:                #777;
+$gray-light:              #ebebeb;
+$gray-lighter:            #f0f0f0;
+$gray-lightest:           #f8f8f8;
 
 // https://coolors.co/477dca-6190d1-a5c882-f3cb2b-ed6145
 $blue:                    #477dca; // Glaucous
@@ -23,8 +23,8 @@ $warning:                 $yellow;
 $alert:                   $red;
 $success:                 $green;
 
-$base-body-bg:            $gray-lightest;
-$base-highlight:          $gray-lightest;
+$base-body-bg:            $gray-lighter;
+$base-highlight:          $gray-lighter;
 $base-font-color:         $gray-darker;
 $base-font-highlight:     black;
 

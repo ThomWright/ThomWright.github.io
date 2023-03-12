@@ -12,7 +12,14 @@ article {
   .post-metadata {
     padding-top: 1em;
     font-style: italic;
-    color: $gray;
+    color: $gray-mid;
+  }
+
+  .tagline {
+    @include vertical-margin(1em);
+
+    font-size: smaller;
+    font-style: italic;
   }
 
   img {

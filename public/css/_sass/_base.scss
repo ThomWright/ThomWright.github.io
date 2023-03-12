@@ -75,11 +75,6 @@ h4 {
   color: lighten($base-font-color, 20%);
 }
 
-h3 small {
-  font-family: $base-font-family;
-  color: $gray-dark;
-}
-
 nav {
   ul {
     li {
@@ -90,13 +85,12 @@ nav {
 
 ol,
 ul {
-  padding-left: 2em;
+  padding-left: $base-padding;
+  margin-top: 0;
 }
 
-ul.no-bullets {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+li {
+  margin-bottom: $small-spacing * 0.5;
 }
 
 p {
@@ -105,13 +99,17 @@ p {
 
 blockquote {
   font-style: italic;
+
   @include single-side-border(left, $lighter-blue);
-  padding-left: 1em;
+  background-color: $gray-lightest;
+
+  padding-left: $base-padding;
   @include horizontal-margin(0);
+  margin-block-start: 0;
 
   p {
     margin: 0;
-    @include vertical-padding(0.5em);
+    @include vertical-padding($small-spacing);
   }
 }
 
@@ -147,4 +145,29 @@ figcaption {
 }
 .img-circle {
   border-radius: 50%;
+}
+
+.related {
+  h2 {
+    font: {
+      weight: 400;
+      size: modular-scale(1);
+    }
+    color: lighten($base-font-color, 10%);
+  }
+}
+
+.post-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: $small-spacing;
+  }
+
+  .date {
+    font-size: smaller;
+    color: $gray-mid;
+  }
 }

@@ -6,8 +6,6 @@ guest_author:
   url: https://thomwright.co.uk
 ---
 
-# Main heading
-
 Some intro text with a [link](https://google.com).
 
 ## Sub-Heading
@@ -41,7 +39,7 @@ function test() {
 }
 ```
 
-And:
+Introducing a code block:
 
 <!-- markdownlint-disable-next-line MD040 -->
 ```
@@ -53,6 +51,8 @@ A plaintext code block
 ```
 
 Some `inline code`.
+
+Introducing a quote:
 
 > A block quote
 
