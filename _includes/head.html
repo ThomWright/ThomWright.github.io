@@ -42,9 +42,14 @@
   <link rel="icon" type="image/png" href="/{{ site.baseurl }}public/favicons/favicon-96x96.png" sizes="96x96">
   <link rel="icon" type="image/png" href="/{{ site.baseurl }}public/favicons/favicon-16x16.png" sizes="16x16">
   <link rel="manifest" href="/{{ site.baseurl }}public/favicons/manifest.json">
-  <meta name="msapplication-TileColor" content="#603cba">
+
+  <meta name="msapplication-TileColor" content="#477dca">
   <meta name="msapplication-TileImage" content="/{{ site.baseurl }}public/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#3c3c3c">
+
+  {% if page.noindex %}
+  <meta name="robots" content="noindex">
+  {% endif %}
 
   <link rel="alternate" type="application/atom+xml" title="Atom feed" href="/atom.xml">
 

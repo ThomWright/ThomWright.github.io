@@ -1,6 +1,9 @@
 ---
 layout: post
 title: 'Designing for failure: Patterns'
+
+# TODO:
+noindex: true
 ---
 
 Systems fail. Processes crash unexpectedly, network partitions happen, operations time out. How much failure is acceptable depends on context, but it’s generally important to be aware of what the implications are.
