@@ -12,6 +12,12 @@
   text-align: center;
 }
 
+.aside {
+  .icon::before {
+    font: var(--fa-font-solid);
+    content: "\f4ad";
+  }
+}
 .info {
   .icon::before {
     font: var(--fa-font-solid);

@@ -93,7 +93,7 @@ For the previous example, we could say: the operation *cannot* be atomic, *must*
 
 Reusable building blocks to help design reliable systems in the presence of failures.
 
-{% include call-out.html
+{% include callout.html
   type="info"
   content="These patterns are still a work in progress. Ship early and iterate, right?"
 %}

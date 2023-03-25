@@ -62,12 +62,12 @@ Introducing a quote:
   size="small"
 %}
 
-{% assign types = "success info warning alert" | split: " " %}
+{% assign types = "aside success info warning alert" | split: " " %}
 {% for type in types %}
   {% capture text_content %}
   A call out: *{{type}}*
   {% endcapture %}
-  {% include call-out.html
+  {% include callout.html
     type=type
     content=text_content
   %}
