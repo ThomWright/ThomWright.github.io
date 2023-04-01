@@ -5,6 +5,11 @@ short: idempotency-key
 group: api-design
 tagline: Identify identical requests
 sort_key: 1
+related:
+  - atomic-read-then-write
+  - change-record
+  - response-record
+  - recovery-point
 ---
 
 ## Context
@@ -21,4 +26,4 @@ How do we determine whether two requests have the same identity?
 
 ## Solution
 
-Send a unique value, called an idempotency key, along with the request. This same value is sent with any retries, so the server can identify which requests are the same.
+Require clients send a unique value, called an idempotency key, along with the request. This same value is should be sent with any retries, so the server can identify which requests are the same. Store this value in the database. If the value already exists, the request is a retry.

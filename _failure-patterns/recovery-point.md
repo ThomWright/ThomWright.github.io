@@ -7,7 +7,7 @@ tagline: Record current progress to allow recovery with minimal rework
 sort_key: 2
 related:
   - transactional-outbox
-  - pre-operation-record
+  - at-most-once-guard
   - store-then-reference
   - response-record
   - resumable-operation

@@ -7,7 +7,7 @@ tagline: Transactionally write a description of work to be performed asynchronou
 sort_key: 1
 related:
   - atomic-transaction
-  - callbacks
+  - callback
 ---
 
 ## Context
@@ -28,15 +28,11 @@ How do we ensure (eventual) consistency when writing to multiple systems?
 
 ## Solution
 
-Write one or more messages to a database in an [Atomic transaction]({% link _failure-patterns/atomic-transaction.md %}) describing what needs to be done. A background process reads these messages and performs the operations on the other systems, retrying until they succeed.
+Write one or more messages to a database in an [Atomic transaction]({% link _failure-patterns/atomic-transaction.md %}) describing what needs to be done. A background process reads these messages and performs the work on the other systems, retrying until it succeeds. A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS.
 
-A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS.
+Essentially, instead of trying to synchronously write to many systems, we instead write to just one system atomically, allowing other writes to happen asynchronously.
 
-If the
-
-TODO: Create a page for a "Publisher" background process? Pair with a Completer or a Publisher?
-
-Pair with [Callbacks]({% link _failure-patterns/callbacks.md %}) to notify clients of success/failure on completion.
+Can be paired with [Callbacks]({% link _failure-patterns/callback.md %}) to notify clients of the result (e.g. success/failure) on completion.
 
 ## See also
 

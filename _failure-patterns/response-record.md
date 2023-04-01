@@ -24,4 +24,6 @@ How do we return the same response, even when the underlying state changes?
 
 ## Solution
 
-Record the response before sending it to the client. On subsequent retries, return this response. This could be indexed by an idempotency key.
+Before sending a response to the client, write it to a database. This could be indexed by an [idempotency key]({% link _failure-patterns/idempotency-key.md %}). When handling a request, first check whether a response record exists for this request. If it does, simply return that response.
+
+This is a special case of a [recovery point]({% link _failure-patterns/recovery-point.md %}).

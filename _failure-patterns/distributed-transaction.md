@@ -6,7 +6,13 @@ group: multiple-systems
 tagline: Write to multiple systems transactionally
 related:
   - atomic-transaction
+incomplete: true
 ---
+
+{% include callout.html
+  type="warning"
+  content="I have never used this pattern in practice."
+%}
 
 ## Context
 
@@ -24,8 +30,10 @@ TODO:
 
 ## Problem
 
-How do we achieve transactionality across all systems, such that either all operations succeed or (eventually) get rolled back?
+How do we achieve transactionality across all systems, such that all operations either succeed or (eventually) get rolled back?
 
 ## Solution
 
 TODO: Sagas, compensating actions, 2-phase commit, blah blah blah
+
+TODO: link to other articles

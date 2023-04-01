@@ -1,7 +1,7 @@
 ---
 layout: pattern
-title: Callbacks
-short: callbacks
+title: Callback
+short: callback
 group: api-design
 tagline: Inform clients about the results of asynchronous operations
 sort_key: 3

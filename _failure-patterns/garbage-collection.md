@@ -4,6 +4,7 @@ title: Garbage collection
 short: garbage-collection
 group: background-processes
 tagline: Find and delete unused data
+incomplete: true
 ---
 
 TODO:
@@ -14,19 +15,25 @@ Some of these patterns can produce a lot of data which will never be used.
 
 ## Examples
 
-{% assign idempotency_key = site.failure-patterns | where: 'short', 'idempotency-key' %}
-{% assign post_operation_record = site.failure-patterns | where: 'short', 'recovery-point' %}
-{% assign store_then_reference = site.failure-patterns | where: 'short', 'store-then-reference' %}
-
-[Idempotency keys]({{ idempotency_key.url }}) can expire, [checkpoints]({{ recovery-point.url }}) might be redundant after operations complete, and [unreferenced data]({{ store-then-reference.url }}) can build up with enough failures.
+[Idempotency keys]({% link _failure-patterns/idempotency-key.md %}) can expire, [recovery points]({% link _failure-patterns/recovery-point.md %}) might be redundant after operations complete, and [unreferenced data]({% link _failure-patterns/store-then-reference.md %}) can build up with enough failures.
 
 ## Problem
 
 TODO:
 
+How do we prevent the indefinite storage of unused data? (naah)
+
+How do we dispose of unnecessary data? (no good: suggests a solution)
+
 ## Solution
 
 TODO:
+
+Run period garbage collection.
+
+- identify which records are no longer needed
+- delete them
+- consider batching, or performing frequently enough that the operation doesn't overload the database
 
 ## Alternatives
 

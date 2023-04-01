@@ -30,7 +30,7 @@ How do we prevent dangling references if writing the data fails?
 
 First store the data, then store the reference. Any updates to this data should be written separately, rather than overwriting the original, in an [append-only](https://en.wikipedia.org/wiki/Append-only) manner.
 
-This can be thought of similarly to [Multiversion Concurrency Control (MVCC)](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) in databases.
+This is similar to [Multiversion Concurrency Control (MVCC)](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) in databases, where instead of updating a row in place, a new version is written along with the associated transaction ID. This new version will not be read until that transaction ID is marked as committed.
 
 This operation is naturally [resumable]({% link _failure-patterns/resumable-operation.md %}). [Garbage collection]({% link _failure-patterns/garbage-collection.md %}) can be used to clean up stale, unreferenced data.
 

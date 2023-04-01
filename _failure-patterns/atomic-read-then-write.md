@@ -32,10 +32,10 @@ How do we prevent problems caused by concurrent read-then-writes?
 Do the read-then-write operation [atomically](https://en.wikipedia.org/wiki/Linearizability). There are various techniques available, including:
 
 1. **Using atomic ([linear](https://en.wikipedia.org/wiki/Linearizability)) database operations**, such as the following for PostgreSQL. Check your database documentation for equivalents and atomicity guarantees.
-    1. `ON CONFLICT DO NOTHING` for unique atomic inserts and `ON CONFLICT DO UPDATE` for atomic upserts. Use a unique ID associated with the request. This could be a client-supplied ID for the resource, but often this isn’t desirable so an idempotency key could be used instead. Insert this ID into a unique column in the same table as the resource data. No duplicate records will be created, and the operation will succeed when retried.
+    1. `ON CONFLICT DO NOTHING` for unique atomic inserts and `ON CONFLICT DO UPDATE` for atomic upserts. Use a unique ID associated with the request. This could be a client-supplied ID for the resource, but often this isn’t desirable so an [idempotency key]({% link _failure-patterns/idempotency-key.md %}) could be used instead. Insert this ID into a unique column in the same table as the resource data. No duplicate records will be created, and the operation will succeed when retried.
     2. `UPDATE table SET balance = balance + $1` for atomic updates based on current state.
-2. **Using locks** to prevent concurrent operations on the same data. There are many forms of locking, including `SELECT FOR UPDATE` in SQL to lock a row for later updating. More coarse-grained locks can also be used, e.g. an Idempotency key lock around the whole operation.
-3. **Using high [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels)** to prevent [phenomena](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#the-zoo-of-transaction-phenomena) such as the lost update described above. However, be aware that some levels might also cause increased transaction failures.
+2. **Using locks** to prevent concurrent operations on the same data. There are many forms of locking, including `SELECT FOR UPDATE` in SQL to lock a row for later updating. More coarse-grained locks can also be used, e.g. an [idempotency key lock]({% link _failure-patterns/idempotency-key-lock.md %}) around the whole operation.
+3. **Using strict [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels)** to prevent [phenomena](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#the-zoo-of-transaction-phenomena) such as the lost update described above. However, be aware that some levels might also cause increased transaction failures.
 
 Read-then-write isn’t the only problematic access pattern to watch out for. See [The Zoo of Transaction Phenomena](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#the-zoo-of-transaction-phenomena) for more.
 
@@ -48,4 +48,4 @@ Read-then-write isn’t the only problematic access pattern to watch out for. Se
 - [Practical Guide to SQL Transaction Isolation](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html)
 - [Transaction isolation in PostgreSQL]({% post_url 2022-01-11-postgres-isolation-levels %})
 - [PostgreSQL anti-patterns: read-modify-write cycles](https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/)
-  - Seems to have disappeared since EDB acquired 2ndQuadrant, so here’s [an archive](https://web.archive.org/web/20220827020902/https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/).
+- [The Zoo of Transaction Phenomena](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#the-zoo-of-transaction-phenomena)
