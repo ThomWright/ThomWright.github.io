@@ -7,8 +7,8 @@ kramdown:
 permalink: pretty
 
 title: Thom Wright
-tagline: Personal blog and website
-description: Thom's blog and personal website
+tagline: Thom's blog
+description: Thom's blog
 
 url: https://thomwright.co.uk
 shorturl: thomwright.co.uk
