@@ -57,9 +57,15 @@ Introducing a quote:
 > A block quote
 
 {% include figure.html
-  img_src="/public/assets/one-second/tcp-keepalive-race.png"
-  caption="A small image with a caption"
+  img_src="/public/assets/one-second/tcp-race.png"
+  caption="A small-width image with a caption"
   size="small"
+%}
+
+{% include figure.html
+  img_src="/public/assets/one-second/tcp-handshake.png"
+  caption="A medium-width image with a caption"
+  size="med"
 %}
 
 {% assign types = "aside success info warning alert" | split: " " %}
