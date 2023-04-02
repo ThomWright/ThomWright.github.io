@@ -62,21 +62,70 @@ I think this is borne out in the many superb Rust projects and libraries we see 
 
 Note that I haven't mentioned anything about performance or (lack of) garbage collection. These are important aspects of the language for sure, but they're not why I use it. I love that I get something that is fast and uses low CPU and memory without having to really think about it, but that's just a bonus.
 
-For some reason I kind of like not having a garbage collector. It makes loads of sense to use one for high-level languages, but somehow I don't miss it. After a year of using Rust full time, I don't think I've experienced any project being delayed by complexities introduced from lack of garbage collection. Perhaps I'm biased and I just don't see how much longer everything takes, but I don't feel any slower than I was with other languages.
+There's a good argument to be made for "letting the computer do the work" of managing memory, much like type checking, both in terms of reducing cognitive load and preventing mistakes. I certainly wouldn't want to do it manually without a computer checking if I've done it correctly. With the help of the compiler, and after developing a *good enough* mental model of how to structure code, any additional cognitive load feels like a small price to pay.
+
+In fact, for some reason I quite like not having a garbage collector. It makes loads of sense to use one for high-level languages, but I don't find myself missing it. After a year of using Rust full time, I don't think I've experienced any project being delayed by complexities introduced by lack of garbage collection. Perhaps I'm biased and I just don't see how much longer everything takes, but I don't feel any slower than I was with other languages.
+
+Admittedly, writing `.clone()` a lot gets a bit tiresome, but it's almost mechanical at this point. I find people (myself included) can have a strange aversion to boxing, even in application code where it makes no difference. I do occasionally think "how can I avoid boxing this?" before remembering that it doesn't matter.
+
+For me, development is not a sprint. I prefer to work at a sustainable pace, avoid frustrations, and be encouraged to think where it matters. Rust gives me most of what I want here.
 
 ### What are the problems?
 
 Of course, not everything is perfect and it's not a language for everyone. I'll do my best to offer a perspective on what isn't so good.
 
-The common perception is that Rust is **hard**. I find application development is rarely more challenging than other high-level languages. My experience though is that Rust libraries tend to drop down to the [low-level register](https://without.boats/blog/patterns-and-abstractions/) more often than in other languages, and this is where it gets tricky.
-
-Writing [`Future`s](https://doc.rust-lang.org/std/future/trait.Future.html) by hand for example: implementing `poll()` requires a different mindset and approach. Building a firm mental model of `Pin` can feel quite mind-bending. Sure, many libraries won't require this of you, but if you want to contribute to something like [`tower`](https://docs.rs/tower/latest/tower/) then it can be fairly daunting. It can feel limiting not having someone in your team or company who really groks this stuff.
-
-It can **take time to learn**. There are many concepts which might be unfamiliar, including memory management, lifetimes, ownership, borrowing, references and perhaps multithreaded concurrency if you're coming from JavaScript. The stack and heap are more front and centre than I've experienced in other high-level languages. These things all affect the experience of using the language. Personally, I like this, I think it’s made me a better engineer. There was an up-front cost, but this was an investment. It doesn’t hinder me day-to-day other than a few clones here or there.
-
-**Compile times**. Yeah, it can be a bit slow. Feedback cycles can feel a bit too long, both waiting for `cargo check` to finish and for tests to compile. Honestly, I don’t find this to be a big problem, the trade-off is worth it for me, but it might bother you. This is perhaps a false dichotomy, but I would much prefer to have a slow compiler than a slow test suite.
+First, **slow compile times**. Feedback cycles can feel a bit too long, both waiting for `cargo check` to finish and for tests to compile. Honestly, I don’t find this to be a big problem, the trade-off is worth it for me, but it might bother you.
 
 There are still some **rough edges**, e.g. `async fn`s in traits. This particular example is fairly trivial to work around in application code using [`async-trait`](https://crates.io/crates/async-trait), but I'm sure there are others I can't think of right now. Perhaps I've just got used to them.
+
+The big one: the common perception is that **Rust is hard**. This is fair, though I would prefer to express it as having **a steep learning curve**. The former makes it seem accessible to only a few, while the latter suggests anyone can learn it with some effort.
+
+There are many concepts which will be unfamiliar to many. The memory management which involves thinking about lifetimes, ownership, borrowing, references, the stack and the heap. If you're coming from JavaScript then multithreaded concurrency might be new. Even in other languages, we often work in thread-per-request contexts. The async model is novel (or it was to me, coming from JavaScript) and can take some getting used to.
+
+As a specific example, imagine someone coming from a language like Java who wants to [return a trait](https://doc.rust-lang.org/rust-by-example/trait/dyn.html) instead of a concrete type. They might reasonably get frustrated when writing something like this:
+
+```rust
+pub trait SomeInterface {}
+pub struct ConcreteImpl {}
+impl SomeInterface for ConcreteImpl {}
+
+pub fn example() -> SomeInterface {
+    ConcreteImpl {}
+}
+```
+
+Only for it not to compile:
+
+```text
+error[E0782]: trait objects must include the `dyn` keyword
+ --> src/example.rs:7:21
+  |
+7 | pub fn example() -> SomeInterface {
+  |                     ^^^^^^^^^^^^^
+  |
+help: add `dyn` keyword before this trait
+  |
+7 | pub fn example() -> dyn SomeInterface {
+  |                     +++
+
+For more information about this error, try `rustc --explain E0782`.
+```
+
+So they do what the compiler says and get another error. This time using `impl SomeInterface` is suggested, which compiles. But then they try to return another implementation as well, and get yet another error. Returning `Box<dyn SomeInterface>` finally fixes it.
+
+Again, the compiler is *excellent*. It shows the problem, offers a solution, and links to relevant material to understand what's going on. Running `rustc --explain E0746` (suggested after the second error) is especially helpful. But it doesn't hide the fact that the programmer needs to understand:
+
+- [The stack and the heap](https://doc.rust-lang.org/stable/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap), and that data on the stack must have a known size.
+- What [trait](https://doc.rust-lang.org/reference/types/trait-object.html) [objects](https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types) are.
+- Possibly what [object safety](https://doc.rust-lang.org/reference/items/traits.html#object-safety) is.
+- The [`impl Trait`](https://doc.rust-lang.org/book/ch10-02-traits.html#returning-types-that-implement-traits) syntax.
+- What [dynamic dispatch](https://doc.rust-lang.org/book/ch17-02-trait-objects.html#trait-objects-perform-dynamic-dispatch) is.
+
+Requiring this much understanding really affects the initial experience of using the language. Personally, I enjoyed the experience of the compiler teaching me as I went. I think it’s made me a better engineer. There was an up-front cost which I see as an investment. But not everyone will see it this way.
+
+I'd say after investing time in learning the language, I've found application development to rarely be more challenging than other high-level languages. My experience though is that Rust libraries tend to drop down to the [low-level register](https://without.boats/blog/patterns-and-abstractions/) more often than in other languages, and this is where it gets tricky.
+
+Writing [`Future`s](https://doc.rust-lang.org/std/future/trait.Future.html) by hand for example: implementing `poll()` requires a different mindset and approach. I still don't feel like I have a firm mental model of `Pin`. Sure, many libraries won't require this of you, but many foundational libraries (such as [`tower`](https://docs.rs/tower/latest/tower/)) can seem daunting if you're not comfortable with these concepts. It can feel limiting not having someone in your team or company who really groks this stuff.
 
 ### When not to use Rust
 
@@ -87,6 +136,10 @@ If you just want to stand up a quick full stack CRUD app, Rust probably isn’t 
 If your team doesn’t know Rust, and isn’t interested in learning, then Rust surely isn’t the best choice. This might be the most important reason not to adopt Rust. Success really does rely on social cohesion and buy-in.
 
 If your company is heavily invested in other languages, then I would be wary to introduce Rust unless there is a particularly compelling reason to do so. I'm not saying it can’t work, but maintaining multiple ecosystems can, well, multiply cost and effort.
+
+> The right tool for the job is often the tool you are already using -- adding new tools has a higher cost than many people appreciate.
+>
+> -- [John Carmack](https://twitter.com/ID_AA_Carmack/status/989951283900514304?s=20)
 
 ## Conclusion
 
