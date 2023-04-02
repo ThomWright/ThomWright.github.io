@@ -58,7 +58,7 @@ $languages: (
         @include horizontal-padding(1em);
         @include vertical-padding(0.5em);
 
-        background-color: $base-highlight;
+        background-color: $gray-light;
         border-top-left-radius: $base-border-radius;
 
         font-family: $mono-font-family;
