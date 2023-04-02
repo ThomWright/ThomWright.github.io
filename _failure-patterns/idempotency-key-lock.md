@@ -59,10 +59,10 @@ TODO:
 
 ## Problem
 
-How do we prevent concurrent retries from …
-    - How do we reduce the amount of duplicate work?
-    - How do we avoid problems with atomic read-then-write?
-    - How do ensure guarantees without atomic check-then-set?
+- How do we prevent concurrent retries from …
+- How do we reduce the amount of duplicate work?
+- How do we avoid problems with atomic read-then-write?
+- How do ensure guarantees without atomic check-then-set?
 
 ## Solution
 

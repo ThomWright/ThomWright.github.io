@@ -8,11 +8,15 @@ permalink: pretty
 
 title: Thom Wright
 tagline: Thom's blog
-description: Thom's blog
+description: Writing about software engineering
 
 url: https://thomwright.co.uk
 shorturl: thomwright.co.uk
 baseurl: ""
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-redirect-from
 
 author:
   name: Thom Wright
@@ -30,8 +34,24 @@ collections:
   failure-patterns:
     output: true
 
-  draft:
+  # For publishing drafts
+  wip:
     output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "wip"
+    values:
+      public: false
+      sitemap: false
+  - scope:
+      path: ""
+      type: "failure-patterns"
+    values:
+      layout: "pattern"
+      # TODO: failure patterns
+      sitemap: false
 
 exclude:
 - _config.yml
@@ -43,4 +63,5 @@ exclude:
 - Gemfile.lock
 - provision
 - README.md
+- tmp
 - Vagrantfile
