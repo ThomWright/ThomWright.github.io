@@ -1,14 +1,10 @@
 /*
   Articles
  */
+
 article {
 
   @include card;
-
-  a {
-    text-decoration: underline;
-    text-decoration-thickness: 5%;
-  }
 
   .article-content ul li {
     list-style-type: disc;
@@ -18,13 +14,6 @@ article {
     padding-top: 1em;
     font-style: italic;
     color: $gray-mid;
-  }
-
-  .tagline {
-    @include vertical-margin(1em);
-
-    font-size: smaller;
-    font-style: italic;
   }
 
   img {
