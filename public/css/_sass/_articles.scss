@@ -5,6 +5,11 @@ article {
 
   @include card;
 
+  a {
+    text-decoration: underline;
+    text-decoration-thickness: 5%;
+  }
+
   .article-content ul li {
     list-style-type: disc;
   }
