@@ -131,9 +131,10 @@ figure {
     min-width: 0;
   }
 }
+
 figcaption {
   font-size: 15px;
-  padding-top: 1em;
+  padding-top: $small-spacing;
   flex-basis: 100%;
   font-style: italic;
 }

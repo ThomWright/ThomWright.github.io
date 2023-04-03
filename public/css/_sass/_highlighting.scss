@@ -42,6 +42,9 @@ $languages: (
   json: "JSON",
   bash: "Bash",
   coffeescript: "CoffeeScript",
+  sql: "SQL",
+  postgresql: "PostgreSQL",
+  postgres: "PostgreSQL",
 );
 
 @each $lang, $name in $languages {
