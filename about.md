@@ -8,7 +8,7 @@ order: 1
 
 I'm Thom, a software engineer in Bristol, UK. I've worked in full stack web development since 2012.
 
-Nowadays I mostly focus designing and implementing reliable, observable and well-documented backend systems. Currently I'm especially enjoying doing so using [Rust](https://www.rust-lang.org/).
+Nowadays I mostly focus on designing and implementing reliable, observable and well-documented backend systems. Currently I'm especially enjoying doing so using [Rust](https://www.rust-lang.org/).
 
 I write to learn and to teach. Often this writing is a way for me to organise my thoughts and try to make sense of things, hopefully in a way that's useful to others.
 
