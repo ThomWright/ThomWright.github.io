@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Pagination
+tags: [reliability, databases]
 ---
 
 A common cause of incidents I see is lack of pagination. Or, more precisely, APIs returning an unbounded number of items. Really it's the lack of a limit which is the problem, which I think is an important distinction. When returning multiple items, pagination is optional but limits are arguably not.
@@ -11,9 +12,14 @@ I've seen several variations on the root cause, including:
 2. The dataset was expected to remain small, possibly a fixed size. This assumption was invalid.
 3. The dataset was expected to grow, but pagination was considered unnecessary, too much effort or too complex to do at the time. [YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it) was invoked, along with "we'll add it when we need it". No observability or alerting on numbers of items being returned was implemented.
 
-I'm still not sure what to do about 1, but 2 and 3 are eminently fixable with a combination of limits and observability.
+I'm still not sure what to do about 1 (except talking about it a lot), but 2 and 3 are eminently fixable with a combination of limits and observability.
 
 With that in mind, here's a quick primer on how I approach pagination (or lack of it). I won't give a complete overview of pagination methods, or how to design APIs around them, but I'll introduce the two most popular approaches and how to avoid some common pitfalls.
+
+{% include callout.html
+    type="aside"
+    content="At some point I will paginate the posts on this blog. But not today."
+%}
 
 ## How to not paginate
 
@@ -68,8 +74,7 @@ If you're paging through a dataset, you need an ordering. Ideally a [strict tota
 In practice, using unique IDs is helpful here. Imagine sorting by a `created_at` timestamp. These are generally not unique, two items can be created at the same time. We can disambiguate using a unique ID as a tie-breaker, like so:
 
 ```sql
-ORDER BY created_at DESC
-       , id DESC
+ORDER BY created_at DESC, id DESC
 ```
 
 {% include callout.html
@@ -100,7 +105,7 @@ One approach to pagination is using offsets. An offset is a number of rows to sk
   size="small"
 %}
 
-The offset is 0-based, and we calculate it from a 1-based page number like so: `page_size * (page_num - 1)`. If we want to load the most recent items first, our SQL query would look like this:
+The offset is 0-based, and we calculate it from a 1-based page number like so: `page_size * (page_num - 1)`. If we want to request the second page, most recent items first, our SQL query would look like this:
 
 ```sql
 SELECT * FROM items
@@ -143,23 +148,12 @@ We use the identity of an item on a page boundary to place our cursor. If we wan
   size="small"
 %}
 
-Going back to our JSON example,
-
-```json
-[
-  {"id": "7ba8", "created_at": "2020-03-01"},
-  {"id": "9c67", "created_at": "2020-02-01"},
-  {"id": "4b98", "created_at": "2020-02-01"},
-  {"id": "7f39", "created_at": "2020-01-01"}
-]
-```
-
-We would write the query to fetch page two like this:
+Going back to our JSON example, we would write the query to fetch page two like this:
 
 ```sql
 SELECT * FROM items
 
--- PostgreSQL syntax for anonymous records
+-- PostgreSQL syntax
 WHERE (created_at, id) < ('2020-02-01', '9c67')
 
 ORDER BY created_at DESC, id DESC
@@ -191,6 +185,6 @@ A high-level overview of the two approaches:
 ## Further reading
 
 - [Five ways to paginate with Postgres](https://www.citusdata.com/blog/2016/03/30/five-ways-to-paginate/)
-- [Use the index, Luke - Paging through results](https://use-the-index-luke.com/sql/partial-results/fetch-next-page)
+- [Use the index, Luke – Paging through results](https://use-the-index-luke.com/sql/partial-results/fetch-next-page)
 - [Evolving API pagination at Slack](https://slack.engineering/evolving-api-pagination-at-slack/)
 - [Pagination with PostgreSQL (for different data set sizes)](https://medium.com/@gdr2409/pagination-with-postgresql-18e0b89e0b1c)
