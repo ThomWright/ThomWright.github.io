@@ -1,6 +1,9 @@
 ---
 layout: post
 title: How many chairs do I need?
+tags:
+  - microservices
+  - reliability
 ---
 
 <!-- markdownlint-disable MD036 MD033 -->

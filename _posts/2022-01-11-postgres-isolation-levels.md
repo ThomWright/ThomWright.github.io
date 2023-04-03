@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Transaction isolation in PostgreSQL
+tags: [databases, postgresql]
 ---
 
 I often forget how different isolation levels affect queries in PostgreSQL, so I wrote a quick overview to remind myself. It won't include all the details but is hopefully accurate enough in what it does say!

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Choosing appropriate data structures
+tags: types
 ---
 
 > "Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won't usually need your flowchart; it'll be obvious."

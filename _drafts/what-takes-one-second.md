@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'What takes one second?'
+tags: tcp
 ---
 
 <!-- markdownlint-disable MD036 MD033 -->

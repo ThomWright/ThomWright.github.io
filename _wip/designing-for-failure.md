@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'Designing for failure: Introduction'
+tags: [reliability, microservices]
 redirect_from:
   - /draft/designing-for-failure-patterns
 ---

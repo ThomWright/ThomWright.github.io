@@ -5,9 +5,15 @@
   {% for post in posts %}
   <li>
     <a href="{{ post.url }}">
+      <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span>
       {{ post.title }}
-      <span class="date">{{ post.date | date_to_string }}</span>
     </a>
+    {% if post.tags and post.tags.size != 0 %}
+    {{/* <br> */}}
+    <span class="tags">
+      <ul>{% for tag in post.tags %}<li>{{ tag }}</li>{% unless forloop.last %} &middot; {% endunless %}{% endfor %}</ul>
+    </span>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>

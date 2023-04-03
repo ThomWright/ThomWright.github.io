@@ -1,6 +1,7 @@
 ---
 layout: post
 title: TCP state transitions are a lie
+tags: tcp
 ---
 
 Everyone seems to be participating in some weird lie about the LISTEN > SYN-RECEIVED state transition in TCP. I feel very left out and I wish someone would tell me what is going on.

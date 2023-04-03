@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Decomposition in microservice architectures
+tags: microservices
 ---
 
 This article is an adaptation of some advice I've written over the years about designing microservice architectures. There isn't much novel advice here, it's mainly just existing ideas rehashed in my own words. It's largely based on real-world problems I've encountered or discussed, but I don't claim to be an expert. This is an attempt to get some ideas out of my head and written down to more easily share and discuss them. The intended audience was full-stack Node.js engineers with varying amounts of experience.

@@ -2,6 +2,7 @@
 layout: post
 title: Validating configuration with io-ts
 canonical: https://candide.com/GB/stories/70d34740-5130-4b1a-8971-ef60082036ba
+tags: [microservices, reliability, types]
 ---
 
 Something I wrote at Candide about how we ensured our services didn't get deployed with invalid configuration.

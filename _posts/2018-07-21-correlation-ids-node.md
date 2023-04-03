@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Correlation IDs in Node.js
+tags: [microservices, reliability, observability]
 ---
 
 Much has already been written about the need for correlation IDs in microservice architectures. If this is a new concept for you, I encourage you to read [_Building Microservices_](https://shop.oreilly.com/product/0636920033158.do) by Sam Newman. Or if you want a quick intro, try [this blog post](https://hilton.org.uk/blog/microservices-correlation-id).
@@ -8,8 +9,8 @@ Much has already been written about the need for correlation IDs in microservice
 There are three ways I know of to pass a correlation ID around a Node.js application:
 
 1. continuation-local storage
-1. async hooks
-1. function arguments
+2. async hooks
+3. function arguments
 
 [Continuation-local storage](https://github.com/othiym23/node-continuation-local-storage) is what [New Relic](https://github.com/newrelic/node-newrelic) used for their instrumentation library, before apparently abandoning it for performance reasons. It's pretty magic, and relies on "extensively monkeypatching the core platform" ([quote](https://github.com/othiym23/node-continuation-local-storage/issues/33#issuecomment-288260932)).
 

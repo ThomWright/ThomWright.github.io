@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Auto-scaling: positive feedback loops"
+tags: [microservices, reliability, queues]
 ---
 
 <!-- markdownlint-disable MD033 -->

@@ -1,0 +1,14 @@
+
+.tags {
+  margin: $small-spacing;
+  font-size: small;
+  color: $gray-mid;
+  ul {
+    padding: 0;
+    display: inline;
+  }
+  li {
+    display: inline;
+    list-style: none;
+  }
+}
