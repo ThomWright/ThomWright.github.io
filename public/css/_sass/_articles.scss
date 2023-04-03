@@ -22,6 +22,30 @@ article {
 
   max-width: $max-content-width;
 
+  table {
+    @mixin table-border($side) {
+      border-#{$side}-width: 1px;
+      border-#{$side}-style: solid;
+      border-#{$side}-color: $gray-light;
+    }
+
+    width: 100%;
+    margin-bottom: $small-spacing;
+
+    border-spacing: 0;
+
+    @include table-border(bottom);
+
+    th, td {
+      border-width: 0px;
+      padding: 0.5em;
+    }
+    th {
+      @include table-border(top);
+      @include table-border(bottom);
+    }
+  }
+
   aside {
     display: flex;
 
