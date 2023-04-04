@@ -4,14 +4,11 @@ title: Garbage collection
 short: garbage-collection
 group: background-processes
 tagline: Find and delete unused data
-incomplete: true
 ---
-
-TODO:
 
 ## Context
 
-Some of these patterns can produce a lot of data which will never be used.
+Some of these patterns can produce a lot of garbage data which will never be used.
 
 ## Examples
 
@@ -19,22 +16,17 @@ Some of these patterns can produce a lot of data which will never be used.
 
 ## Problem
 
-TODO:
-
-How do we prevent the indefinite storage of unused data? (naah)
-
-How do we dispose of unnecessary data? (no good: suggests a solution)
+How do we limit the amount of garbage data stored?
 
 ## Solution
 
-TODO:
+Run a periodic garbage collection process. The process can be scheduled to run as a cron job. It will need to:
 
-Run period garbage collection.
+1. Identify which records are no longer needed.
+2. Delete these records.
 
-- identify which records are no longer needed
-- delete them
-- consider batching, or performing frequently enough that the operation doesn't overload the database
+It can be worth considering performing this process in fixed-size batches so the operation doesn't overload the database, and running frequently enough that the amount of garbage doesn't grow faster than it can be collected.
 
 ## Alternatives
 
-TODO: For some use cases, putting the data in a cache with a TTL can work.
+In some cases it is possible to put the data in a cache with a TTL. If the data is intended to be temporary then this can work well.

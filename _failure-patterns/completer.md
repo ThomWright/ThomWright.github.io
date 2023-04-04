@@ -8,38 +8,43 @@ related:
   - transactional-outbox
   - recovery-point
   - resumable-operation
-incomplete: true
 ---
-
-TODO:
-
-From [https://brandur.org/idempotency-keys](https://brandur.org/idempotency-keys)
-
-- a helping hand with Resumable operations
-- store request in event log before processing
-- clients might give up retrying and leave unfinished operations lying around
-- the completer finds these and drives them to completion
 
 ## Context
 
-TODO:
+Operations can fail part way through. Clients can retry, but might give up before driving the operation to completion.
 
 ## Prerequisites
 
-TODO: recovery points?
+The operation is [resumable]({% link _failure-patterns/resumable-operation.md %}) and [recovery points]({% link _failure-patterns/recovery-point.md %}) are used.
+
+It is acceptable for the operation to happen asynchronously.
 
 ## Example
 
-TODO:
+Making a payment on an e-commerce system. At a high level, the operation might look like this:
+
+1. Save order details.
+2. Take payment.
+3. Start fulfilment process.
+
+Taking a payment but never starting the fulfilment process would result in some unhappy customers.
 
 ## Problem
 
-TODO:
+How do we ensure that important multi-step operations are always completed?
 
 ## Solution
 
-TODO:
+Run a background completer process. It should:
+
+1. Find recovery points which are incomplete, and have not been updated recently.
+2. Resume the operation. Either by running the operation itself, or by requesting the application process to do it.
 
 ## Also known as
 
 - [Active recovery](https://www.lpalmieri.com/posts/idempotency/#10-3-forward-recovery)
+
+## See also
+
+- [The completer](https://brandur.org/idempotency-keys)

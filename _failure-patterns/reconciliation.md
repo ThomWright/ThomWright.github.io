@@ -23,9 +23,9 @@ How do we detect and fix inconsistencies between disparate systems?
 
 Compare state between the two systems. There will be three outcomes for any inconsistency found:
 
-- Pending -- the system has not had long enough to become consistent. Wait and do nothing.
-- Resolvable -- the reconciliation system can automatically resolve the inconsistency. Apply the change.
-- Unresolvable -- the inconsistency needs manual intervention. Raise an alert.
+- Pending&nbsp;– the system has not had long enough to become consistent. Wait and do nothing.
+- Resolvable&nbsp;– the reconciliation system can automatically resolve the inconsistency. Apply the change.
+- Unresolvable&nbsp;– the inconsistency needs manual intervention. Raise an alert.
 
 TODO:
 

@@ -17,8 +17,7 @@ related:
 
 ## Context
 
-When implementing a [Resumable operation]({% link _failure-patterns/resumable-operation.md %}
-), it can be desirable to minimise rework, either because the operations are expensive or might produce repeated side effects. In which case we would want to perform each sub-operation at least once, while minimising the frequency of any happening more than once.
+When implementing a [Resumable operation]({% link _failure-patterns/resumable-operation.md %}), it can be desirable to minimise rework, either because the operations are expensive or might produce repeated side effects. In which case we would want to perform each sub-operation at least once, while minimising the frequency of any happening more than once.
 
 ## Prerequisites
 
