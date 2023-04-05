@@ -169,6 +169,11 @@ figcaption {
   }
 
   .date {
-    color: $gray-mid;
+    color: $base-font-color-lighter;
   }
+}
+
+.breadcrumb {
+  font-style: italic;
+  color: $base-font-color-lighter;
 }
