@@ -38,7 +38,7 @@ Model the operation as a state machine. Write a record to a database after succe
 
 When handling a request, start by fetching the latest recovery point associated with the operation, and continue from that point.
 
-For the example above, we might have three states: `OrderReceived`, `PaymentSuccess` and `OrderFinished` (ignoring error cases, which I realise goes against the narrative of this whole post), and the steps would be:
+For the example above, we might have three states: `OrderReceived`, `PaymentSuccess` and `OrderFinished` (ignoring error cases, which I realise goes against the narrative of this whole thing), and the steps would be:
 
 1. Transaction:
     - Insert recovery point - state: `OrderReceived`
@@ -53,15 +53,9 @@ For the example above, we might have three states: `OrderReceived`, `PaymentSucc
 
 Steps 3-5 could be consolidated into a single step using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
 
-This operation might leave the system in an inconsistent state if e.g. the process crashes while taking the payment, and the client stops retrying. Pair with a [Completer]({% link _failure-patterns/completer.md %}) or [Reconciliation system]({% link _failure-patterns/reconciliation.md %}) to handle this.
+Relying on the client to retry is a kind of **passive recovery**. This might leave the system in an inconsistent state if e.g. the process crashes while taking the payment and the client stops retrying. In which case we might want to consider **active recovery** using a [completer]({% link _failure-patterns/completer.md %}).
 
-{% capture recovery_note %}
-This pattern covers **forwards recovery**. For **backwards recovery** see [saga]({% link _failure-patterns/saga.md %}).
-{% endcapture %}
-{% include callout.html
-  type="info"
-  content=recovery_note
-%}
+This pattern has focused on **forwards recovery**: attempting to successfully complete the operation. An alternative is **backwards recovery**: attempting to roll back. See [saga]({% link _failure-patterns/saga.md %}) for more information about backwards recovery.
 
 ## Also known as
 

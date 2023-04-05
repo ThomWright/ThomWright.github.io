@@ -87,9 +87,13 @@ We can use the following constraints to help us understand which patterns are ap
 
 For the previous example, we could say: the operation *cannot* be atomic, *must* be idempotent and eventually consistent, and *can* be asynchronous.
 
-## Patterns
+## Why patterns?
 
-See the [patterns]({% link failure-patterns.md %}) for more.
+There are lots of problems to solve when designing distributed applications, and many competing solutions to these problems. When faced with a particular problem, it can be difficult to remember all the options along with their pros and cons, and difficult to succinctly communicate them to others.
+
+I find patterns helpful in this regard. I like being able to quickly read through possible solutions and narrow down the options. I often get a better understanding the problem I'm trying to solve by doing so, and sometimes realise there are other problems I hadn't considered. Being able to share links with my team and build a shared language makes designing systems together quicker and easier.
+
+You can find all the [patterns listed here]({% link failure-patterns.md %}).
 
 ## Further reading
 
