@@ -6,6 +6,7 @@ group: multiple-systems
 tagline: Write to multiple systems transactionally
 related:
   - atomic-transaction
+  - saga
 incomplete: true
 ---
 
@@ -22,7 +23,7 @@ Some operations need to write to two or more transactional systems.
 
 Eventual consistency is acceptable.
 
-It is worth the complexity.
+It is worth introducing significant complexity.
 
 ## Example
 

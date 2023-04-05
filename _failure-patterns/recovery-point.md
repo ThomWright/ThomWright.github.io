@@ -6,6 +6,7 @@ group: multiple-systems
 tagline: Record current progress to allow recovery with minimal rework
 sort_key: 2
 related:
+  - saga
   - transactional-outbox
   - at-most-once-guard
   - store-then-reference
@@ -53,6 +54,14 @@ For the example above, we might have three states: `OrderReceived`, `PaymentSucc
 Steps 3-5 could be consolidated into a single step using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
 
 This operation might leave the system in an inconsistent state if e.g. the process crashes while taking the payment, and the client stops retrying. Pair with a [Completer]({% link _failure-patterns/completer.md %}) or [Reconciliation system]({% link _failure-patterns/reconciliation.md %}) to handle this.
+
+{% capture recovery_note %}
+This pattern covers **forwards recovery**. For **backwards recovery** see [saga]({% link _failure-patterns/saga.md %}).
+{% endcapture %}
+{% include callout.html
+  type="info"
+  content=recovery_note
+%}
 
 ## Also known as
 

@@ -108,3 +108,4 @@ See the [patterns]({% link failure-patterns.md %}) for more.
 - [An In-Depth Introduction To Idempotency](https://www.lpalmieri.com/posts/idempotency/)
 - [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
 - [Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency)
+- [Handling Failures From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)
