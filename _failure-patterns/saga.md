@@ -15,7 +15,7 @@ related:
 
 ## Context
 
-Some operations need to write to two or more transactional systems, and require the end result to be a complete success or complete failure. The operation terminating in partial success state (after writing to only a subset of the systems) is not acceptable, though this is an acceptable intermediate state.
+Some operations need to write to two or more transactional systems, and require the end result to be a complete success or complete failure. The operation terminating in a partial success state (having successfully written to only a subset of systems) is not acceptable, though this is an acceptable intermediate state.
 
 ## Prerequisites
 
@@ -41,9 +41,9 @@ These backwards transitions are known as **compensating actions**, and are effec
 
 For the travel booking example, we might have three states:
 
-1. Nothing booked (initial state, terminal state)
-2. Flight booked (intermediate state)
-3. Hotel booked (terminal state)
+1. Nothing booked (initial state, terminal state) - `∅`
+2. Flight booked (intermediate state) - `FB`
+3. Flight and hotel booked (terminal state) - `FB HB`
 
 And two forward operations: `book flight` and `book hotel`. If we end up in a state where we've booked the flight but cannot book the hotel (e.g. because it is full), then we need the backward operation: `cancel flight`.
 
