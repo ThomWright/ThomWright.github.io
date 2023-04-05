@@ -67,7 +67,6 @@ This pattern covers **forwards recovery**. For **backwards recovery** see [saga]
 
 - Checkpoint
 - [Passive recovery](https://www.lpalmieri.com/posts/idempotency/#10-3-forward-recovery)
-- Post-operation record
 
 ## See also
 
