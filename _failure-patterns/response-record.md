@@ -27,3 +27,7 @@ How do we return the same response, even when the underlying state changes?
 Before sending a response to the client, write it to a database. This could be indexed by an [idempotency key]({% link _failure-patterns/idempotency-key.md %}). When handling a request, first check whether a response record exists for this request. If it does, simply return that response.
 
 This is a special case of a [recovery point]({% link _failure-patterns/recovery-point.md %}).
+
+## See also
+
+- [Stripe: Idempotent Requests](https://stripe.com/docs/api/idempotent_requests)

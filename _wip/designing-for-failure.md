@@ -87,14 +87,6 @@ We can use the following constraints to help us understand which patterns are ap
 
 For the previous example, we could say: the operation *cannot* be atomic, *must* be idempotent and eventually consistent, and *can* be asynchronous.
 
-<!--
-*TODO:** consider [safety and liveness](https://en.wikipedia.org/wiki/Safety_and_liveness_properties)?
-
-**TODO:** consider whether rollbacks are required? Comes under the **Consistency** heading, I guess. Forward and backward recovery?
-
-**TODO:** something about visibility of partial (inconsistent) states?
--->
-
 ## Patterns
 
 See the [patterns]({% link failure-patterns.md %}) for more.
@@ -105,7 +97,5 @@ See the [patterns]({% link failure-patterns.md %}) for more.
 - [A pattern language for microservices](https://microservices.io/patterns/index.html)
 - [Messaging Patterns](https://www.enterpriseintegrationpatterns.com/)
 - [The Seven Most Classic Patterns for Distributed Transactions](https://medium.com/@dongfuye/the-seven-most-classic-solutions-for-distributed-transaction-management-3f915f331e15)
-- [An In-Depth Introduction To Idempotency](https://www.lpalmieri.com/posts/idempotency/)
-- [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
-- [Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency)
 - [Handling Failures From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)
+- [[Book] Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)

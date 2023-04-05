@@ -10,6 +10,7 @@ related:
   - recovery-point
   - store-then-reference
   - completer
+  - idempotency-key
 ---
 
 ## Context

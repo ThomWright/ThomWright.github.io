@@ -27,3 +27,10 @@ How do we determine whether two requests have the same identity?
 ## Solution
 
 Require clients send a unique value, called an idempotency key, along with the request. This same value is should be sent with any retries, so the server can identify which requests are the same. Store this value in the database. If the value already exists, the request is a retry.
+
+## See also
+
+- [Stripe: Designing robust and predictable APIs with idempotency](https://stripe.com/blog/idempotency)
+- [Stripe API: Idempotent Requests](https://stripe.com/docs/api/idempotent_requests)
+- [An In-Depth Introduction To Idempotency](https://www.lpalmieri.com/posts/idempotency/)
+- [Implementing Stripe-like Idempotency Keys in Postgres](https://brandur.org/idempotency-keys)
