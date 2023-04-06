@@ -15,7 +15,7 @@ related:
 
 ## Context
 
-Some operations need to write to two or more transactional systems, and require the end result to be a complete success or complete failure. The operation terminating in a partial success state (having successfully written to only a subset of systems) is not acceptable, though this is an acceptable intermediate state.
+Some operations need to write to two or more transactional systems, and require the end result to be a complete success or complete failure. The individual steps, or time between them, might take a while.
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ It is worth introducing extra complexity.
 
 ## Example
 
-A travel booking system needs to book a hotel and a flight. It must either book both, or neither.
+A travel booking system needs to book a hotel and a flight. It must end up either booking both, or neither.
 
 ## Problem
 
@@ -56,8 +56,14 @@ And two forward operations: `book flight` and `book hotel`. If we end up in a st
 
 You will want some way to drive progress (either forwards or backwards). This can be a centralised system, such as a [completer]({% link _failure-patterns/completer.md %}) (known as *orchestration*), or distributed using e.g. [transactional outboxes]({% link _failure-patterns/transactional-outbox.md %}) (known as *choreography*).
 
+{% include callout.html
+  type="warning"
+  content="Intermediate states can cause observable inconsistency, which can lead to [anomalies](https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/saga/saga#issues-and-considerations)."
+%}
+
 ## See also
 
 - [Microservice patterns: Saga](https://microservices.io/patterns/data/saga.html)
 - [[Video] What is a Saga in Microservices?](https://www.youtube.com/watch?v=0W8BtIwh824)
 - [Saga distributed transactions pattern](https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/saga/saga)
+- [Patterns for distributed transactions within a microservices architecture](https://developers.redhat.com/blog/2018/10/01/patterns-for-distributed-transactions-within-a-microservices-architecture)

@@ -9,7 +9,7 @@ order: 3
 
 Reusable building blocks to help design reliable systems in the presence of failures.
 
-<!-- TODO: link to published post -->
+<!-- TODO: failure patterns: link to published post -->
 See the [introductory post]({% link _wip/designing-for-failure.md %}).
 
 {% include callout.html

@@ -100,6 +100,8 @@ You can find all the [patterns listed here]({% link failure-patterns.md %}).
 - [Pattern language](https://en.wikipedia.org/wiki/Pattern_language)
 - [A pattern language for microservices](https://microservices.io/patterns/index.html)
 - [Messaging Patterns](https://www.enterpriseintegrationpatterns.com/)
+- [Cloud design patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns/)
+- [Patterns of Distributed Systems](https://martinfowler.com/articles/patterns-of-distributed-systems/)
 - [The Seven Most Classic Patterns for Distributed Transactions](https://medium.com/@dongfuye/the-seven-most-classic-solutions-for-distributed-transaction-management-3f915f331e15)
 - [Handling Failures From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)
 - [[Book] Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
