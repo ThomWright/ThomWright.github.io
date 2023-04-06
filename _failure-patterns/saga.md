@@ -4,8 +4,9 @@ title: Saga
 short: saga
 group: multiple-systems
 tagline: Perform a series of transactions with backwards recovery
+sort_key: 2
 related:
-  - atomic-transaction
+  - acid-transaction
   - distributed-transaction
   - transactional-outbox
   - completer

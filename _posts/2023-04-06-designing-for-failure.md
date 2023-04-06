@@ -81,7 +81,7 @@ We can use the following constraints to help us understand which patterns are ap
 - **Idempotency (side effects)**&nbsp;– Is it required that retries cause no additional state changes? Even when a subset of the desired side effects failed? Is it required that a side effect happens at most once, exactly once or at least once? (See [Why can't we have exactly-once message processing?]({% post_url 2022-05-24-at-least-once-delivery %}))
 - **Idempotency (response)**&nbsp;– Is it required that retries always receive the same response? Even when the operation failed?
 - **Consistency**&nbsp;– Is it required that the system is always in a consistent state? Is eventual consistency acceptable? Are there acceptable inconsistent states?
-- **Asynchronicity**&nbsp;– Is it required that all writes are done synchronously before returning a response? Can any be deferred until later?
+- **Synchronicity**&nbsp;– Is it required that all writes are done synchronously before returning a response? Can any be deferred until later?
 - **Atomicity**&nbsp;– Is it possible to do all writes atomically? Is it possible to do some subsets atomically?
 - **Client behaviour**&nbsp;– Are we in control of the client? Will it reliably retry until success?
 
@@ -97,6 +97,7 @@ You can find all the [patterns listed here]({% link failure-patterns.md %}).
 
 ## Further reading
 
-- [ACID](https://en.wikipedia.org/wiki/ACID)
+- [Wikipedia: ACID](https://en.wikipedia.org/wiki/ACID)
+- [Wikipedia: Eventual consistency](https://en.wikipedia.org/wiki/Eventual_consistency)
 - [[Book] Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
 - [Handling Failures From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)

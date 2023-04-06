@@ -5,7 +5,7 @@ short: change-record
 group: single-system
 tagline: Record that a change has been made so it doesn't happen again
 related:
-  - atomic-transaction
+  - acid-transaction
   - idempotency-key
 ---
 

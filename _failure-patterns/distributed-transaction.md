@@ -4,8 +4,9 @@ title: Distributed transaction
 short: distributed-transaction
 group: multiple-systems
 tagline: Write to multiple systems transactionally
+sort_key: 3
 related:
-  - atomic-transaction
+  - acid-transaction
   - saga
 ---
 
@@ -38,7 +39,7 @@ Use a distributed transaction by implementing e.g. [two-phase](https://en.wikipe
 
 For longer-running transactions, consider using a [saga]({% link _failure-patterns/saga.md %}).
 
-Also, consider whether it would be possible to consolidate your data into a single system to make [atomic transactions]({% link _failure-patterns/atomic-transaction.md %}) possible. This will likely result in a much simpler system.
+Also, consider whether it would be possible to consolidate your data into a single system to make [atomic transactions]({% link _failure-patterns/acid-transaction.md %}) possible. This will likely result in a much simpler system.
 
 ## See also
 

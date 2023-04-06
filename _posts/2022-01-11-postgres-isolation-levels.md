@@ -39,3 +39,4 @@ There is more to transaction isolation than this, but this is a good enough over
 - [PostgreSQL: Transaction Isolation](https://www.postgresql.org/docs/14/transaction-iso.html)
 - [Jepsen: Consistency models](https://jepsen.io/consistency)
 - [The Art of PostgreSQL: PostgreSQL Concurrency: Isolation and Locking](https://tapoueh.org/blog/2018/07/postgresql-concurrency-isolation-and-locking/)
+- [The Zoo of Transaction Phenomena](https://begriffs.com/posts/2017-08-01-practical-guide-sql-isolation.html#the-zoo-of-transaction-phenomena)

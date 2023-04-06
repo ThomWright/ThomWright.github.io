@@ -46,9 +46,24 @@ Sometimes inconsistency is unavoidable, whether by design, or simply because of 
 {% for pattern in background_processes %}- **[{{ pattern.title }}]({{ pattern.url }})**&nbsp;–{% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
 {% endfor %}
 
+## Comparisons
+
+When consistency is important, you will generally need to choose (at least) one of the patterns in the table below.
+
+|  | ACID transaction | Distributed transaction | Transactional outbox | Saga |
+|:--|:--|:--|:--|:--|
+| **Num . systems** | Single | Many | Many | Many |
+| **Consistency** | Consistent* | Consistent* | Eventual | Eventual |
+| **Atomicity** | Atomic* | Atomic* | Non-atomic | Non-atomic |
+| **Synchronicity** | Sync | Sync | Async | Async |
+| **Complexity** | Simple | Complex | Moderate | Complex |
+
+<!-- markdownlint-disable-next-line MD036 -->
+*\* Depends on [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %})*
+
 ## More patterns
 
-- [Pattern language](https://en.wikipedia.org/wiki/Pattern_language)
+- [Wikipedia: Pattern language](https://en.wikipedia.org/wiki/Pattern_language)
 - [A pattern language for microservices](https://microservices.io/patterns/index.html)
 - [Messaging Patterns](https://www.enterpriseintegrationpatterns.com/)
 - [Cloud design patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns/)

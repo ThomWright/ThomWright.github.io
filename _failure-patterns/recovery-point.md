@@ -4,7 +4,7 @@ title: Recovery point
 short: recovery-point
 group: multiple-systems
 tagline: Record current progress to allow recovery with minimal rework
-sort_key: 2
+sort_key: 5
 related:
   - saga
   - transactional-outbox

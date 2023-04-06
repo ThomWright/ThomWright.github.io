@@ -6,7 +6,7 @@ group: single-system
 tagline: Concurrently write data based on current state
 sort_key: 2
 related:
-  - atomic-transaction
+  - acid-transaction
   - idempotency-key
   - idempotency-key-lock
 ---

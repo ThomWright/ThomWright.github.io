@@ -5,7 +5,7 @@ short: response-record
 group: single-system
 tagline: Return the same response for every retry
 related:
-  - atomic-transaction
+  - acid-transaction
   - idempotency-key
   - recovery-point
 ---

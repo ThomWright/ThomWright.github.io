@@ -30,10 +30,14 @@ article {
     }
 
     width: 100%;
+    display: block;
+    overflow-x: scroll;
+
     margin-bottom: $small-spacing;
 
     border-spacing: 0;
 
+    @include table-border(top);
     @include table-border(bottom);
 
     th, td {
@@ -41,7 +45,6 @@ article {
       padding: 0.5em;
     }
     th {
-      @include table-border(top);
       @include table-border(bottom);
     }
   }
