@@ -2,7 +2,8 @@
 layout: page
 title: 'Designing for failure: Patterns'
 short_title: 'Failure patterns'
-public: 'false'
+sitemap: false
+public: false
 order: 3
 ---
 
