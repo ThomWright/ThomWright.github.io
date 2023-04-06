@@ -2,20 +2,12 @@
 layout: page
 title: 'Designing for failure: Patterns'
 short_title: 'Failure patterns'
-sitemap: false
-public: false
 order: 3
 ---
 
 Reusable building blocks to help design reliable systems in the presence of failures.
 
-<!-- TODO: failure patterns: link to published post -->
-See the [introductory post]({% link _wip/designing-for-failure.md %}).
-
-{% include callout.html
-  type="info"
-  content="These patterns are still a work in progress. Ship early and iterate, right?"
-%}
+See the [introductory post]({% post_url 2023-04-06-designing-for-failure %}).
 
 ## API design
 
@@ -48,3 +40,13 @@ Sometimes inconsistency is unavoidable, whether by design, or simply because of 
 {% assign background_processes = site.failure-patterns | where: 'group', 'background-processes' | sort: "sort_key", "last" %}
 {% for pattern in background_processes %}- **[{{ pattern.title }}]({{ pattern.url }})**&nbsp;–{% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
 {% endfor %}
+
+## More patterns
+
+- [Pattern language](https://en.wikipedia.org/wiki/Pattern_language)
+- [A pattern language for microservices](https://microservices.io/patterns/index.html)
+- [Messaging Patterns](https://www.enterpriseintegrationpatterns.com/)
+- [Cloud design patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns/)
+- [Reliability patterns](https://learn.microsoft.com/en-us/azure/architecture/framework/resiliency/reliability-patterns)
+- [Patterns of Distributed Systems](https://martinfowler.com/articles/patterns-of-distributed-systems/)
+- [The Seven Most Classic Patterns for Distributed Transactions](https://medium.com/@dongfuye/the-seven-most-classic-solutions-for-distributed-transaction-management-3f915f331e15)

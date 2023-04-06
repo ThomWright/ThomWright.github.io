@@ -50,8 +50,7 @@ defaults:
       type: "failure-patterns"
     values:
       layout: "pattern"
-      # TODO: failure patterns
-      sitemap: false
+
 
 exclude:
 - _config.yml
