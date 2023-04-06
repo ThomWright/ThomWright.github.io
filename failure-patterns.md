@@ -9,6 +9,11 @@ Reusable building blocks to help design reliable systems in the presence of fail
 
 See the [introductory post]({% post_url 2023-04-06-designing-for-failure %}).
 
+{% include callout.html
+  type="info"
+  content="These are still a work in progress. Feedback appreciated!"
+%}
+
 ## API design
 
 Rather than internal details, these patterns describe the API as seen by clients.
