@@ -4,7 +4,6 @@ title: Reconciliation
 short: reconciliation
 group: background-processes
 tagline: Detect and resolve inconsistencies
-incomplete: true
 ---
 
 ## Context
@@ -27,7 +26,4 @@ Compare state between the two systems. There will be three outcomes for any inco
 - Resolvable&nbsp;– the reconciliation system can automatically resolve the inconsistency. Apply the change.
 - Unresolvable&nbsp;– the inconsistency needs manual intervention. Raise an alert.
 
-TODO:
-
-- Need a bit more detail on how to compare the state… We probably can’t compare the *whole* state all the time!
-- Discuss using ETLs to put data in a single place to perform reconciliation?
+It is worth considering how to appropriately limit the amount of data being checked for consistency, e.g. by only checking data that has changed more recently than the previous reconciliation.
