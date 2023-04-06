@@ -7,7 +7,6 @@ tagline: Protect against concurrent retries
 related:
   - idempotency-key
   - atomic-read-then-write
-incomplete: true
 ---
 
 ## Context
@@ -16,56 +15,21 @@ It is possible for retries to arrive while a previous request is still being pro
 
 ## Example
 
-{% include callout.html
-   type="info"
-   content="Honestly, I'm struggling to come up with good examples for this one. If you have some ideas, let me know!"
+The result of a process, either `SUCCESS` or `FAILURE`, needs to be recorded in a system without an [atomic read-then-write]({% link _failure-patterns/atomic-read-then-write.md %}) operation. Once written, the record should not change.
+
+{% include figure.html
+  img_src="/public/assets/failure-patterns/state-machine-result.png"
+  alt="A state machine"
+  caption="A state machine with two terminal states"
+  size="small"
 %}
 
-TODO:
+It would be possible for a race condition to occur, like so:
 
-- State machine
-  - A state machine is tracked in a system without an atomic "check then set" operation
-  - E.g. the system has `SET key value` and `GET key` operations
-  - and value must follow:
-
-    ```text
-    ∅ -> SUCCESS
-      `-> FAILURE
-    ```
-
-    i.e. no transition from SUCCESS to FAILURE is allowed
-
-  - a request transitions a key through the values as it progresses
-  - Race conditions can occur, e.g.
-    - Request: `GET x : ∅`
-    - Retry: `GET x : ∅`
-    - Request: `SET x SUCCESS`
-    - Retry: `SET x FAILURE`
-  - Solution:
-    - Request: Lock idempotency key
-    - Retry: Wait for lock...
-    - Request: `GET x : ∅`
-    - Request: `SET x SUCCESS`
-    - Request: Release
-    - Retry: ... acquire lock
-    - Retry: `GET x : SUCCESS`
-    - Retry: Release
-  - TODO: why do recovery points not solve this? because they depend on being able to do check-then-set atomically
-- At most once (this is essentially another state machine problem)
-  - Lock
-  - Has operation happened?
-    - No: do operation FIXME: timing issue? what if it's started but not finished because a previous attempt started then crashed?
-    - Yes: don't
-  - Release lock
-- Ensure sequentiality?
-  - E.g.
-    - Lock events table
-    - Insert event n
-    - Release
-    - All events <= n now visible
-  - This isn't really an idempotency key lock, it's a lock on the entire table
-- A "catch all" mechanism
-  - This can sometimes just be easier than thinking about possible concurrency race conditions
+1. Request: `GET x : ∅`
+2. Retry: `GET x : ∅`
+3. Request: `SET x SUCCESS`
+4. Retry: `SET x FAILURE`
 
 ## Problem
 
@@ -89,7 +53,7 @@ Doing this automatically for every top-level write operation can reduce the cogn
 
 ## Alternatives
 
-There are often alternatives to locks, especially if correctness if your goal and your storage system supports [atomic read-then-write operations]({% link _failure-patterns/atomic-read-then-write.md %}).
+There are often alternatives to locks, especially if correctness if your goal and your storage system supports [atomic read-then-write]({% link _failure-patterns/atomic-read-then-write.md %}) operations.
 
 ## See also
 
