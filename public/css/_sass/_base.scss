@@ -120,10 +120,12 @@ strong {
 
 figure {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-around;
-  @include horizontal-margin(0);
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0;
+
+  // @include horizontal-margin(0);
 
   text-align: center;
 
@@ -133,10 +135,26 @@ figure {
   }
 }
 
+figure.multi-img {
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: $small-spacing;
+
+  figcaption {
+    flex-basis: 100%;
+  }
+}
+
+.multi-figure {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
 figcaption {
   font-size: 15px;
-  padding-top: $small-spacing;
-  flex-basis: 100%;
   font-style: italic;
 }
 

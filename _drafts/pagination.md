@@ -4,6 +4,8 @@ title: Pagination
 tags: [reliability, databases]
 ---
 
+<!-- markdownlint-disable MD033 -->
+
 A common cause of incidents I see is lack of pagination. Or, more precisely, APIs returning an unbounded number of items. Really it's the lack of a limit which is the problem, which I think is an important distinction. When returning multiple items, pagination is optional but limits are arguably not.
 
 I've seen several variations on the root cause, including:
@@ -173,12 +175,16 @@ CREATE INDEX CONCURRENTLY item_creation_tie_idx ON items (created_at, id);
 
 A high-level overview of the two approaches:
 
+<div class="table-wrapper" markdown="block">
+
 |  | Offset | Cursor |
 | --- | --- | --- |
 | Stable page boundaries | ❌ No | ✅ Yes |
 | Efficiency | ❌ O(offset + limit) | ✅ O(limit) |
 | Implementation complexity | ✅ Low | Medium |
 | Skip pages | Yes | No* |
+
+</div>
 
 \* When using cursors you can't directly jump to e.g. page 5, but you *can* jump to an arbitrary point in the list if you can construct a cursor for it. The cursor doesn't necessarily need to identify a real row. For example you could start from `created_at < '2000-01-01'` if you wanted to take a look at the 1990's. This can be useful for paging through an arbitrary time range without having to go back page by page starting from now.
 

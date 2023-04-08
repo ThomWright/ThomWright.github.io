@@ -20,8 +20,16 @@ article {
     max-width: 100%;
   }
 
+  .article-content>figure {
+    @include vertical-margin($small-spacing);
+  }
+
   max-width: $max-content-width;
 
+  .table-wrapper {
+    width: 100%;
+    overflow-x: scroll;
+  }
   table {
     @mixin table-border($side) {
       border-#{$side}-width: 1px;
@@ -30,8 +38,8 @@ article {
     }
 
     width: 100%;
-    display: block;
-    overflow-x: scroll;
+    // display: block;
+    // overflow-x: scroll;
 
     margin-bottom: $small-spacing;
 

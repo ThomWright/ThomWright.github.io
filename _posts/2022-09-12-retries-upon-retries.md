@@ -29,7 +29,7 @@ Let's start with the simplest version of this [model](https://github.com/ThomWri
 
 We'll start off by defining how this server responds to requests. The response times follow an [Erlang probability distribution](https://newrelic.com/blog/best-practices/expected-distributions-website-response-times), with a mean of **5ms**. Running 10,000 requests we see something like this:
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/1-perfect-latencies.png" alt="Single server latency distribution"/>
   <img class="small-img" src="/public/assets/retries/1-perfect-percentiles.png" alt="Single server latency percentiles"/>
 </figure>
@@ -47,7 +47,7 @@ What if that server also sends requests to a dependency, like this:
 
 The latencies from the client's perspective then look like so:
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/2-perfect-latencies.png" alt="Latency distribution"/>
   <img class="small-img" src="/public/assets/retries/2-perfect-percentiles.png" alt="Latency percentiles with a dependency"/>
 </figure>
@@ -60,7 +60,7 @@ Some parameters:
 - The dependency has a recovery time of **2s**. The failure rate for retries gown down linearly over this period. In other words, we're modelling short transient failures.
 - The server does up to **3 retries**, using [exponential backoff with jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/) and a base of **100ms**.
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/2-failures-latencies.png" alt="Latencies with retries"/>
   <img class="small-img" src="/public/assets/retries/2-failures-percentiles.png" alt="Latency percentiles with retries"/>
 </figure>
@@ -81,7 +81,7 @@ The model doesn't (yet?) take into account concurrency or the effect of addition
 
 We can look at how much the failure rate of the dependency affects latency, availability and increased load. As we'd expect, increased failure rate causes increased latency, decreased availability and increased load. The "Improvement" line shows how much the availability has been improved by using retries.
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/2-latency-by-failure-rate.png" alt="Latency by failure rate"/>
   <img class="small-img" src="/public/assets/retries/2-success-by-failure-rate.png" alt="Success by failure rate"/>
   <img class="small-img" src="/public/assets/retries/2-load-by-failure-rate.png" alt="Load by failure rate"/>
@@ -91,7 +91,7 @@ We can look at how much the failure rate of the dependency affects latency, avai
 
 "Those retries are taking too long!" I hear you say. OK, let's make them a bit quicker and try 10ms instead of 100ms.
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/2-shorter-latency-by-failure-rate.png" alt="Latency by failure rate"/>
   <img class="small-img" src="/public/assets/retries/2-shorter-success-by-failure-rate.png" alt="Success by failure rate"/>
   <img class="small-img" src="/public/assets/retries/2-shorter-load-by-failure-rate.png" alt="Load by failure rate"/>
@@ -125,7 +125,7 @@ Regardless of the end result in terms of latency/availability, I think there are
 
 Let's see how they compare. First: **latency**.
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/4-all-latency-by-failure-rate.png" alt="Latency by failure rate"/>
   <img class="small-img" src="/public/assets/retries/4-top-only-latency-by-failure-rate.png" alt="Latency by failure rate"/>
   <figcaption>Left: all servers retry. Right: top only</figcaption>
@@ -135,7 +135,7 @@ There doesn't seem to be a big different here, except at the high percentiles. W
 
 Next, **availability**.
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/4-all-success-by-failure-rate.png" alt="Success by failure rate"/>
   <img class="small-img" src="/public/assets/retries/4-top-only-success-by-failure-rate.png" alt="Success by failure rate"/>
 </figure>
@@ -144,7 +144,7 @@ Because these cascading retries are so damn persistent, we do see increased avai
 
 Finally, **load**.
 
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/retries/4-all-load-by-failure-rate.png" alt="Load by failure rate"/>
   <img class="small-img" src="/public/assets/retries/4-top-only-load-by-failure-rate.png" alt="Load by failure rate"/>
 </figure>

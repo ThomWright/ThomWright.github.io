@@ -5,6 +5,8 @@ short_title: 'Failure patterns'
 order: 3
 ---
 
+<!-- markdownlint-disable MD033 -->
+
 Reusable building blocks to help design reliable systems in the presence of failures.
 
 See the [introductory post]({% post_url 2023-04-06-designing-for-failure %}).
@@ -50,6 +52,8 @@ Sometimes inconsistency is unavoidable, whether by design, or simply because of 
 
 When consistency is important, you will generally need to choose (at least) one of the patterns in the table below.
 
+<div class="table-wrapper" markdown="block">
+
 |  | ACID transaction | Distributed transaction | Transactional outbox | Saga |
 |:--|:--|:--|:--|:--|
 | **Num . systems** | Single | Many | Many | Many |
@@ -57,6 +61,8 @@ When consistency is important, you will generally need to choose (at least) one 
 | **Atomicity** | Atomic* | Atomic* | Non-atomic | Non-atomic |
 | **Synchronicity** | Sync | Sync | Async | Async |
 | **Complexity** | Simple | Complex | Moderate | Complex |
+
+</div>
 
 <!-- markdownlint-disable-next-line MD036 -->
 *\* Depends on [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %})*
