@@ -68,7 +68,7 @@ When consistency is important, you will generally need to choose (at least) one 
 
 |  | ACID transaction | Distributed transaction | Transactional outbox | Saga |
 |:--|:--|:--|:--|:--|
-| **Num . systems** | Single | Many | Many | Many |
+| **Num. systems** | Single | Many | Many | Many |
 | **Consistency** | Consistent* | Consistent* | Eventual | Eventual |
 | **Atomicity** | Atomic* | Atomic* | Non-atomic | Non-atomic |
 | **Synchronicity** | Sync | Sync | Async | Async |
