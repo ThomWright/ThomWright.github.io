@@ -12,7 +12,7 @@ related:
 
 ## Context
 
-Some requests need to write to several independent systems. Operations on independent systems may fail independently, or the system might crash in between writes, leaving the system in an inconsistent state.
+Some requests need to write to several independent systems. Write operations on these systems might fail independently, or the application might crash in between writes, leaving the system in an inconsistent state.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ Essentially, instead of trying to synchronously write to many systems, we instea
  A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS. This could be an external process or internal to the application.
 
 <!-- markdownlint-disable MD033 -->
-<figure>
+<figure class="multi-img">
   <img class="small-img" src="/public/assets/failure-patterns/outbox-ext-pub.png" alt="Outbox with an external publisher process"/>
   <img class="small-img" src="/public/assets/failure-patterns/outbox-int-pub.png" alt="Outbox with an internal publisher"/>
   <figcaption>An external publisher process and an internal publisher.</figcaption>
