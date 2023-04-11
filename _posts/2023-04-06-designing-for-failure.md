@@ -27,15 +27,35 @@ This post serves as an introduction to the ideas behind the patterns.
 
 First, I’ll be using these terms a lot and I think it’s worth defining what I mean by them.
 
-- **Operation**&nbsp;– A logical unit of work. Operations form a tree, and might consist of several read or write sub-operations.
+System
 
-    This is quite generic, so I'll often just use the term **request** instead, especially for top-level operations.
-- **Write**&nbsp;– An operation which changes state, e.g. of a database, file system, message queue, or even the physical world.
-- **Read**&nbsp;– An operation which inspects state but does not change it.
-- **Side effect**&nbsp;– An observable state change caused by a write.
-- **Crash**&nbsp;– A shorthand for various issues including unexpected process termination and network partitions which result in an operation never finishing.
+: An independent software application. This could be e.g. a microservice, a database, or a large third party such as a bank (which itself will likely be comprised of many internal systems). Systems communicate with each other over a network.
 
-A quick example: updating a username. This is a *write operation*. The system performing this operation might need to *read* from another system (to e.g. check authentication/authorisation) and then *write* the new username to a database. It would look like this, where each `|- X -|` span is an operation:
+  This is quite generic, so I'll often use the term **application** when referring to the system we're primarily focusing on.
+
+Operation
+
+: A logical unit of work. Operations form a tree, and might consist of several read or write sub-operations.
+
+  Again, this is quite generic, so I'll often just use the term **request** instead, especially for top-level operations.
+
+Write
+
+: An operation which changes state, e.g. of a database, file system, message queue, or even the physical world.
+
+Read
+
+: An operation which inspects state but does not change it.
+
+Side effect
+
+: An observable state change caused by a write.
+
+Crash
+
+: A shorthand for various issues including unexpected process termination and network partitions which result in an operation never finishing.
+
+A quick example: updating a username. This is a *write operation*. The application performing this operation might need to *read* from another system (to e.g. check authentication and authorisation) and then *write* the new username to a database. It would look like this, where each `|- X -|` span is an operation:
 
 ```text
 Application |-- Request ---------------|
