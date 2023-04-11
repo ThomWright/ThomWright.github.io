@@ -28,7 +28,7 @@ article {
 
   .table-wrapper {
     width: 100%;
-    overflow-x: scroll;
+    overflow-x: auto;
   }
   table {
     @mixin table-border($side) {
@@ -38,8 +38,6 @@ article {
     }
 
     width: 100%;
-    // display: block;
-    // overflow-x: scroll;
 
     margin-bottom: $small-spacing;
 
