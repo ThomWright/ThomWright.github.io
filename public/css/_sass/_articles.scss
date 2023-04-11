@@ -26,6 +26,10 @@ article {
 
   max-width: $max-content-width;
 
+  dt {
+    font-weight: bold;
+  }
+
   .table-wrapper {
     width: 100%;
     overflow-x: auto;
