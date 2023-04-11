@@ -20,7 +20,12 @@ Eventual consistency is acceptable. Performing the operation (or part of the ope
 
 ## Example
 
-A new user registers with a social network. As part of registration, a database record needs to be written with the login details, and a message needs to be published so other systems can respond, e.g. by sending a welcome email or finding contact recommendations.
+A new user registers with a social network. As part of registration, a database record needs to be written with the login details, and an event needs to be published so other systems can respond, e.g. by sending a welcome email or finding contact recommendations. Imagine either of the following scenarios:
+
+1. **Publishing fails** - The application writes the new user record to the database. It then tries to publish the event, but fails with a transient error.
+2. **The application crashes** - The application writes the new user record to the database. It then crashes before publishing the event.
+
+Either of these will result in no welcome email being sent, and no other system being aware of the newly registered user.
 
 ## Problem
 
