@@ -1,7 +1,9 @@
 ---
 layout: page
 title: Posts
-redirect_from: /archive
+redirect_from:
+  - /archive
+  - /archive/
 order: 2
 ---
 
