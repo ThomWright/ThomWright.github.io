@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "Alerting: SLOs, error budgets and burn rates"
+title: "Writing better alerts"
 tags: [alerting, observability, reliability]
 ---
 
 <!-- markdownlint-disable MD033 -->
 
-Getting alerts right can be hard. It’s not uncommon to see alerts which are too sensitive, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short.
+Getting alerts right can be hard. It’s not uncommon to see alerts which are too noisy, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short.
 
 On the other hand, many alerts are not sensitive enough. Errors can occur at high rates without detection, either because the overall error rate is below the alert threshold, or because they occur in spikes much shorter than the alert window.
 
@@ -44,7 +44,7 @@ Let's assume we have an SLO of 99.9% availability (successful requests) over 30 
 
 {% include callout.html
   type="aside"
-  content="I'll be using this example SLO for the entirety of this post."
+  content="I'll be using this example SLO for the rest of this post."
 %}
 
 One of the simplest alerts we could write is something like this in [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/):
@@ -62,30 +62,42 @@ This alerts if we have an error rate higher than 0.2%, averaged over the last 5 
 
 We could write this as:
 
-- Error threshold: 0.2%
-- Alert window: 5 minutes
+<!--Error threshold
+: 0.2%
+
+Alert window
+: 5 minutes -->
+
+- **Error threshold:** 0.2%<br>
+- **Alert window:** 5 minutes
 
 There are several ways this could miss significant events, as illustrated below. The blue dashed line is our SLO error threshold, the yellow box represents the alert detection threshold, and the red boxes show errors. If the area of the red box is large than the yellow box then the alert will fire.
 
 <div class="multi-figure">
 {% include figure.html
   img_src="/public/assets/alerting/simple-spikes.png"
-  caption="30-second 0.3% error spikes"
+  caption="False negative: 30-second 0.3% error spikes"
   size="small"
 %}
 
 {% include figure.html
   img_src="/public/assets/alerting/simple-steady.png"
-  caption="Steady 0.15% error rate"
+  caption="False negative: steady 0.15% error rate"
   size="small"
 %}
 </div>
 
 First, we see an error spikes of 0.3%, lasting 30 seconds each, an average of 0.15% over 5 minutes. This is less than 0.2% so won’t be detected, but if this happened too frequently then it could blow the error budget. Second, the error rate is 0.15% for the full 5 minutes. This could continue undetected indefinitely, and would eventually blow the error budget.
 
-There's another problem too. A one-off error spike of 2% for 1 minute (0.4% average over 5 minutes) would trigger the alert. The issue would have resolved itself before an engineer was able to respond. This is *not a significant event*, and while it might be worth investigating, it's probably not worth waking anyone up for.
+{% include figure.html
+  img_src="/public/assets/alerting/fp-spike.png"
+  caption="False positive: 1% spike for 1 minute"
+  size="small"
+%}
 
-### Measuring success
+There's another problem too. A one-off error spike of > 1% for 1 minute (> 0.2% average over 5 minutes) *would* trigger the alert. The issue would have resolved itself before an engineer was able to respond. This is *not a significant event*, and while it might be worth investigating, it's probably not worth waking anyone up for.
+
+## Measuring success
 
 So this alerting rule has some problems. It's worth defining what these are so we know how to improve. We'll be using the following measures of success:
 
@@ -115,28 +127,66 @@ Reducing the error threshold to 0.1% would make the alert more sensitive, but le
 
 ```python
 detection_time = (error_threshold * alert_window) / error_rate
-
-# 0.2% error rate
-detection_time = (0.002 * 5) / 0.002 = 5 # minutes
-
-# 100% error rate
-detection_time = (0.002 * 5) / 1 = 0.01 # minutes
 ```
 
-The detection time is influenced by the alert window. A wider alert window takes longer to detect a given error rate. For example, this 5 minute window takes 5 minutes to detect a 0.2% error rate, 1 minute to detect a 1% error rate and 0.6 seconds to detect a 100% error rate. A 1 hour window would take 1 hour for 0.2% and 12 minutes for 1%.
+Detection time is shorter for higher error rates (which is good!) and wider alert windows take longer to detect a given error rate. A few examples for our example 0.2% error threshold:
 
-A shorter alert window also reduces precision. Imagine using a 1 minute window - a single 1 minute period of 0.2% error rate could trigger the alert despite not being significant. This would not trigger when using the 5 minute window.
+<div class="table-wrapper" markdown="block">
+
+| Error rate | Detection time (5m window) | Detection time (1h window) |
+| :-- | :-- | :-- |
+| 0.1% | Never | Never |
+| 0.2% | 5m | 1h |
+| 1% | 1m | 12m |
+| 10% | 6s | 1.2m |
+| 100% | 0.6s | 7.2s |
+
+</div>
 
 {% include callout.html
   type="info"
   content="In practice, alerting rules will likely be run at regular intervals, e.g. 10 seconds. In which case it could take up to 10 seconds to detect a 100% error rate."
 %}
 
+A shorter alert window also reduces precision. Imagine using a 1 minute window - a single 1 minute period of 0.2% error rate could trigger the alert despite not being significant. This would not trigger when using the 5 minute window.
+
 TODO: reset time
 
-### Doing better
+## Improving sensitivity and precision
 
-TODO: why not just increase the alert window? It would be more precise, and detection time would still be good. Reset time would be poor though!
+Let's start by looking at **sensitivity**. Our SLO requires 99.9% successful requests, but we're only alerting on a 0.2% error rate. This is trivially fixed by changing our error threshold to 0.1%. This gives us 100% sensitivity: every significant event will now trigger an alert.
+
+However, this reduces **precision**! Longer alert windows improve precision, so let's try increasing it to 1 hour. We can look at how high an error spike would need to be to trigger an alert:
+
+| Spike duration | Error rate to trigger alert |
+| :-- | :-- |
+| 1m | > 6% |
+| 5m | > 1.2% |
+| 1h | > 0.1% |
+
+<!-- Is that OK? At this stage, it's difficult to know.
+
+The other question is: is our detection time acceptable? Again difficult to tell. -->
+
+So we now have this alerting rule:
+
+<!-- - Error threshold: 0.1%
+- Alert window: 1 hour -->
+
+- **Error threshold:** 0.1%<br>
+- **Alert window:** 1 hour
+
+This is arguably better: it has improved sensitivity and precision, with a slightly longer detection time.
+
+At this point we might ask ourselves:
+
+1. Is this precise enough? Can we do better?
+2. Is our detection time short enough? Or is it overly cautious?
+3. Is it really worth waking someone up after an hour of a 0.1% error rate?
+
+To answer these questions, let's look at burn rates.
+
+<!-- TODO: why not just increase the alert window? It would be more precise, and detection time would still be good. Reset time would be poor though!
 
 Steel man: error threshold = 0.1%, alert window = 1 hour.
 
@@ -154,21 +204,23 @@ Things we might still want:
 
 1. Better precision.
 2. Better reset time.
-3. To differentiate between "wake someone up" and "take a look at this soon".
+3. To differentiate between "wake someone up" and "take a look at this soon". -->
 
 <!-- We'll discuss reset time in more depth later. -->
 
-The rest of this post will look at how we can build something better: more precise, more sensitive, and with appropriate detection and reset times. Let’s start by looking at burn rates.
+<!-- The rest of this post will look at how we can build something even better: more precise, more sensitive, and with appropriate detection and reset times. Let’s start by looking at burn rates. -->
 
-## Burn rates
+<!-- TODO: What detection time do we need? How do we know? -->
 
-As stated above, a burn rate is how fast we’re using up our error budget. Burn rates are really useful because they give us a good idea of how quickly we need to alert and respond to a given event before our SLO is impacted. That is, what our detection time should be.
+## Improving detection time using burn rates
+
+As stated above, a burn rate is how fast we’re using up our error budget. Burn rates are really useful because they give us a good idea of how quickly we need to respond to a given event before our SLO is impacted. That is, it tells us what our detection time should be!
 
 A burn rate of 1 will use up the exact error budget in the SLO window. For our example SLO it will take 30 days to use up the entire budget. A burn rate > 1 will use up the error budget in less time.
 
 {% include callout.html
   type="aside"
-  content="For simplicity I'll assume a near-constant request rate."
+  content="For simplicity I'll assume near-constant request and error rates."
 %}
 
 {% include figure.html
@@ -192,7 +244,7 @@ burn_rate = 0.002 / (1 - 0.999) = 2
 time_to_exhaustion = 30 / 2 = 15 # days
 ```
 
-Here’s a handy chart with some examples, which we’ll be referring to as we go.
+Here’s a handy table with some examples:
 
 <div class="table-wrapper" markdown="block">
 
@@ -209,33 +261,38 @@ Here’s a handy chart with some examples, which we’ll be referring to as we g
 
 </div>
 
-Let's try thinking in terms of burn rates instead of error rates.
+<!-- Let's try thinking in terms of burn rates instead of error rates.
 
 1. We want to know when we've used too much of our error budget.
 2. We don't care about burn rates < 1, but anything > 1 we want to alert on.
 
-<!-- We'll want to alert before our error budget gets exhausted, and give enough time for the responder to take appropriate action. That is, our **detection time** (and hence alert window) should be shorter for higher burn rates. We can wait longer for lower burn rates. This happens naturally, but it's maybe not enough. -->
+<!-- We'll want to alert before our error budget gets exhausted, and give enough time for the responder to take appropriate action. That is, our **detection time** (and hence alert window) should be shorter for higher burn rates. We can wait longer for lower burn rates. This happens naturally, but it's maybe not enough.
 
-Let's start by considering sensitivity. We want to catch all significant events and protect our SLO, so we'll need to alert on a burn rate of 1.
+Let's start by considering sensitivity. We want to catch all significant events and protect our SLO, so we'll need to alert on a burn rate of 1. -->
 
-Let's say we want to know when we've used up 10% of our budget. It takes 30 days for this burn rate to exhaust the budget so our alert window should be 3 days.
+Let's say we want to know when we've used up 10% of our budget. It takes 30 days for this burn rate to exhaust the budget so our alert window should be 3 days. What happens to detection time for different error rates here?
 
-What happens to detection time for different error rates here? (Ok, we'll also think in terms of error rates a bit.)
-
-As a reminder: `detection_time = (error_threshold * alert_window) / error_rate`.
+<!-- As a reminder: `detection_time = (error_threshold * alert_window) / error_rate`. -->
 
 <div class="table-wrapper" markdown="block">
 
-| Error rate | Detection time | Time left to exhaustion |
-| :-- | :-- | :-- |
-| 0.1% | 3 days | 27 days |
-| 0.6% | 12 hours | 4.5 days |
-| 1.44% | 5 hours | ~2.75 days |
-| 100% | ~4 minutes | <40 minutes |
+| Error rate | Burn rate | Detection time | Time left to exhaustion |
+| :-- | :-- | :-- | :-- |
+| 0.1% | 1 | 3 days | 27 days |
+| 0.6% | 6 | 12 hours | 4.5 days |
+| 1.44% | 14.4 | 5 hours | ~2.75 days |
+| 100% | 1000 | ~4 minutes | <40 minutes |
 
 </div>
 
-Perhaps we want **multiple alerting rules**. A short window for high burn rates, a medium window for medium burn rates, and a long window for low burn rates. For the low burn rates, we might not need to page someone urgently, but instead send a notification to investigate later.
+So our detection time doesn't need to be so short at all. Maybe a *much* longer window is actually OK, something like this:
+
+- **Error threshold:** 0.1%<br>
+- **Alert window:** 3 days
+
+TODO: If the time to exhaustion is really long then do we really need to send an alert and potentially wake someone up? Can't we just send a notification for someone to investigate during working hours? If the problem starts on a Friday night, we need to make sure we enough time to respond on Monday morning, so let's try taking 5 days as our dividing line between *alert* and *notify*.
+
+Perhaps we want **multiple alerting rules**. A short window for high burn rates and a long window for low burn rates. For the low burn rates, we might not need to page someone urgently, but instead send a notification to investigate later.
 
 If we want to catch all significant events and protect our SLO, we'll need to alert on a burn rate of 1. If it takes 30 days for this burn rate to exhaust the budget, maybe let's alert after 3 days. 6 days for a burn rate of 5? Let's alert in 6 hours. 50 hours for 14.4? An hour.
 
