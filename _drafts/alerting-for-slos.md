@@ -6,13 +6,9 @@ tags: [alerting, observability, reliability]
 
 <!-- markdownlint-disable MD033 -->
 
-Getting alerts right can be hard. It’s not uncommon to see alerts which are too noisy, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short.
+Getting alerts right can be hard. It’s not uncommon to see alerts which are too noisy, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short. On the other hand, many alerts are not sensitive enough and errors can occur at high rates without detection.
 
-On the other hand, many alerts are not sensitive enough. Errors can occur at high rates without detection, either because the overall error rate is below the alert threshold, or because they occur in spikes much shorter than the alert window.
-
-In this post I’ll talk through how I think about writing alerts which find a better balance. A lot of this material you can find in the alerting chapter of the [Google SRE Workbook](https://sre.google/workbook/alerting-on-slos/), but I’m writing it in my own words because I didn’t find it the easiest to follow!
-
-I’ll assume you already have a good understanding of SLOs and error budgets.
+In this post I’ll talk through how I think about writing alerts which find a better balance.
 
 ## Definitions
 
@@ -61,12 +57,6 @@ One of the simplest alerts we could write is something like this in [PromQL](htt
 This alerts if we have an error rate higher than 0.2%, averaged over the last 5 minutes.
 
 We could write this as:
-
-<!--Error threshold
-: 0.2%
-
-Alert window
-: 5 minutes -->
 
 - **Error threshold:** 0.2%<br>
 - **Alert window:** 5 minutes
@@ -135,7 +125,7 @@ Detection time is shorter for higher error rates (which is good!) and wider aler
 
 | Error rate | Detection time (5m window) | Detection time (1h window) |
 | :-- | :-- | :-- |
-| 0.1% | Never | Never |
+| 0.1% | ∞ | ∞ |
 | 0.2% | 5m | 1h |
 | 1% | 1m | 12m |
 | 10% | 6s | 1.2m |
@@ -371,8 +361,24 @@ TODO:
 - The effect of high and low SLOs (90% and 99.999%)
   - And the effect of short windows? E.g. daily? Or 15 minutes?
 - Not all requests are equal - can classify requests and have different SLOs for different classes
+- If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough.
 
-## Conclusion
+## Conclusions
+
+1. To improve **precision** (making alerts less noisy), we can widen the *alert window* or increase the *error threshold*.
+2. To improve **sensitivity** (making sure we catch all significant errors), we can reduce our *error threshold*. Setting it to match our SLO rate gives us 100% sensitivity.
+3. To choose acceptable **detection times** we can look at *burn rates* and *error budgets*. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can choose an acceptable *alert window*.
+4. We can make use of *multiple alerting rules* for different severities. For non-urgent events, we can notify instead of paging to make life less stressful for on-call engineers.
+    - For low urgency:
+      - Precision: lower
+      - Sensitivity: higher
+      - Detection time: longer
+      - Action: notify
+    - For high urgency:
+      - Precision: higher
+      - Sensitivity: lower
+      - Detection time: shorter
+      - Action: page
 
 - TODO:
   - `for: <duration>` considered harmful

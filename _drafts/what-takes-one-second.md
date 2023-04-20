@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'What takes one second?'
-tags: tcp
+tags: [tcp, debugging]
 ---
 
 <!-- markdownlint-disable MD036 MD033 -->
