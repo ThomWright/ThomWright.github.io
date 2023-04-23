@@ -10,13 +10,13 @@ Getting alerts right can be hard. It’s not uncommon to see alerts which are to
 
 In this post I’ll talk through how I approach writing alerts which find a better balance.
 
-I'll start with a [simple example](#simple-example) and consider how to [measure success](#measuring-success). We'll improve the [sensitivity and precision](#improving-sensitivity-and-precision) and look at how to use [burn rates](#improving-detection-time-using-burn-rates) to inform detection time. I'll use the idea of [error budget consumption](#error-budget-consumption) to design a [new set of alerts](#alerting-on-budget-consumption), and finally I'll go through actually [writing the new alerting rules](#writing-the-alerting-rules) and [improving reset time](#improving-reset-time).
+I'll present a [simple example](#simple-example) which has some problems, and set out to improve it. To do that, we need to know how to [measure success](#measuring-success). I'll start by considering [sensitivity and precision](#improving-sensitivity-and-precision), and introduce [burn rates](#burn-rates) and [error budgets](#error-budget-consumption). Using these ideas we can design a [better set of alerts](#designing-better-alerts). Finally I'll go through actually [writing the new alerting rules](#writing-the-alerting-rules).
 
-This is a long post, so if you like you can jump straight to the [conclusions](#conclusions).
+If you like you can jump straight to the [conclusions](#conclusions).
 
 ## Definitions
 
-Let’s start off with some definitions. First, the basics about alerts and SLOs:
+Let’s begin with some definitions.
 
 Alert
 
@@ -142,7 +142,7 @@ Detection time is shorter for higher error rates (which is good!) and wider aler
   content="In practice, alerting rules will likely be run at regular intervals, e.g. 10 seconds. In which case it could take up to 10 seconds to detect a 100% error rate."
 %}
 
-A shorter alert window also reduces precision. Imagine using a 1 minute window - a single 1 minute period of 0.2% error rate could trigger the alert despite not being significant. This would not trigger when using the 5 minute window.
+A shorter alert window also reduces precision. Imagine using a 1 minute window -- a single 1 minute period of 0.2% error rate could trigger the alert despite not being significant. This would not trigger when using the 5 minute window.
 
 TODO: reset time
 
@@ -171,11 +171,11 @@ At this point we might ask ourselves:
 2. Is our detection time too long? Or perhaps too short?
 3. Is it really worth waking someone up after an hour of a 0.1% error rate?
 
-To answer these questions, let's look at burn rates.
+Our first step towards answering these questions is burn rates.
 
-## Improving detection time using burn rates
+## Burn rates
 
-As stated above, a burn rate is how fast we’re using up our error budget. Burn rates are really useful because they give us a good idea of how quickly we need to respond to a given event before our SLO is impacted. That is, it tells us what our detection time should be!
+As stated above, a burn rate is how fast we’re using up our error budget. Burn rates are really useful because they give us a good idea of how quickly we need to respond to a given event before our SLO is impacted. That is, it tells us what our **detection time** should be!
 
 A burn rate of 1 will use up the exact error budget in the SLO window. For our example SLO it will take 30 days to use up the entire budget. A burn rate > 1 will use up the error budget in less time.
 
@@ -233,7 +233,7 @@ error_budget_consumed = burn_rate * alert_window / slo_window
 
 The higher the burn rate and the wider the alert window, the more error budget consumed before the alert fires.
 
-Consider our example alert from earlier, which had a 0.2% error rate threshold. It would fire when only 0.023% of the error budget was consumed.
+Consider our example alert from earlier, which had a 0.2% error rate threshold. It would fire when only 0.023% of the error budget was consumed. This is very sensitive! Arguably *too* sensitive.
 
 ```python
 alert_window = 5 minutes
@@ -241,26 +241,22 @@ slo_window = 30 days = 720 hours = 720 * 60 minutes
 
 burn_rate = 2
 
-error_budget_consumed = (2 * 5) / (720 * 60) = 0.023% # Very sensitive!
+error_budget_consumed = (2 * 5) / (720 * 60) = 0.023%
 ```
 
-I like to think of this *error budget consumed* number as the area of the boxes in the diagram below.
-
-<!-- {% include figure.html
-  img_src="/public/assets/alerting/multi-alert.png"
-  caption="Multiple alert detection zones (not to scale)"
-  size="small"
-%} -->
+I like to think of this *error budget consumption* number as the area of the boxes in the diagram below.
 
 {% include figure.html
   img_src="/public/assets/alerting/10-pc-budget.png"
-  caption="Detection thresholds for three alerts with 10% error budget consumption"
+  caption="Detection thresholds for three alerts with 10% error budget consumption. Each has the same area."
   size="small"
 %}
 
-## Alerting on budget consumption
+## Designing better alerts
 
-Let's say we want to know when we've used up 10% of our budget. It takes 30 days for this burn rate to exhaust the budget so our alert window should be 3 days. What happens to detection time for different error rates here?
+ALerting after using 0.023% of our error budget is going to generate too many noisy alerts for non-significant events. Instead, we could alert after using 10% of our budget. We're alerting on a burn rate of 1, so it takes 3 days to consume 10% of the budget. This means we can set our alert window to 3 days.
+
+What happens to detection time for different error rates here?
 
 <div class="table-wrapper" markdown="block">
 
@@ -273,18 +269,18 @@ Let's say we want to know when we've used up 10% of our budget. It takes 30 days
 
 </div>
 
-It seems our detection time doesn't need to be so short at all. Maybe a *much* longer window is actually OK, something like this:
+By looking at how long it takes to exhaust the error budget, we see that we can justify a much longer detection time. So our alerting rule becomes:
 
 - **Error threshold:** 0.1%<br>
 - **Alert window:** 3 days
 
-If it takes a really long time to exhaust the error budget, do we even need to send an alert and potentially wake someone up? Maybe w can just send a notification for someone to investigate during working hours.
+Now, if it takes a really long time to exhaust the error budget, do we even need to send an alert and potentially wake someone up? Maybe we can just send a notification for someone to investigate during working hours.
 
 To do this, we can create **multiple alerting rules**. A short window for high burn rates and a long window for low burn rates. For the low burn rates, we might not need to page someone urgently, but instead send a notification to investigate later.
 
-If the problem starts on a Friday night, we need to make sure we enough time to respond on Monday morning. So let's try taking 5 days as our dividing line, which is a burn rate of 6. If time to exhaustion is less than five days, we can treat this more urgently.
+If the problem starts on a Friday night, we need to make sure we enough time to respond when someone checks the notifications on Monday morning. So let's try taking 5 days as our dividing line, which gives us a burn rate of 6. If time to exhaustion is less than 5 days, we can treat this more urgently.
 
-We might want to be more conservative with our error budget at high burn rates. To work out what alert windows to configure, we can rearrange the equation above into this:
+We might want to be more conservative with our error budget at high burn rates. To work out what alert windows to configure, we can rearrange the equation above. If we want to alert after using 5% of the error budget, our alert window would need to be 6 hours (0.25 days).
 
 ```python
 alert_window = error_budget_consumed * slo_window / burn_rate
@@ -293,19 +289,31 @@ alert_window = error_budget_consumed * slo_window / burn_rate
 alert_window = 0.05 * 30 / 6 = 0.25 # days
 ```
 
-To catch all significant events and protect our SLO, we'll need to keep our alerting rule for a burn rate of 1. Our alerting rule for a burn rate of 6 will be more urgent, and we'll configure it to consume less error budget. Detection time for a complete outage is more than, which we could reduce to under a minute by using another alerting rule with an even shorter window for a higher burn rate.
+Remember, shrinking the alert window reduces precision. But, increasing the error rate (or burn rate in this case) *increases* precision, so these somewhat balance out.
 
-What we end up with is something like this.
+Optionally, we can add another alert for even more urgent events. What we end up with is something like this:
 
 <div class="table-wrapper" markdown="block">
 
-| Burn rate | Error budget consumed | Alert window | Urgency |
+| Burn rate | Error budget consumed | Alert window | Action |
 | :-- | :-- | :-- | :-- |
 | 14.4 | 2% | 1 hour | Page |
 | 6 | 5% | 6 hours | Page |
 | 1 | 10% | 3 days | Notification |
 
 </div>
+
+{% include figure.html
+  img_src="/public/assets/alerting/multi-alert.png"
+  caption="Multiple alert detection zones (not to scale)"
+  size="small"
+%}
+
+The advantages of this system:
+
+1. Any event which could result in failing the SLO will be alerted on.
+2. Events need to be quite significant to generate an alert. We need to use at least 2% of the error budget for any alert to fire. Low error rates need to consume at least 10% of the error budget.
+3. Only urgent alerts will result in an on-call engineer being paged.
 
 Now we know what we're aiming for, we can take a look at writing the alerting rules.
 
