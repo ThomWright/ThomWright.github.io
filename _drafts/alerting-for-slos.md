@@ -6,11 +6,11 @@ tags: [alerting, observability, reliability]
 
 <!-- markdownlint-disable MD033 -->
 
-Getting alerts right can be hard. It’s not uncommon to see alerts which are too noisy, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short. On the other hand, many alerts are not sensitive enough and errors can occur at high rates without detection.
+Getting alerts right can be hard. It’s not uncommon to see alerts which are too noisy, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short. This can cause alert fatigue, and result in real incidents being ignored. On the other hand, many alerts are not sensitive enough and errors can occur at high rates without detection.
 
 In this post I’ll talk through how I approach writing alerts which find a better balance.
 
-I'll present a [simple example](#simple-example) which has some problems, and set out to improve it. To do that, we need to know how to [measure success](#measuring-success). I'll start by considering [sensitivity and precision](#improving-sensitivity-and-precision), and introduce [burn rates](#burn-rates) and [error budgets](#error-budget-consumption). Using these ideas we can design a [better set of alerts](#designing-better-alerts). Finally I'll go through actually [writing the new alerting rules](#writing-the-alerting-rules).
+I'll present a [simple example](#simple-example) which has some problems, and set out to improve it. To do that, we need to know how to [measure success](#measuring-success). I'll start by considering [sensitivity and precision](#improving-sensitivity-and-precision), introduce [burn rates](#burn-rates) and [error budgets](#error-budget-consumption) to determine appropriate [detection times](#detection-time), and show how to handle different [levels of urgency](#urgency). Putting the pieces together we can [design a better set of alerts](#final-design). Finally I'll go through actually [writing the new alerting rules](#writing-the-alerting-rules).
 
 If you like you can jump straight to the [conclusions](#conclusions).
 
@@ -47,15 +47,18 @@ Let's assume we have an SLO of 99.9% availability (successful requests) over 30 
   content="I'll be using this example SLO for the rest of this post."
 %}
 
-One of the simplest alerts we could write is something like this in [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/):
+One of the simplest alerts we could write is something like this [Prometheus alerting rule](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) written in [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/):
 
-```text
-((
-  sum(rate(requests_errors_total[5m]))
-  /
-  sum(rate(requests_total[5m]))
-) * 100
-) < 99.8
+```yaml
+# Simplified for clarity
+- alert: HighErrorRate
+  expr: >
+    ((
+      sum(rate(requests_errors_total[5m]))
+      /
+      sum(rate(requests_total[5m]))
+    ) * 100
+    ) > 0.2
 ```
 
 This alerts if we have an error rate higher than 0.2%, averaged over the last 5 minutes.
@@ -64,6 +67,11 @@ We could write this as:
 
 - **Error threshold:** 0.2%<br>
 - **Alert window:** 5 minutes
+
+{% include callout.html
+  type="warning"
+  content="This alerting rule is deliberately not using the `for:` clause. The problems with this clause are well described in Google's [Site Reliability Workbook](https://sre.google/workbook/alerting-on-slos/#3-incrementing-alert-duration)."
+%}
 
 There are several ways this could miss significant events, as illustrated below. The blue dashed line is our SLO error threshold, the yellow box represents the alert detection threshold, and the red boxes show errors. If the area of the red box is large than the yellow box then the alert will fire.
 
@@ -252,11 +260,11 @@ I like to think of this *error budget consumption* number as the area of the box
   size="small"
 %}
 
-## Designing better alerts
+## Detection time
 
-ALerting after using 0.023% of our error budget is going to generate too many noisy alerts for non-significant events. Instead, we could alert after using 10% of our budget. We're alerting on a burn rate of 1, so it takes 3 days to consume 10% of the budget. This means we can set our alert window to 3 days.
+Alerting after using 0.023% of our error budget is going to generate too many noisy alerts for non-significant events. Instead of designing alerts based on error rates, we could start from error budget consumption, and only alert after a **significant** amount of budget has been consumed. For example, we could alert after using 10% of our budget. For a burn rate of 1, it takes 3 days to consume 10% of the budget.
 
-What happens to detection time for different error rates here?
+What happens to **detection time** for different error rates if we use a 3 day alert window?
 
 <div class="table-wrapper" markdown="block">
 
@@ -269,12 +277,14 @@ What happens to detection time for different error rates here?
 
 </div>
 
-By looking at how long it takes to exhaust the error budget, we see that we can justify a much longer detection time. So our alerting rule becomes:
+By looking at how long it takes to exhaust the error budget, we see that we can justify a much longer detection time, which gives us better **precision**. So our alerting rule now becomes:
 
-- **Error threshold:** 0.1%<br>
+- **Burn rate:** 1<br>
 - **Alert window:** 3 days
 
-Now, if it takes a really long time to exhaust the error budget, do we even need to send an alert and potentially wake someone up? Maybe we can just send a notification for someone to investigate during working hours.
+## Urgency
+
+Now, if it takes a really long time to exhaust the error budget, do we even need to send page someone and potentially wake them up? In this case, perhaps we could just send a notification for someone to investigate during working hours.
 
 To do this, we can create **multiple alerting rules**. A short window for high burn rates and a long window for low burn rates. For the low burn rates, we might not need to page someone urgently, but instead send a notification to investigate later.
 
@@ -291,7 +301,11 @@ alert_window = 0.05 * 30 / 6 = 0.25 # days
 
 Remember, shrinking the alert window reduces precision. But, increasing the error rate (or burn rate in this case) *increases* precision, so these somewhat balance out.
 
-Optionally, we can add another alert for even more urgent events. What we end up with is something like this:
+Optionally, we can add another alert for even more urgent events.
+
+## Final design
+
+Now we have all we need to design our new alerting rules! What we end up with is something like this:
 
 <div class="table-wrapper" markdown="block">
 
@@ -319,7 +333,48 @@ Now we know what we're aiming for, we can take a look at writing the alerting ru
 
 ## Writing the alerting rules
 
-TODO: write some alerting rules! How are these calculated? Do we need recording rules?
+TODO: write some alerting rules! How are these calculated? How efficiently? Do we need recording rules?
+
+Let's start with our `burn rate = 1` alert.
+
+- **Burn rate:** 1
+- **Alert window:** 3 days
+
+```yaml
+expr: >
+  ((
+    sum(rate(requests_errors_total[3d]))
+    /
+    sum(rate(requests_total[3d]))
+  ) * 100
+  ) > 0.1
+```
+
+This is gonna be slow. Looking back over 3 days can be a lot of data.
+
+You might think: "rate just does `(last_sample - first_sample) / time_range`, what's the problem?". Conceptually, yes, but it needs to look back over the entire time period to adjust for counter resets in (e.g. when your service restarts). This turns the calculation from constant to linear. Not good!
+
+TODO: Can we get prometheus to calculate this efficiently? I can't find a way. Recording rules don't seem to help much. Every rule evaluation will do the entire rate calculation again. It can't incrementally build upon the previous result.
+
+<!-- ```yaml
+expr: (
+        job:slo_errors_per_request:ratio_rate1h{job="myjob"} > (14.4*0.001)
+      or
+        job:slo_errors_per_request:ratio_rate6h{job="myjob"} > (6*0.001)
+      )
+severity: page
+
+expr: job:slo_errors_per_request:ratio_rate3d{job="myjob"} > 0.001
+severity: ticket
+```
+
+```yaml
+record: job:slo_errors_per_request:ratio_rate10m
+expr: >
+  sum(rate(slo_errors[10m])) by (job)
+    /
+  sum(rate(slo_requests[10m])) by (job)
+``` -->
 
 ## Improving reset time
 
@@ -337,25 +392,19 @@ TODO:
 
 ## Conclusions
 
+TODO: something about engineering trade-offs...
+
 1. To improve **precision** (make alerts less noisy), we can widen the *alert window* or increase the *error threshold*.
 2. To improve **sensitivity** (make sure we catch all significant errors), we can reduce our *error threshold*. Setting it to match our SLO rate gives us 100% sensitivity.
 3. To choose acceptable **detection times** we can look at *burn rates* and *error budgets*. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can choose an acceptable *alert window*.
-4. We can make use of *multiple alerting rules* for different severities. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers.
-    - For low urgency:
-      - Precision: lower
-      - Sensitivity: higher
-      - Detection time: longer
-      - Action: notify
-    - For high urgency:
-      - Precision: higher
-      - Sensitivity: lower
-      - Detection time: shorter
-      - Action: page
+4. We can make use of *multiple alerting rules* for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers.
 
-- TODO:
-  - `for: <duration>` considered harmful
-  - Long windows are Good, actually
-    - As long as you're calculating them efficiently...
+    | Urgency | Precision | Sensitivity | Detection time | Action |
+    | :-- | :-- | :-- | :-- | :-- |
+    | **High** | Higher | Lower | Shorter | Page |
+    | **Low** | Lower | Higher | Longer | Notify |
+
+5. TODO: reset time
 
 - TODO: Building something *really good* often means striving for better than something like an SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is not worth waking people up for, instead it's a job for notification-level alerts. NOTE: Do not impose this on other people/teams!
 
@@ -364,3 +413,10 @@ TODO:
 - [Google SRE Workbook - Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/)
 - [Prometheus - Querying basics](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 - [Precision and sensitivity](https://en.wikipedia.org/wiki/Precision_and_recall)
+
+https://docs.bitnami.com/tutorials/implementing-slos-using-prometheus
+
+| Urgency | Precision | Sensitivity | Detection time | Action |
+| :-- | :-- | :-- | :-- | :-- |
+| **High** | Higher | Lower | Shorter | Page |
+| **Low** | Lower | Higher | Longer | Notify |
