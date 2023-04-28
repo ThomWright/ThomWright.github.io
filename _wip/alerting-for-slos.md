@@ -173,6 +173,12 @@ So we now have this alerting rule:
 
 This is arguably better: it has improved both sensitivity and precision, with a slightly longer detection time.
 
+{% include figure.html
+  img_src="/public/assets/alerting/adjustments.png"
+  caption="Adjusting the error threshold and alert window"
+  size="med"
+%}
+
 At this point we might ask ourselves:
 
 1. Is this precise enough? Can we do even better?
