@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Automatic test retries
+tags: [testing, reliability, antipatterns]
 ---
 
 One day, some sleazy individual might come up to you and whisper in your ear:
