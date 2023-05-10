@@ -4,6 +4,7 @@ title: ACID transaction
 short: acid-transaction
 redirect_from:
   - /failure-patterns/atomic-transaction
+  - /failure-patterns/atomic-transaction/
 group: single-system
 tagline: Perform multiple writes, such that either all of them or none of them succeed
 sort_key: 1

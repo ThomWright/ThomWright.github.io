@@ -4,7 +4,7 @@
 
   <header>
     <h1>
-      {{ article.title }}
+      {% if article.group == "antipattern" %}Antipattern: {% endif %}{{ article.title }}
     </h1>
   </header>
 

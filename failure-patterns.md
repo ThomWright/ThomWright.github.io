@@ -60,6 +60,17 @@ Sometimes inconsistency is unavoidable, whether by design, or simply because of 
 
 {% endfor %}
 
+## Antipatterns
+
+Some patterns exist which should be avoided. They may seem to offer benefits, but either do not deliver what they seem to or have other serious drawbacks.
+
+{% assign antipatterns = site.failure-patterns | where: 'group', 'antipattern' | sort: "sort_key", "last" %}
+{% for pattern in antipatterns %}[{{ pattern.title }}]({{ pattern.url }})
+
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+
+{% endfor %}
+
 ## Comparisons
 
 When consistency is important, you will generally need to choose (at least) one of the patterns in the table below.
