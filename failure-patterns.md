@@ -66,13 +66,12 @@ When consistency is important, you will generally need to choose (at least) one 
 
 <div class="table-wrapper" markdown="block">
 
-|  | ACID transaction | Distributed transaction | Transactional outbox | Saga |
-|:--|:--|:--|:--|:--|
-| **Num. systems** | Single | Many | Many | Many |
-| **Consistency** | Consistent* | Consistent* | Eventual | Eventual |
-| **Atomicity** | Atomic* | Atomic* | Non-atomic | Non-atomic |
-| **Synchronicity** | Sync | Sync | Async | Async |
-| **Complexity** | Simple | Complex | Moderate | Complex |
+|                         | **Number of systems**   | **Consistency**       | **Atomicity**   | **Synchronicity** | **Complexity** |
+|:--                      |:--                    |:--              |:--                |:--                |:--      |
+| ACID transaction        | One                   | Consistent\*    | Atomic\*          | Sync              | Simple   |
+| Distributed transaction | Many                  | Consistent\*    | Atomic\*          | Sync              | Complex  |
+| Transactional outbox    | Many                  | Eventual        | Non-atomic        | Async             | Moderate |
+| Saga                    | Many                  | Eventual        | Non-atomic        | Async             | Complex  |
 
 </div>
 
