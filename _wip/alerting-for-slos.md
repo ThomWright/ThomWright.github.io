@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Writing better alerts"
+title: Designing alerts for SLOs
 tags: [alerting, observability, reliability]
 ---
 
@@ -136,12 +136,12 @@ Detection time is shorter for higher error rates (which is good!) and wider aler
 <div class="table-wrapper" markdown="block">
 
 | Error rate | Detection time (5m window) | Detection time (1h window) |
-| :-- | :-- | :-- |
-| 0.1% | ∞ | ∞ |
-| 0.2% | 5m | 1h |
-| 1% | 1m | 12m |
-| 10% | 6s | 1.2m |
-| 100% | 0.6s | 7.2s |
+|:-----------|:---------------------------|:---------------------------|
+| 0.1%       | ∞                          | ∞                          |
+| 0.2%       | 5m                         | 1h                         |
+| 1%         | 1m                         | 12m                        |
+| 10%        | 6s                         | 1.2m                       |
+| 100%       | 0.6s                       | 7.2s                       |
 
 </div>
 
@@ -161,10 +161,10 @@ Let's start by looking at **sensitivity**. Our SLO requires 99.9% successful req
 However, this reduces **precision**! Alerts will now fire for shorter and lower error spikes which are not significant. Wider alert windows improve precision, so let's try increasing this to 1 hour. We can look at how high an error spike would need to be to trigger an alert:
 
 | Spike duration | Error rate to trigger alert |
-| :-- | :-- |
-| 1m | > 6% |
-| 5m | > 1.2% |
-| 1h | > 0.1% |
+|:---------------|:----------------------------|
+| 1m             | > 6%                        |
+| 5m             | > 1.2%                      |
+| 1h             | > 0.1%                      |
 
 So we now have this alerting rule:
 
@@ -223,15 +223,15 @@ Here’s a handy table with some examples:
 <div class="table-wrapper" markdown="block">
 
 | Error rate | Burn rate (99.9% SLO) | Time to exhaustion (30 day SLO) |
-| :-- | :-- | :-- |
-| 0.1% | 1 | 30 days |
-| 0.2% | 2 | 15 days |
-| 0.5% | 5 | 6 days |
-| 0.6% | 6 | 5 days |
-| 1% | 10 | 3 days |
-| 1.44% | 14.4 | 50 hours |
-| 3.6% | 36 | 20 hours |
-| 100% | 1,000 | 43 minutes |
+|:-----------|:----------------------|:--------------------------------|
+| 0.1%       | 1                     | 30 days                         |
+| 0.2%       | 2                     | 15 days                         |
+| 0.5%       | 5                     | 6 days                          |
+| 0.6%       | 6                     | 5 days                          |
+| 1%         | 10                    | 3 days                          |
+| 1.44%      | 14.4                  | 50 hours                        |
+| 3.6%       | 36                    | 20 hours                        |
+| 100%       | 1,000                 | 43 minutes                      |
 
 </div>
 
@@ -275,11 +275,11 @@ What happens to **detection time** for different error rates if we use a 3 day a
 <div class="table-wrapper" markdown="block">
 
 | Error rate | Burn rate | Detection time | Time left to exhaustion |
-| :-- | :-- | :-- | :-- |
-| 0.1% | 1 | 3 days | 27 days |
-| 0.6% | 6 | 12 hours | 4.5 days |
-| 1.44% | 14.4 | 5 hours | ~2.75 days |
-| 100% | 1000 | ~4 minutes | <40 minutes |
+|:-----------|:----------|:---------------|:------------------------|
+| 0.1%       | 1         | 3 days         | 27 days                 |
+| 0.6%       | 6         | 12 hours       | 4.5 days                |
+| 1.44%      | 14.4      | 5 hours        | ~2.75 days              |
+| 100%       | 1000      | ~4 minutes     | <40 minutes             |
 
 </div>
 
@@ -315,13 +315,17 @@ Now we have all we need to design our new alerting rules! What we end up with is
 
 <div class="table-wrapper" markdown="block">
 
-| Burn rate | Error budget consumed | Alert window | Action |
-| :-- | :-- | :-- | :-- |
-| 14.4 | 2% | 1 hour | Page |
-| 6 | 5% | 6 hours | Page |
-| 1 | 10% | 3 days | Notification |
+| Burn rate | Error budget consumed | Alert window | Detection time\* | Action       |
+|:----------|:----------------------|:-------------|:-----------------|:-------------|
+| 14.4      | 2%                    | 1 hour       | ~50 secs         | Page         |
+| 6         | 5%                    | 6 hours      | ~2 min           | Page         |
+| 1         | 10%                   | 3 days       | ~4 min           | Notification |
 
 </div>
+
+*\* For a complete outage (100% error rate).*
+
+Visually, it looks like this:
 
 {% include figure.html
   img_src="/public/assets/alerting/multi-alert.png"
@@ -386,6 +390,16 @@ expr: >
 
 TODO: I haven't talked much about reset time yet. Time for multi-window alerts.
 
+<div class="table-wrapper" markdown="block">
+
+| Burn rate | Error budget consumed | Long alert window | Short alert window | Action       |
+|:----------|:----------------------|:------------------|:-------------------|:-------------|
+| 14.4      | 2%                    | 1 hour            | 5 mins             | Page         |
+| 6         | 5%                    | 6 hours           | 30 mins            | Page         |
+| 1         | 10%                   | 3 days            | 6 hours            | Notification |
+
+</div>
+
 ## Caveats
 
 TODO:
@@ -405,10 +419,10 @@ TODO: something about engineering trade-offs...
 3. To choose acceptable **detection times** we can look at *burn rates* and *error budgets*. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can choose an acceptable *alert window*.
 4. We can make use of *multiple alerting rules* for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers.
 
-    | Urgency | Precision | Sensitivity | Detection time | Action |
-    | :-- | :-- | :-- | :-- | :-- |
-    | **High** | Higher | Lower | Shorter | Page |
-    | **Low** | Lower | Higher | Longer | Notify |
+    | Urgency  | Precision | Sensitivity | Detection time | Action |
+    |:---------|:----------|:------------|:---------------|:-------|
+    | **High** | Higher    | Lower       | Shorter        | Page   |
+    | **Low**  | Lower     | Higher      | Longer         | Notify |
 
 5. TODO: reset time
 
