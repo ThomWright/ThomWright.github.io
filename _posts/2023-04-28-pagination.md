@@ -152,6 +152,15 @@ We use the identity of an item on a page boundary to place our cursor. If we wan
 
 Going back to our JSON example, we would write the query to fetch page two like this:
 
+```json
+[
+  {"id": "7ba8", "created_at": "2020-03-01"},
+  {"id": "9c67", "created_at": "2020-02-01"},
+  {"id": "4b98", "created_at": "2020-02-01"},
+  {"id": "7f39", "created_at": "2020-01-01"}
+]
+```
+
 ```sql
 SELECT * FROM items
 
