@@ -78,13 +78,13 @@ There are several ways this could miss significant events, as illustrated below.
 <div class="multi-figure">
 {% include figure.html
   img_src="/public/assets/alerting/simple-spikes.png"
-  caption="False negative: 30-second 0.3% error spikes"
+  caption="False negative: 30-second 0.3% error spikes."
   size="small"
 %}
 
 {% include figure.html
   img_src="/public/assets/alerting/simple-steady.png"
-  caption="False negative: steady 0.15% error rate"
+  caption="False negative: steady 0.15% error rate."
   size="small"
 %}
 </div>
@@ -93,7 +93,7 @@ First, we see an error spikes of 0.3%, lasting 30 seconds each, an average of 0.
 
 {% include figure.html
   img_src="/public/assets/alerting/fp-spike.png"
-  caption="False positive: 1% spike for 1 minute"
+  caption="False positive: 1% spike for 1 minute."
   size="small"
 %}
 
@@ -175,7 +175,7 @@ This is arguably better: it has improved both sensitivity and precision, with a 
 
 {% include figure.html
   img_src="/public/assets/alerting/adjustments.png"
-  caption="Adjusting the error threshold and alert window"
+  caption="Adjusting the error threshold and alert window."
   size="med"
 %}
 
@@ -200,7 +200,7 @@ A burn rate of 1 will use up the exact error budget in the SLO window. For our e
 
 {% include figure.html
   img_src="/public/assets/alerting/remaining-budget.png"
-  caption="Burn rates using up an error budget"
+  caption="Burn rates using up an error budget."
   size="small"
 %}
 
@@ -305,13 +305,9 @@ alert_window = error_budget_consumed * slo_window / burn_rate
 alert_window = 0.05 * 30 / 6 = 0.25 # days
 ```
 
-Remember, shrinking the alert window reduces precision. But, increasing the error rate (or burn rate in this case) *increases* precision, so these somewhat balance out.
+Remember, shrinking the alert window reduces precision. But increasing the error threshold (or burn rate in this case) *increases* precision, so these somewhat balance out.
 
-Optionally, we can add another alert for even more urgent events.
-
-## Final design
-
-Now we have all we need to design our new alerting rules! What we end up with is something like this:
+Optionally, we can add another alert for even more urgent events, and end up with something like the table below.
 
 <div class="table-wrapper" markdown="block">
 
@@ -325,82 +321,68 @@ Now we have all we need to design our new alerting rules! What we end up with is
 
 *\* For a complete outage (100% error rate).*
 
+## Reset time
+
+This is looking good, but still has a problem with reset time. Taking the 14.4 burn rate as an example, it will alert on a complete outage in less than a minute, and after the error rate goes back down to 0% it will take a full 59 minutes for the alert to *stop* firing.
+
+The diagram below shows why. Any large enough spike of errors within the 1 hour window will trigger the alert, even if it has already stopped.
+
+{% include figure.html
+  img_src="/public/assets/alerting/reset-spike.png"
+  caption="An error spike moving further back through the window as time passes."
+  size="small"
+%}
+
+We can counter this by combining two windows, our existing window and a shorter window. Taking our 1 hour window as an example, we could fire an alert only if both windows detect a high enough error rate. As the high error rate period to the left, the short window will stop firing and the alert will reset.
+
+{% include figure.html
+  img_src="/public/assets/alerting/reset-short-window.png"
+  caption="Using a short window to select only current errors. Short window shown in orange."
+  size="small"
+%}
+
+With that in mind, we can adjust our alerting rules like so:
+
+<div class="table-wrapper" markdown="block">
+
+| Burn rate | Error budget consumed | Long window | Short window |
+|:----------|:----------------------|:------------|:-------------|
+| 14.4      | 2%                    | 1 hour      | 5 mins       |
+| 6         | 5%                    | 6 hours     | 30 mins      |
+| 1         | 10%                   | 3 days      | 6 hours      |
+
+</div>
+
+## Final design
+
+Now we have all we need to design our new alerting rules! What we end up with is something like this:
+
+<div class="table-wrapper" markdown="block">
+
+| Error rate | Long window | Short window | Action       |
+|:-----------|:------------|:-------------|:-------------|
+| 1.44%      | 1 hour      | 5 mins       | Page         |
+| 0.6%       | 6 hours     | 30 mins      | Page         |
+| 0.1%       | 3 days      | 6 hours      | Notification |
+
+</div>
+
 Visually, it looks like this:
 
 {% include figure.html
   img_src="/public/assets/alerting/multi-alert.png"
-  caption="Multiple alert detection zones (not to scale)"
+  caption="Multiple alert detection zones (not to scale)."
   size="small"
 %}
 
 The advantages of this system:
 
 1. Any event which could result in failing the SLO will be alerted on.
-2. Events need to be quite significant to generate an alert. We need to use at least 2% of the error budget for any alert to fire. Low error rates need to consume at least 10% of the error budget.
+2. Events need to be quite significant to generate an alert. At least 2% of the error budget must be used for any alert to fire. Low error rates need to consume at least 10% of the error budget.
 3. Only urgent alerts will result in an on-call engineer being paged.
+4. The alerts will reset quickly after the event has ended.
 
-Now we know what we're aiming for, we can take a look at writing the alerting rules.
-
-## Writing the alerting rules
-
-TODO: write some alerting rules! How are these calculated? How efficiently? Do we need recording rules?
-
-Let's start with our `burn rate = 1` alert.
-
-- **Burn rate:** 1
-- **Alert window:** 3 days
-
-```yaml
-expr: >
-  ((
-    sum(rate(requests_errors_total[3d]))
-    /
-    sum(rate(requests_total[3d]))
-  ) * 100
-  ) > 0.1
-```
-
-This is gonna be slow. Looking back over 3 days can be a lot of data.
-
-You might think: "rate just does `(last_sample - first_sample) / time_range`, what's the problem?". Conceptually, yes, but it needs to look back over the entire time period to adjust for counter resets in (e.g. when your service restarts). This turns the calculation from constant to linear. Not good!
-
-TODO: Can we get prometheus to calculate this efficiently? I can't find a way. Recording rules don't seem to help much. Every rule evaluation will do the entire rate calculation again. It can't incrementally build upon the previous result.
-
-<!-- ```yaml
-expr: (
-        job:slo_errors_per_request:ratio_rate1h{job="myjob"} > (14.4*0.001)
-      or
-        job:slo_errors_per_request:ratio_rate6h{job="myjob"} > (6*0.001)
-      )
-severity: page
-
-expr: job:slo_errors_per_request:ratio_rate3d{job="myjob"} > 0.001
-severity: ticket
-```
-
-```yaml
-record: job:slo_errors_per_request:ratio_rate10m
-expr: >
-  sum(rate(slo_errors[10m])) by (job)
-    /
-  sum(rate(slo_requests[10m])) by (job)
-``` -->
-
-## Improving reset time
-
-TODO: I haven't talked much about reset time yet. Time for multi-window alerts.
-
-<div class="table-wrapper" markdown="block">
-
-| Burn rate | Error budget consumed | Long alert window | Short alert window | Action       |
-|:----------|:----------------------|:------------------|:-------------------|:-------------|
-| 14.4      | 2%                    | 1 hour            | 5 mins             | Page         |
-| 6         | 5%                    | 6 hours           | 30 mins            | Page         |
-| 1         | 10%                   | 3 days            | 6 hours            | Notification |
-
-</div>
-
-## Caveats
+### Caveats
 
 TODO:
 
@@ -408,7 +390,92 @@ TODO:
 - The effect of high and low SLOs (90% and 99.999%)
   - And the effect of short windows? E.g. daily? Or 15 minutes?
 - Not all requests are equal - can classify requests and have different SLOs for different classes
+- SLAs can exist for multiple clients. One client might only account for a small percentage of traffic. A 100% error rate for one client might not trigger an alert, but still cause an SLA breach.
 - If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough.
+
+Now we (finally!) know what we're aiming for, we can take a look at writing these alerting rules.
+
+## Writing the alerting rules
+
+TODO: I'll be focusing on Prometheus here. I expect some of the concepts will apply to other systems.
+
+TODO: write some alerting rules! How are these calculated? How efficiently? Do we need recording rules?
+
+Let's start with our `burn rate = 1` alert, with just a single window for now.
+
+- **Burn rate:** 1
+- **Alert window:** 3 days
+
+```yaml
+alert: MyServiceAvailabilityLowUrgency
+expr: >
+  (
+    100 * sum(rate(requests_errors_total{service="my-service"}[3d]))
+    /
+    sum(rate(requests_total{service="my-service"}[3d]))
+  ) > 0.1
+```
+
+This is gonna be slow. Looking back over 3 days can be a lot of data.
+
+You might think: "rate just does `(last_sample - first_sample) / time_range`, what's the problem?". Conceptually, yes, but with two important caveats:
+
+1. It needs to aggregate (`sum(...)`) over an arbitrary number of time series.
+2. It needs to look back over the entire time period to adjust for counter resets in (e.g. when your service restarts). This turns the calculation from constant to linear. Not good!
+
+If your Prometheus instance is configured to use a 15s scrape interval, that's `4 * 60 * 24 * 3 = 17,280` samples per time series to query.
+
+Luckily, there's another way!
+
+```yaml
+## Hourly averages
+
+### Average rate of requests (within SLI) per service
+- record: service:requests_total:rate1h
+  expr: sum by (service)(rate(grpc_server_sli_total[1h]))
+
+### Average rate of errored requests per service
+- record: service:requests_errors_total:rate1h
+  expr: sum by (service)(rate(grpc_server_sli_total{error="true"}[1h]))
+
+### Average error rate % (errors / total) per service
+### Range: 0-100
+- record: service:requests_error_ratio:rate1h
+  expr: >
+    100 * service:requests_errors_total:rate1h
+    /
+    service:requests_total:rate1h
+
+## Average error rates %
+
+### 3 days
+- record: service:requests_error_ratio:rate3d
+  expr: >
+    avg_over_time(service:requests_error_ratio:rate1h[3d:1h])
+```
+
+Here we have some recording rules to pre-calculate hourly average request and error rates, with hourly error ratios. These are quick to calculate using recording rules: Prometheus only needs to look back over the previous hour.
+
+Then, and this is a neat trick, we take 1 hourly error ratio per hour, and calculate the average over the last 3 days. An average of two or more averages is the same as the average of all the underlying samples. Prometheus only needs to consider `24 * 3 = 72` samples per time series, and there will only be 1 time series per service.
+
+We can then write our alert like so:
+
+```yaml
+alert: MyServiceAvailabilityLowUrgency
+expr: service:requests_error_ratio:rate3d{service="my-service"} > 0.1
+```
+
+And for improved reset time:
+
+```yaml
+alert: MyServiceAvailabilityLowUrgency
+expr: >
+  service:requests_error_ratio:rate3d{service="my-service"} > 0.1
+  and
+  service:requests_error_ratio:rate6h{service="my-service"} > 0.1
+```
+
+We can do a similar trick for the other alerting rules.
 
 ## Conclusions
 
