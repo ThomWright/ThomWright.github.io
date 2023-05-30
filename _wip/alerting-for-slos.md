@@ -2,6 +2,9 @@
 layout: post
 title: Designing alerts for SLOs
 tags: [alerting, observability, reliability]
+# redirect_from:
+#   - /wip/alerting-for-slos
+#   - /wip/alerting-for-slos/
 ---
 
 <!-- markdownlint-disable MD033 -->
@@ -53,12 +56,12 @@ One of the simplest alerts we could write is something like this [Prometheus ale
 # Simplified for clarity
 - alert: HighErrorRate
   expr: >
-    ((
-      sum(rate(requests_errors_total[5m]))
+    (
+      sum(rate(requests_total{error="true"}[5m]))
       /
       sum(rate(requests_total[5m]))
-    ) * 100
-    ) > 0.2
+    )
+    > 0.002
 ```
 
 This alerts if we have an error rate higher than 0.2%, averaged over the last 5 minutes.
@@ -131,7 +134,7 @@ Reducing the error threshold to 0.1% would make the alert more sensitive, but le
 detection_time = error_threshold * alert_window / error_rate
 ```
 
-Detection time is shorter for higher error rates (which is good!) and wider alert windows take longer to detect a given error rate. A few examples for our example 0.2% error threshold:
+**Detection times** and **reset times** are affected by the alert window: wider windows take longer both to detect a given error rate and to reset after the errors are resolved. Detection times are also naturally shorter for higher error rates, as shown in the table below for our example 0.2% error threshold.
 
 <div class="table-wrapper" markdown="block">
 
@@ -150,9 +153,12 @@ Detection time is shorter for higher error rates (which is good!) and wider aler
   content="In practice, alerting rules will likely be run at regular intervals, e.g. 10 seconds. In which case it could take up to 10 seconds to detect a 100% error rate."
 %}
 
-A shorter alert window also reduces precision. Imagine using a 1 minute window -- a single 1 minute period of 0.2% error rate could trigger the alert despite not being significant. This would not trigger when using the 5 minute window.
+To summarise:
 
-TODO: reset time
+- Wider window = higher precision, but longer detection and reset times.
+- Lower error threshold = higher sensitivity, but lower precision.
+
+This looks like a difficult problem to solve: every change we can make improves one measure, but worsens others! Luckily, there are a few tricks we can use.
 
 ## Improving sensitivity and precision
 
@@ -292,7 +298,7 @@ By looking at how long it takes to exhaust the error budget, we see that we can 
 
 Now, if it takes a really long time to exhaust the error budget, do we even need to send page someone and potentially wake them up? In this case, perhaps we could just send a notification for someone to investigate during working hours.
 
-To do this, we can create **multiple alerting rules**. A short window for high burn rates and a long window for low burn rates. For the low burn rates, we might not need to page someone urgently, but instead send a notification to investigate later.
+To do this, we can create **multiple windows**. A short window for high burn rates and a long window for low burn rates. For the low burn rates, we might not need to page someone urgently, but instead send a notification to investigate later.
 
 If the problem starts on a Friday night, we need to make sure we enough time to respond when someone checks the notifications on Monday morning. So let's try taking 5 days as our dividing line, which gives us a burn rate of 6. If time to exhaustion is less than 5 days, we can treat this more urgently.
 
@@ -382,24 +388,14 @@ The advantages of this system:
 3. Only urgent alerts will result in an on-call engineer being paged.
 4. The alerts will reset quickly after the event has ended.
 
-### Caveats
-
-TODO:
-
-- Low traffic services
-- The effect of high and low SLOs (90% and 99.999%)
-  - And the effect of short windows? E.g. daily? Or 15 minutes?
-- Not all requests are equal - can classify requests and have different SLOs for different classes
-- SLAs can exist for multiple clients. One client might only account for a small percentage of traffic. A 100% error rate for one client might not trigger an alert, but still cause an SLA breach.
-- If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough.
+## Writing the alerting rules
 
 Now we (finally!) know what we're aiming for, we can take a look at writing these alerting rules.
 
-## Writing the alerting rules
-
-TODO: I'll be focusing on Prometheus here. I expect some of the concepts will apply to other systems.
-
-TODO: write some alerting rules! How are these calculated? How efficiently? Do we need recording rules?
+{% include callout.html
+  type="info"
+  content="I'll be focusing on Prometheus here. I expect some of the concepts will apply to other systems."
+%}
 
 Let's start with our `burn rate = 1` alert, with just a single window for now.
 
@@ -410,10 +406,11 @@ Let's start with our `burn rate = 1` alert, with just a single window for now.
 alert: MyServiceAvailabilityLowUrgency
 expr: >
   (
-    100 * sum(rate(requests_errors_total{service="my-service"}[3d]))
+    sum(rate(requests_total{service="my-service", error="true"}[3d]))
     /
     sum(rate(requests_total{service="my-service"}[3d]))
-  ) > 0.1
+  )
+  > 0.001
 ```
 
 This is gonna be slow. Looking back over 3 days can be a lot of data.
@@ -423,7 +420,12 @@ You might think: "rate just does `(last_sample - first_sample) / time_range`, wh
 1. It needs to aggregate (`sum(...)`) over an arbitrary number of time series.
 2. It needs to look back over the entire time period to adjust for counter resets in (e.g. when your service restarts). This turns the calculation from constant to linear. Not good!
 
-If your Prometheus instance is configured to use a 15s scrape interval, that's `4 * 60 * 24 * 3 = 17,280` samples per time series to query.
+{% include callout.html
+  type="aside"
+  content="Number 2 is speculation based on how I assume Prometheus works, they might do something clever internally to avoid this."
+%}
+
+If your Prometheus instance is configured to use a 10s scrape interval, that's `6 * 60 * 24 * 3 = 25,920` samples per time series to scan.
 
 Luckily, there's another way!
 
@@ -432,17 +434,17 @@ Luckily, there's another way!
 
 ### Average rate of requests (within SLI) per service
 - record: service:requests_total:rate1h
-  expr: sum by (service)(rate(grpc_server_sli_total[1h]))
+  expr: sum by (service)(rate(requests_total[1h]))
 
 ### Average rate of errored requests per service
 - record: service:requests_errors_total:rate1h
-  expr: sum by (service)(rate(grpc_server_sli_total{error="true"}[1h]))
+  expr: sum by (service)(rate(requests_total{error="true"}[1h]))
 
-### Average error rate % (errors / total) per service
-### Range: 0-100
+### Average error rate ratio (errors / total) per service
+### Range: 0-1
 - record: service:requests_error_ratio:rate1h
   expr: >
-    100 * service:requests_errors_total:rate1h
+    service:requests_errors_total:rate1h
     /
     service:requests_total:rate1h
 
@@ -454,15 +456,15 @@ Luckily, there's another way!
     avg_over_time(service:requests_error_ratio:rate1h[3d:1h])
 ```
 
-Here we have some recording rules to pre-calculate hourly average request and error rates, with hourly error ratios. These are quick to calculate using recording rules: Prometheus only needs to look back over the previous hour.
+Here we have some recording rules to pre-calculate hourly average error ratios. These are quick to calculate using recording rules: Prometheus only needs to look back over the previous hour.
 
-Then, and this is a neat trick, we take 1 hourly error ratio per hour, and calculate the average over the last 3 days. An average of two or more averages is the same as the average of all the underlying samples. Prometheus only needs to consider `24 * 3 = 72` samples per time series, and there will only be 1 time series per service.
+Then we use a neat trick: `avg_over_time(some_metric[3d:1h])`. This takes 1 sample per hour, and calculates the average over the last 3 days. Since each sample is an hourly average, this works nicely: an average of two or more averages is the same as the average of all the underlying samples. Prometheus only needs to consider `24 * 3 = 72` samples per time series, and there will only be 1 time series per service.
 
 We can then write our alert like so:
 
 ```yaml
 alert: MyServiceAvailabilityLowUrgency
-expr: service:requests_error_ratio:rate3d{service="my-service"} > 0.1
+expr: service:requests_error_ratio:rate3d{service="my-service"} > 0.001
 ```
 
 And for improved reset time:
@@ -470,30 +472,43 @@ And for improved reset time:
 ```yaml
 alert: MyServiceAvailabilityLowUrgency
 expr: >
-  service:requests_error_ratio:rate3d{service="my-service"} > 0.1
+  service:requests_error_ratio:rate3d{service="my-service"} > 0.001
   and
-  service:requests_error_ratio:rate6h{service="my-service"} > 0.1
+  service:requests_error_ratio:rate6h{service="my-service"} > 0.001
 ```
 
-We can do a similar trick for the other alerting rules.
+We can create similar recording rules for the other alerting rules. As long as the alert windows are consistent, these can be used to create alerts for different error threshold for different services.
+
+## Caveats
+
+Now, nothing is ever perfect, and this system is no exception. Here are some caveats of this approach:
+
+- **Low traffic services** - The lower the request rate, the more significant each request is to the overall error rate. In very low traffic services (or services with low request volumes overnight), a small number of errors can cause high error rates. This might not be a significant event, but could alert anyway. For more information, see [Google's SRE workbook](https://sre.google/workbook/alerting-on-slos/#low-traffic-services-and-error-budget-alerting).
+- **Very high or low availability SLOs** - Below a certain expected level of availability, the combinations of error threshold and alert window suggested in this post will never fire. Very high expected levels of availability can burn through error budgets before alerts can reasonably expected to respond. Again, see [Google's SRE workbook](https://sre.google/workbook/alerting-on-slos/#low-traffic-services-and-error-budget-alerting) for more information.
+- **Multiple QoS levels** - For internal services, some requests might be required to complete a customer requests, while others might be for a less important background job. It is possible to classify requests and have different SLOs for different classes.
+- **Single customer outages** - Some systems will serve many high-value customers, each with their own SLA. A single customer might only account for a small percentage of total traffic. A 100% error rate for one client might not trigger an alert, but still cause an SLA breach.
+- **Consumed error budgets** - If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough.
 
 ## Conclusions
 
-TODO: something about engineering trade-offs...
+The TL;DR of this post:
 
 1. To improve **precision** (make alerts less noisy), we can widen the *alert window* or increase the *error threshold*.
 2. To improve **sensitivity** (make sure we catch all significant errors), we can reduce our *error threshold*. Setting it to match our SLO rate gives us 100% sensitivity.
-3. To choose acceptable **detection times** we can look at *burn rates* and *error budgets*. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can choose an acceptable *alert window*.
-4. We can make use of *multiple alerting rules* for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers.
+3. To choose acceptable **detection times** we can look at *burn rates* and *error budgets*. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can pick an appropriate *alert window*.
+4. To reduce **reset times** we can use *multiple windows*, and only alert when both the long and short window are detecting errors.
+5. We can make use of *multiple alerting rules* with different actions for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers.
 
     | Urgency  | Precision | Sensitivity | Detection time | Action |
     |:---------|:----------|:------------|:---------------|:-------|
     | **High** | Higher    | Lower       | Shorter        | Page   |
     | **Low**  | Lower     | Higher      | Longer         | Notify |
 
-5. TODO: reset time
+As ever, designing systems requires making trade-offs, and we've made several here. For one thing, we've replaced a simple system with a more complex one. Whether that is a good trade-off for your context is for you to decide.
 
-- TODO: Building something *really good* often means striving for better than something like an SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is not worth waking people up for, instead it's a job for notification-level alerts. NOTE: Do not impose this on other people/teams!
+A very last note: building something *really good* often means striving for better than an imposed SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is usually not worth waking people up for - instead it's a job for notification-level alerts.
+
+Good luck! I wish you alerts that are less noisy than mine were before I started writing this post.
 
 ## Further reading
 
