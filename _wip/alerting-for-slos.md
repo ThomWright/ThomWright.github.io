@@ -483,11 +483,11 @@ We can create similar recording rules for the other alerting rules. As long as t
 
 Now, nothing is ever perfect, and this system is no exception. Here are some caveats of this approach:
 
-- **Low traffic services** - The lower the request rate, the more significant each request is to the overall error rate. In very low traffic services (or services with low request volumes overnight), a small number of errors can cause high error rates. This might not be a significant event, but could alert anyway. For more information, see [Google's SRE workbook](https://sre.google/workbook/alerting-on-slos/#low-traffic-services-and-error-budget-alerting).
-- **Very high or low availability SLOs** - Below a certain expected level of availability, the combinations of error threshold and alert window suggested in this post will never fire. Very high expected levels of availability can burn through error budgets before alerts can reasonably expected to respond. Again, see [Google's SRE workbook](https://sre.google/workbook/alerting-on-slos/#low-traffic-services-and-error-budget-alerting) for more information.
-- **Multiple QoS levels** - For internal services, some requests might be required to complete a customer requests, while others might be for a less important background job. It is possible to classify requests and have different SLOs for different classes.
-- **Single customer outages** - Some systems will serve many high-value customers, each with their own SLA. A single customer might only account for a small percentage of total traffic. A 100% error rate for one client might not trigger an alert, but still cause an SLA breach.
-- **Consumed error budgets** - If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough.
+- **Low traffic services** – The lower the request rate, the more significant each request is to the overall error rate. In very low traffic services (or services with low request volumes overnight), a small number of errors can cause high error rates. This might not be a significant event, but could alert anyway. For more information, see [Google's SRE workbook](https://sre.google/workbook/alerting-on-slos/#low-traffic-services-and-error-budget-alerting).
+- **Very high or low availability SLOs** – Below a certain expected level of availability, the combinations of error threshold and alert window suggested in this post will never fire. Very high expected levels of availability can burn through error budgets before alerts can reasonably expected to respond. Again, see [Google's SRE workbook](https://sre.google/workbook/alerting-on-slos/#low-traffic-services-and-error-budget-alerting) for more information.
+- **Multiple QoS levels** – For internal services, some requests might be required to complete a customer requests, while others might be for a less important background job. It is possible to classify requests and have different SLOs for different classes.
+- **Single customer outages** – Some systems will serve many high-value customers, each with their own SLA. A single customer might only account for a small percentage of total traffic. A 100% error rate for one client might not trigger an alert, but still cause an SLA breach.
+- **Consumed error budgets** – If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough.
 
 ## Conclusions
 
@@ -497,7 +497,7 @@ The TL;DR of this post:
 2. To improve **sensitivity** (make sure we catch all significant errors), we can reduce our *error threshold*. Setting it to match our SLO rate gives us 100% sensitivity.
 3. To choose acceptable **detection times** we can look at *burn rates* and *error budgets*. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can pick an appropriate *alert window*.
 4. To reduce **reset times** we can use *multiple windows*, and only alert when both the long and short window are detecting errors.
-5. We can make use of *multiple alerting rules* with different actions for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers.
+5. We can make use of *multiple alerting rules* with different actions for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers. In general:
 
     | Urgency  | Precision | Sensitivity | Detection time | Action |
     |:---------|:----------|:------------|:---------------|:-------|
@@ -506,12 +506,12 @@ The TL;DR of this post:
 
 As ever, designing systems requires making trade-offs, and we've made several here. For one thing, we've replaced a simple system with a more complex one. Whether that is a good trade-off for your context is for you to decide.
 
-A very last note: building something *really good* often means striving for better than an imposed SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is usually not worth waking people up for - instead it's a job for notification-level alerts.
+A very last note: building something *really good* often means striving for better than an imposed SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is usually not worth waking people up for – instead it's a job for notification-level alerts.
 
 Good luck! I wish you alerts that are less noisy than mine were before I started writing this post.
 
 ## Further reading
 
-- [Google SRE Workbook - Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/)
-- [Prometheus - Querying basics](https://prometheus.io/docs/prometheus/latest/querying/basics/)
-- [Precision and sensitivity](https://en.wikipedia.org/wiki/Precision_and_recall)
+- [Google SRE Workbook – Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/)
+- [Prometheus – Querying basics](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+- [Wikipedia – Precision and sensitivity](https://en.wikipedia.org/wiki/Precision_and_recall)
