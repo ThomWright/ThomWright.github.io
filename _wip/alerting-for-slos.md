@@ -78,14 +78,13 @@ We could write this as:
 
 I'll be using these diagrams a lot, so I'll quickly introduce them. What you see below is the error rate over the last hour, with a short burst of errors in red. As time progresses, that burst moves to the left. If this is a 1% error rate for 2 minutes, then that's a 0.4% average over 5 minutes. This will trigger the alert.
 
-A general intuition: if the area of the red box is larger than the yellow box (within the alert window), then an alert will fire.
-
 {% include figure.html
   img_src="/public/assets/alerting/intro-2.png"
   caption="A short burst of errors."
   size="small"
 %}
-</div>
+
+A general intuition: if the area of the red box is larger than the yellow box (within the alert window), then an alert will fire.
 
 Neither of the below will fire though.
 
