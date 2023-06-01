@@ -76,31 +76,50 @@ We could write this as:
   content="This alerting rule is deliberately not using the `for:` clause. The problems with this clause are well described in Google's [Site Reliability Workbook](https://sre.google/workbook/alerting-on-slos/#3-incrementing-alert-duration)."
 %}
 
-There are several ways this could miss significant events, as illustrated below. The blue dashed line is our SLO error threshold, the yellow box represents the alert detection threshold, and the red boxes show errors. If the area of the red box is large than the yellow box then the alert will fire.
+I'll be using these diagrams a lot, so I'll quickly introduce them. What you see below is the error rate over the last hour, with a short burst of errors in red. As time progresses, that burst moves to the left. If this is a 1% error rate for 2 minutes, then that's a 0.4% average over 5 minutes. This will trigger the alert.
+
+A general intuition: if the area of the red box is larger than the yellow box (within the alert window), then an alert will fire.
+
+{% include figure.html
+  img_src="/public/assets/alerting/intro-2.png"
+  caption="A short burst of errors."
+  size="small"
+%}
+</div>
+
+Neither of the below will fire though.
 
 <div class="multi-figure">
 {% include figure.html
-  img_src="/public/assets/alerting/simple-spikes.png"
-  caption="False negative: 30-second 0.3% error spikes."
+  img_src="/public/assets/alerting/intro-3.png"
+  caption="The errors happened too long ago for the alert to fire."
   size="small"
 %}
+
+{% include figure.html
+  img_src="/public/assets/alerting/intro-4.png"
+  caption="The average error rate is too low to trigger the alert."
+  size="small"
+%}
+</div>
+
+So what's the problem with this alerting rule? To start, there are cases when it _should_ fire but doesn't. That is, there are **significant events that are missed**.
+
+Below is an example case, where the blue dashed line represents the SLO rate. The error rate is a continuous 0.15%, which if continued undetected would eventually blow the error budget.
 
 {% include figure.html
   img_src="/public/assets/alerting/simple-steady.png"
   caption="False negative: steady 0.15% error rate."
   size="small"
 %}
-</div>
 
-First, we see an error spikes of 0.3%, lasting 30 seconds each, an average of 0.15% over 5 minutes. This is less than 0.2% so won’t be detected, but if this happened too frequently then it could blow the error budget. Second, the error rate is 0.15% for the full 5 minutes. This could continue undetected indefinitely, and would eventually blow the error budget.
+There's another problem too. A one-off error spike of > 1% for 1 minute (> 0.2% average over 5 minutes) _would_ trigger the alert. The issue would have resolved itself before an engineer was able to respond. This is _not a significant event_, and while it might be worth investigating, it's probably not worth waking anyone up for.
 
 {% include figure.html
   img_src="/public/assets/alerting/fp-spike.png"
   caption="False positive: 1% spike for 1 minute."
   size="small"
 %}
-
-There's another problem too. A one-off error spike of > 1% for 1 minute (> 0.2% average over 5 minutes) *would* trigger the alert. The issue would have resolved itself before an engineer was able to respond. This is *not a significant event*, and while it might be worth investigating, it's probably not worth waking anyone up for.
 
 ## Measuring success
 
@@ -128,13 +147,19 @@ Reset time
 
 Considering the alerting rule above, we can say that it is **not sensitive** enough because it doesn't alert on all significant events. We can also say it's **not precise** enough because it alerts on non-significant events.
 
-Reducing the error threshold to 0.1% would make the alert more sensitive, but less precise, and vice versa for increasing the error threshold.
+Reducing the error threshold to 0.1% would make the alert **more sensitive**, but **less precise**, and vice versa for increasing the error threshold.
 
-```python
-detection_time = error_threshold * alert_window / error_rate
-```
+Widening the alert window has the effect of making the rule **more precise**. This is because it takes longer for a given error rate to trigger the alert. In other words, the event needs to be _more significant_. Alerts won't go off for short periods of low error rates.
 
-**Detection times** and **reset times** are affected by the alert window: wider windows take longer both to detect a given error rate and to reset after the errors are resolved. Detection times are also naturally shorter for higher error rates, as shown in the table below for our example 0.2% error threshold.
+Consider the 2 minute period of 1% error rate above. With a 5 minute window, that's an average of 0.4%, which will trigger an alert. With a 1 hour window it averages out at 0.033%, which is below the threshold.
+
+{% include figure.html
+  img_src="/public/assets/alerting/wider-window.png"
+  caption="A wider alert window."
+  size="small"
+%}
+
+**Detection times** and **reset times** are also affected by the alert window: wider windows take longer both to detect a given error rate and to reset after the errors are resolved. Detection times are also naturally shorter for higher error rates, as shown in the table below for our example 0.2% error threshold.
 
 <div class="table-wrapper" markdown="block">
 
@@ -148,6 +173,10 @@ detection_time = error_threshold * alert_window / error_rate
 
 </div>
 
+```python
+detection_time = error_threshold * alert_window / error_rate
+```
+
 {% include callout.html
   type="info"
   content="In practice, alerting rules will likely be run at regular intervals, e.g. 10 seconds. In which case it could take up to 10 seconds to detect a 100% error rate."
@@ -158,7 +187,7 @@ To summarise:
 - Wider window = higher precision, but longer detection and reset times.
 - Lower error threshold = higher sensitivity, but lower precision.
 
-This looks like a difficult problem to solve: every change we can make improves one measure, but worsens others! Luckily, there are a few tricks we can use.
+This looks like a difficult problem to solve: every change we make improves one measure, but worsens others! Luckily, there are a few tricks we can use.
 
 ## Improving sensitivity and precision
 
@@ -191,7 +220,7 @@ At this point we might ask ourselves:
 2. Is our detection time too long? Or perhaps too short?
 3. Is it really worth waking someone up after an hour of a 0.1% error rate?
 
-Our first step towards answering these questions is burn rates.
+Our first step towards answering these questions is to look at burn rates.
 
 ## Burn rates
 
@@ -253,7 +282,7 @@ error_budget_consumed = burn_rate * alert_window / slo_window
 
 The higher the burn rate and the wider the alert window, the more error budget consumed before the alert fires.
 
-Consider our example alert from earlier, which had a 0.2% error rate threshold. It would fire when only 0.023% of the error budget was consumed. This is very sensitive! Arguably *too* sensitive.
+Consider our example alert from earlier, which had a 0.2% error rate threshold. It would fire when only 0.023% of the error budget was consumed. This is very sensitive! Arguably _too_ sensitive.
 
 ```python
 alert_window = 5 minutes
@@ -264,7 +293,7 @@ burn_rate = 2
 error_budget_consumed = (2 * 5) / (720 * 60) = 0.023%
 ```
 
-I like to think of this *error budget consumption* number as the area of the boxes in the diagram below.
+I like to think of this _error budget consumption_ number as the area of the boxes in the diagram below.
 
 {% include figure.html
   img_src="/public/assets/alerting/10-pc-budget.png"
@@ -274,7 +303,7 @@ I like to think of this *error budget consumption* number as the area of the box
 
 ## Detection time
 
-Alerting after using 0.023% of our error budget is going to generate too many noisy alerts for non-significant events. Instead of designing alerts based on error rates, we could start from error budget consumption, and only alert after a **significant** amount of budget has been consumed. For example, we could alert after using 10% of our budget. For a burn rate of 1, it takes 3 days to consume 10% of the budget.
+Alerting after using 0.023% of our error budget is going to generate too many noisy alerts for non-significant events. Instead of designing alerts based on error rates, we could start from error budget consumption, and only alert after a **significant** amount of budget has been consumed. For example, we could **alert after using 10% of our budget**. For a burn rate of 1, it takes 3 days to consume 10% of the budget.
 
 What happens to **detection time** for different error rates if we use a 3 day alert window?
 
@@ -311,9 +340,9 @@ alert_window = error_budget_consumed * slo_window / burn_rate
 alert_window = 0.05 * 30 / 6 = 0.25 # days
 ```
 
-Remember, shrinking the alert window reduces precision. But increasing the error threshold (or burn rate in this case) *increases* precision, so these somewhat balance out.
+Remember, shrinking the alert window reduces precision. But increasing the error threshold (or burn rate in this case) _increases_ precision, so these somewhat balance out.
 
-Optionally, we can add another alert for even more urgent events, and end up with something like the table below.
+Optionally, we can add another alert for even more urgent events after even less error budget, for a shorter detection time. We then end up with something like the table below.
 
 <div class="table-wrapper" markdown="block">
 
@@ -329,13 +358,13 @@ Optionally, we can add another alert for even more urgent events, and end up wit
 
 ## Reset time
 
-This is looking good, but still has a problem with reset time. Taking the 14.4 burn rate as an example, it will alert on a complete outage in less than a minute, and after the error rate goes back down to 0% it will take a full 59 minutes for the alert to *stop* firing.
+This is looking good, but still has a problem with reset time. Taking the 14.4 burn rate as an example, it will alert on a complete outage in less than a minute, and after the error rate goes back down to 0% it will take a full 59 minutes for the alert to _stop_ firing.
 
 The diagram below shows why. Any large enough spike of errors within the 1 hour window will trigger the alert, even if it has already stopped.
 
 {% include figure.html
   img_src="/public/assets/alerting/reset-spike.png"
-  caption="An error spike moving further back through the window as time passes."
+  caption="An alert uselessly firing after the errors have stopped."
   size="small"
 %}
 
@@ -493,20 +522,24 @@ Now, nothing is ever perfect, and this system is no exception. Here are some cav
 
 The TL;DR of this post:
 
-1. To improve **precision** (make alerts less noisy), we can widen the *alert window* or increase the *error threshold*.
-2. To improve **sensitivity** (make sure we catch all significant errors), we can reduce our *error threshold*. Setting it to match our SLO rate gives us 100% sensitivity.
-3. To choose acceptable **detection times** we can look at *burn rates* and *error budgets*. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can pick an appropriate *alert window*.
-4. To reduce **reset times** we can use *multiple windows*, and only alert when both the long and short window are detecting errors.
-5. We can make use of *multiple alerting rules* with different actions for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers. In general:
+1. To improve **precision** (make alerts less noisy), we can widen the _alert window_ or increase the _error threshold_.
+2. To improve **sensitivity** (make sure we catch all significant errors), we can reduce our _error threshold_. Setting it to match our SLO rate gives us 100% sensitivity.
+3. To choose acceptable **detection times** we can look at _burn rates_ and _error budgets_. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can pick an appropriate _alert window_.
+4. To reduce **reset times** we can use _multiple windows_, and only alert when both the long and short window are detecting errors.
+5. We can make use of _multiple alerting rules_ with different actions for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers. In general:
+
+    <div class="table-wrapper" markdown="block">
 
     | Urgency  | Precision | Sensitivity | Detection time | Action |
     |:---------|:----------|:------------|:---------------|:-------|
     | **High** | Higher    | Lower       | Shorter        | Page   |
     | **Low**  | Lower     | Higher      | Longer         | Notify |
 
+    </div>
+
 As ever, designing systems requires making trade-offs, and we've made several here. For one thing, we've replaced a simple system with a more complex one. Whether that is a good trade-off for your context is for you to decide.
 
-A very last note: building something *really good* often means striving for better than an imposed SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is usually not worth waking people up for – instead it's a job for notification-level alerts.
+A very last note: building something _really good_ often means striving for better than an imposed SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is usually not worth waking people up for – instead it's a job for notification-level alerts.
 
 Good luck! I wish you alerts that are less noisy than mine were before I started writing this post.
 
