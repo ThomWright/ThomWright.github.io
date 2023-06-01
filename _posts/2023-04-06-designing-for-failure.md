@@ -71,15 +71,15 @@ Idempotency is often a desirable property for a system, especially when clients 
 
 The obligatory [Wikipedia definition](https://en.wikipedia.org/wiki/Idempotence):
 
-> Idempotence is the property of certain operations in mathematics and computer science whereby they can be applied multiple times without changing the result beyond the initial application.
+> Idempotence is the property of certain operations in mathematics and computer science whereby they can be applied multiple times without changing the result beyond the initial application.
 
 More relevant to us is the definition from [RFC 9110: HTTP Semantics](https://httpwg.org/specs/rfc9110.html#idempotent.methods):
 
-> A request method is considered idempotent if the intended effect on the server of multiple identical requests with that method is the same as the effect for a single such request.
+> A request method is considered idempotent if the intended effect on the server of multiple identical requests with that method is the same as the effect for a single such request.
 
 Another definition I like from [Zero To Production In Rust](https://www.lpalmieri.com/posts/idempotency/#4-idempotency-an-introduction) is:
 
-> An API endpoint is retry-safe (or **idempotent**) if the caller has no way to **observe** if a request has been sent to the server once or multiple times.
+> An API endpoint is retry-safe (or **idempotent**) if the caller has no way to **observe** if a request has been sent to the server once or multiple times.
 
 Given these, I see two properties one might expect from an idempotent API:
 
