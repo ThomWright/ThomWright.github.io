@@ -4,7 +4,7 @@ title: 'What takes one second?'
 tags: [tcp, debugging]
 ---
 
-I had an interesting debugging challenge recently, investigating strange latencies in several services. One symptom I've observed is a outgoing requests taking one second longer than usual. Why one second?
+I had an interesting debugging challenge recently, investigating strange latencies in several services. One symptom I observed had outgoing requests taking one second longer than usual. Why one second?
 
 <!-- markdownlint-disable MD036 MD033 -->
 
