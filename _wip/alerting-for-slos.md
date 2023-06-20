@@ -86,7 +86,7 @@ I'll be using these diagrams a lot, so I'll quickly introduce them. What you see
 
 A general intuition: if the area of the red box is larger than the yellow box (within the alert window), then an alert will fire.
 
-Neither of the below will fire though.
+Neither of the below will fire.
 
 <div class="multi-figure">
 {% include figure.html
@@ -102,9 +102,7 @@ Neither of the below will fire though.
 %}
 </div>
 
-So what's the problem with this alerting rule? To start, there are cases when it _should_ fire but doesn't. That is, there are **significant events that are missed**.
-
-Below is an example case, where the blue dashed line represents the SLO rate. The error rate is a continuous 0.15%, which if continued undetected would eventually blow the error budget.
+So what's the problem with this alerting rule? To start, there are cases when it _should_ fire but doesn't. That is, there are **significant events that are missed**. Below is an example case, where the blue dashed line represents the SLO rate. The error rate is a continuous 0.15%, which if continued undetected would eventually blow the error budget and cause us to fail our SLO.
 
 {% include figure.html
   img_src="/public/assets/alerting/simple-steady.png"
@@ -112,7 +110,7 @@ Below is an example case, where the blue dashed line represents the SLO rate. Th
   size="small"
 %}
 
-There's another problem too. A one-off error spike of > 1% for 1 minute (> 0.2% average over 5 minutes) _would_ trigger the alert. The issue would have resolved itself before an engineer was able to respond. This is _not a significant event_, and while it might be worth investigating, it's probably not worth waking anyone up for.
+There's another problem too. A one-off error spike of > 1% for 1 minute (> 0.2% average over 5 minutes) _would_ trigger the alert. If it only lasts a minute, the issue would have resolved itself before an engineer was able to respond. We'll define significance later, but for now let's just say this is _not a significant event_. While it might be worth investigating, it's probably not worth waking anyone up for.
 
 {% include figure.html
   img_src="/public/assets/alerting/fp-spike.png"
@@ -123,6 +121,12 @@ There's another problem too. A one-off error spike of > 1% for 1 minute (> 0.2% 
 ## Measuring success
 
 So this alerting rule has some problems. It's worth defining what these are so we know how to improve. We'll be using the following measures of success:
+
+Significance
+
+: What is the threshold above which we consider an event to be significant?
+
+  If it's too low then our alerts might be too noisy without good cause. Too high, we might not meet our SLO.
 
 Precision
 
@@ -143,6 +147,8 @@ Detection time
 Reset time
 
 : How long after the significant event ends does the alert continue firing? Shorter is better.
+
+Measuring significance is something we'll come back to later. For now, we'll just use our intuition.
 
 Considering the alerting rule above, we can say that it is **not sensitive** enough because it doesn't alert on all significant events. We can also say it's **not precise** enough because it alerts on non-significant events.
 
@@ -300,6 +306,8 @@ I like to think of this _error budget consumption_ number as the area of the box
   size="small"
 %}
 
+This is also a good measure of **significance**. Events are significant when they consume a large proportion of the error budget. This can be because of either a high error rate or a long duration.
+
 ## Detection time
 
 Alerting after using 0.023% of our error budget is going to generate too many noisy alerts for non-significant events. Instead of designing alerts based on error rates, we could start from error budget consumption, and only alert after a **significant** amount of budget has been consumed. For example, we could **alert after using 10% of our budget**. For a burn rate of 1, it takes 3 days to consume 10% of the budget.
@@ -324,7 +332,7 @@ By looking at how long it takes to exhaust the error budget, we see that we can 
 
 ## Urgency
 
-Now, if it takes a really long time to exhaust the error budget, do we even need to send page someone and potentially wake them up? In this case, perhaps we could just send a notification for someone to investigate during working hours.
+If it takes a really long time to exhaust the error budget, do we even need to send page someone and potentially wake them up? In this case, perhaps we could just send a notification for someone to investigate during working hours.
 
 To do this, we can create **multiple windows**. A short window for high burn rates and a long window for low burn rates. For the low burn rates, we might not need to page someone urgently, but instead send a notification to investigate later.
 
@@ -353,7 +361,7 @@ Optionally, we can add another alert for even more urgent events after even less
 
 </div>
 
-*\* For a complete outage (100% error rate).*
+_\* For a complete outage (100% error rate)._
 
 ## Reset time
 
@@ -393,13 +401,15 @@ Now we have all we need to design our new alerting rules! What we end up with is
 
 <div class="table-wrapper" markdown="block">
 
-| Error rate | Long window | Short window | Action       |
-|:-----------|:------------|:-------------|:-------------|
-| 1.44%      | 1 hour      | 5 mins       | Page         |
-| 0.6%       | 6 hours     | 30 mins      | Page         |
-| 0.1%       | 3 days      | 6 hours      | Notification |
+| Error threshold | Long window | Short window | Action       |
+|:----------------|:------------|:-------------|:-------------|
+| 1.44%           | 1 hour      | 5 mins       | Page         |
+| 0.6%            | 6 hours     | 30 mins      | Page         |
+| 0.1%            | 3 days      | 6 hours      | Notification |
 
 </div>
+
+Note that if you're using a different SLO over the same window, e.g. 99.95% or 99.99% over 30 days, then you can simply adjust the error thresholds and everything should still work. E.g. for 99.95% availability, simply halve them.
 
 Visually, it looks like this:
 
@@ -515,7 +525,7 @@ Now, nothing is ever perfect, and this system is no exception. Here are some cav
 - **Very high or low availability SLOs** – Below a certain expected level of availability, the combinations of error threshold and alert window suggested in this post will never fire. Very high expected levels of availability can burn through error budgets before alerts can reasonably expected to respond. Again, see [Google's SRE workbook](https://sre.google/workbook/alerting-on-slos/#low-traffic-services-and-error-budget-alerting) for more information.
 - **Multiple QoS levels** – For internal services, some requests might be required to complete a customer requests, while others might be for a less important background job. It is possible to classify requests and have different SLOs for different classes.
 - **Single customer outages** – Some systems will serve many high-value customers, each with their own SLA. A single customer might only account for a small percentage of total traffic. A 100% error rate for one client might not trigger an alert, but still cause an SLA breach.
-- **Consumed error budgets** – If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough.
+- **Consumed error budgets** – If you have already used up much of your budget for the current SLO period, your alerts might not be sensitive enough. These alerts might not trigger even if you're consistently consuming 90% of your budget every month. In this case, effectively you only have 10% of your budget for unexpected events. Consider warning on burn rates < 1 to catch these situations.
 
 ## Conclusions
 
@@ -537,8 +547,6 @@ The TL;DR of this post:
     </div>
 
 As ever, designing systems requires making trade-offs, and we've made several here. For one thing, we've replaced a simple system with a more complex one. Whether that is a good trade-off for your context is for you to decide.
-
-A very last note: building something _really good_ often means striving for better than an imposed SLO. You might not be happy with the bare minimum of e.g. 99.9% availability. Your customers might not be either. It can be worth considering making your alerts stricter than necessary to encourage you to keep improving reliability or performance. Be careful with page-level alerts though, this is usually not worth waking people up for – instead it's a job for notification-level alerts.
 
 Good luck! I wish you alerts that are less noisy than mine were before I started writing this post.
 
