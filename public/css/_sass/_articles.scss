@@ -6,6 +6,40 @@ article {
 
   @include card;
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    a {
+      text-decoration-line: none;
+      &:hover {
+        text-decoration-line: underline;
+      }
+    }
+  }
+
+  a.heading_anchor {
+    &::after {
+      content: " #";
+
+      text-decoration-line: none;
+      opacity: 0.5;
+      display: inline-block;
+      padding-left: $base-padding / 4;
+
+      visibility: hidden;
+    }
+
+    &:hover {
+      &::after {
+        visibility: visible;
+      }
+    }
+  }
+
+
   .article-content ul li {
     list-style-type: disc;
   }

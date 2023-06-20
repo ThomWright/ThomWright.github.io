@@ -42,3 +42,10 @@
     content: "\f14a";
   }
 }
+
+.link {
+  .icon::before {
+    font: var(--fa-font-solid);
+    content: "\f0c1";
+  }
+}

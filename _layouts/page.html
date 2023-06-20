@@ -5,10 +5,18 @@ layout: default
 <article>
   {% if page.title %}
     <header>
-      <h1>{{ page.title }}</h1>
+      <h1>
+        <a href="{{ page.url }}">
+          {{ page.title }}
+        </a>
+      </h1>
     </header>
   {% endif %}
   <div>
-    {{ content }}
+    {% include with_anchor_headings.html
+      html=content anchorBody="%heading%"
+      anchorClass="heading_anchor"
+      hideHeaderContent=true
+    %}
   </div>
 </article>

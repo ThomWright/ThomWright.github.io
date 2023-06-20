@@ -7,4 +7,4 @@ redirect_from:
 order: 2
 ---
 
-{% include post-list.html posts=site.posts %}
+{% include post_list.html posts=site.posts %}

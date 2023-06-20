@@ -4,15 +4,30 @@
 
   <header>
     <h1>
-      {% if article.group == "antipattern" %}Antipattern: {% endif %}{{ article.title }}
+      <a href="{{ article.url }}">
+        {% if article.group == "antipattern" %}Antipattern: {% endif %}{{ article.title }}
+      </a>
     </h1>
   </header>
 
   <span class="breadcrumb">A <a href="{% link failure-patterns.md %}">Failure pattern</a></span>
 
   <div class="article-content">
-    {{ article.content }}
+    {% include with_anchor_headings.html
+      html=content
+      anchorBody="%heading%"
+      anchorClass="heading_anchor"
+      hideHeaderContent=true
+    %}
 
+    {% capture related_patterns %}
     {% include related_patterns.html %}
+    {% endcapture %}
+    {% include with_anchor_headings.html
+      html=related_patterns
+      anchorBody="%heading%"
+      anchorClass="heading_anchor"
+      hideHeaderContent=true
+    %}
   </div>
 </article>
