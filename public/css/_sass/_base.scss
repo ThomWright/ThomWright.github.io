@@ -125,8 +125,6 @@ figure {
 
   margin: 0;
 
-  // @include horizontal-margin(0);
-
   text-align: center;
 
   img {
@@ -151,6 +149,10 @@ figure.multi-img {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-around;
+
+  figcaption {
+    @include horizontal-padding($base-padding / 4);
+  }
 }
 
 figcaption {

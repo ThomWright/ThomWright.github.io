@@ -4,5 +4,10 @@
 body {
   > footer {
     padding-top: 0;
+
+    > * {
+      @include horizontal-margin(auto);
+      max-width: $max-content-width;
+    }
   }
 }

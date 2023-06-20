@@ -2,11 +2,6 @@
   Main grid
  */
 // $grid-columns : 12
-$header-columns: 3;
-$main-columns: $grid-columns - $header-columns - 2;
-
-$large-header-columns: 2;
-$large-main-columns: $grid-columns - $large-header-columns - 2;
 
 body {
   @include outer-container(100%);
@@ -17,33 +12,17 @@ body {
     @include span-columns($grid-columns);
   }
 
-  > header {
-    @include media($desktop-up) {
-      @include span-columns($header-columns);
-      @include fix-left;
-    }
-    @include media($large-desktop-up) {
-      @include span-columns($large-header-columns);
+  > main,
+  > footer {
+    @include media($tablet-up) {
+      @include span-columns($grid-columns - 2);
+      @include shift(1);
     }
   }
 
-  > main,
-  > footer {
-    @include media($desktop-up) {
-      @include span-columns($main-columns);
-      @include shift($header-columns + 1);
-    }
-    @include media($large-desktop-up) {
-      @include span-columns($large-main-columns);
-      @include shift($large-header-columns + 1);
-    }
-  }
 
   > main,
   > footer {
     padding: $gutter;
-    @include media($desktop-up) {
-      padding-left: 0;
-    }
   }
 }

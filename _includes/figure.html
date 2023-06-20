@@ -9,10 +9,13 @@
 {% assign size = include.size %}
 
 <figure>
-  <img
-    {% if size %} class="{{size}}-img" {% endif %}
-    src="{{ img_src }}"
-    alt="{{ alt }}"
-  />
+  <div
+      {% if size %} class="{{size}}-img" {% endif %}
+  >
+    <img
+      src="{{ img_src }}"
+      alt="{{ alt }}"
+    />
+  </div>
   <figcaption>{{ caption | markdownify }}</figcaption>
 </figure>
