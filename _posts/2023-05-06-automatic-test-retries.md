@@ -4,11 +4,13 @@ title: Automatic test retries
 tags: [testing, reliability, antipatterns]
 ---
 
+<!-- begin_excerpt -->
 One day, some sleazy individual might come up to you and whisper in your ear:
 
 > Psst, I got something real nice for you. Check out this new test runner. It'll retry your tests for you if they fail, and if they pass after a few attempts it'll just say they succeeded and no one will have to know. No more flaky tests.
 
 Don't buy it. This person is trying to sell you ~~drugs~~ lies and deception.
+<!-- end_excerpt -->
 
 You might try it, just to give it a go. You might even like it. The tests are so much greener. No more manual re-running in CI. No more time spent fighting flaky tests. You don't have to pretend to yourself that "maybe I'll fix it next time it breaks..." because you don't even see the test failures. No more guilt. Feels good!
 

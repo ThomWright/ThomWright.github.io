@@ -5,8 +5,6 @@ tags: [reliability, queues]
 toc: true
 ---
 
-<!-- markdownlint-disable MD036 MD033 -->
-
 One of the big problems in distributed systems is reliably sending, processing and acknowledging messages. As such, message delivery systems such as queues often come with some guarantees about delivery. You might see terms such as "at-least-once" or "at-most-once".
 
 When dealing with these kinds of systems I've often heard people wondering: "why not exactly once?". Or even just assuming that messages will always be delivered and processed exactly once, and perhaps ending up with slightly broken systems as a result. I want to explain why exactly-once isn't possible, and talk through some issues you might encounter as a result.
@@ -57,6 +55,8 @@ Have fun coming up with more examples!
 ## Some real scenarios
 
 Let's consider two scenarios.
+
+<!-- markdownlint-disable MD036 MD033 -->
 
 1. Processing a message is possible in a single atomic operation.<br>
     a. Idempotently<br>

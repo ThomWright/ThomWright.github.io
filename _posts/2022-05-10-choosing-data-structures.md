@@ -8,7 +8,9 @@ tags: types
 >
 > -- *Fred Brooks, The Mythical Man Month*
 
+<!-- begin_excerpt -->
 How do we choose which data structures to use in our code? In some instances it’s fairly obvious. When the amount of data we’re working with is the primary constraint, we probably need to choose the most efficient structure for what we’re trying to achieve.
+<!-- end_excerpt -->
 
 However, often that isn’t the case. Often we’re working with small amounts of data, maybe tiny amounts of data. This data might even be small enough to be hardcoded. In these cases, efficiency isn’t a primary concern. Instead, clarity, simplicity, possibly maintainability are likely to be primary concerns. There might also be other guarantees we want which make certain structures more appropriate, guarantees around e.g. ordering, uniqueness or whether cyclic data is allowed. In other words, we want to make illegal states unrepresentable.
 

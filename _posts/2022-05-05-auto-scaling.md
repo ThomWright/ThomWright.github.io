@@ -6,7 +6,10 @@ tags:
   - reliability
 ---
 
-<!-- markdownlint-disable MD036 MD033 -->
+{% include callout.html
+  type="aside"
+  content="I'm not particularly happy with this as analogy for auto-scaling. One day I might try writing something better, but this will do for now."
+%}
 
 Let’s imagine a scenario where I’m trying to decide how many chairs I need for my new flat. In this imaginary scenario I live with a partner, and I have two types of chair to choose from:
 
@@ -17,6 +20,7 @@ How many chairs do I need?
 
 Well, I live with my partner so clearly I need two, at least. That’s the minimum number of chairs I need. We’ll be using them a lot, so we’ll just go with the normal chairs.
 
+<!-- markdownlint-disable MD036 MD033 -->
 **Min. chairs required: 2**
 
 We might invite friends or family over for dinner occasionally, so we decide to also get 15 magic chairs. That’s a total of of 17 chairs. More is better, right?

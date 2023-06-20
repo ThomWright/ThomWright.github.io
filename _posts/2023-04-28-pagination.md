@@ -5,9 +5,9 @@ tags: [reliability, databases]
 toc: true
 ---
 
-<!-- markdownlint-disable MD033 -->
-
 A common cause of incidents I see is lack of pagination. Or, more precisely, APIs returning an unbounded number of items. Really it's the lack of a limit which is the problem, which I think is an important distinction. When returning multiple items, pagination is optional but limits are arguably not.
+
+<!-- markdownlint-disable MD033 -->
 
 I've seen several variations on the root cause, including:
 

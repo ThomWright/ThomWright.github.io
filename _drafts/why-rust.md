@@ -4,11 +4,13 @@ title: Why Rust?
 tags: [language, rust, types]
 ---
 
+<!-- begin_excerpt -->
 Rust is, for me, the best language for backend development I’ve used in my 10+ year career.
 
 Emphasis on *for me*.
 
 To explain why, it'll help to share some context on what I do and what I value.
+<!-- end_excerpt -->
 
 ## About me
 

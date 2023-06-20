@@ -1,21 +1,39 @@
 <article>
 
-  {% if include.article %}
-    {% assign article = include.article %}
-  {% else %}
-    {% assign full_page = true %}
-    {% assign article = page %}
-  {% endif %}
+{% if include.article %}
+  {% comment %}
+    Included on another page -- show excerpt.
+  {% endcomment %}
 
+  {% assign article = include.article %}
   <header>
     <h1>
-      {% if full_page %}
+      <a href="{{ post.url }}">
         {{ article.title }}
-      {% else %}
-        <a href="{{ post.url }}">
-          {{ article.title }}
-        </a>
-      {% endif %}
+      </a>
+    </h1>
+  </header>
+  <div class="article-content">
+    {% if article.content contains "<!-- begin_excerpt -->" %}
+      {{ article.content | split: "<!-- end_excerpt -->" | first | split: "<!-- begin_excerpt -->" | last }}
+    {% else %}
+      {{ article.excerpt }}
+    {% endif %}
+    {% comment %}
+    {{ article.excerpt }}
+    {{ post.content | strip_html | split: '\n\n' | first }}
+    {{ post.content | markdownify | strip_html | truncatewords: 50 }}
+    {% endcomment %}
+  </div>
+{% else %}
+  {% comment %}
+    This is a post page -- show full post.
+  {% endcomment %}
+
+  {% assign article = page %}
+  <header>
+    <h1>
+      {{ article.title }}
     </h1>
     <div class="post-metadata">
       <time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time>
@@ -41,14 +59,9 @@
   {% endif %}
 
   <div class="article-content">
-    {% if full_page %}
-      {{ content }}
-    {% else %}
-      {{ article.content }}
-    {% endif %}
+    {{ content }}
   </div>
 
-  {% if full_page %}
   <footer>
     <div class="related">
       <h2>Related Posts</h2>
@@ -56,5 +69,6 @@
       {% include post-list.html posts=related-posts %}
     </div>
   </footer>
-  {% endif %}
+
+{% endif %}
 </article>

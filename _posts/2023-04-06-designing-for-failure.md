@@ -120,5 +120,5 @@ You can find all the [patterns listed here]({% link failure-patterns.md %}).
 
 - [Wikipedia: ACID](https://en.wikipedia.org/wiki/ACID)
 - [Wikipedia: Eventual consistency](https://en.wikipedia.org/wiki/Eventual_consistency)
-- [[Book] Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
+- [Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
 - [Handling Failures From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)

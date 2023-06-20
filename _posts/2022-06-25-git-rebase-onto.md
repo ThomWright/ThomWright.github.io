@@ -4,13 +4,19 @@ title: Git rebase --onto
 tags: [tools, tips, git]
 ---
 
+
 <!-- markdownlint-disable MD033 -->
 
-*EDIT (November 2022): There is now another (better?) way! Using the new `--update-refs` flag, as shown [here](https://adamj.eu/tech/2022/10/15/how-to-rebase-stacked-git-branches/).*
+{% include callout.html
+  type="info"
+  content="EDIT (November 2022): There is now another (better?) way! Using the new `--update-refs` flag, as shown [here](https://adamj.eu/tech/2022/10/15/how-to-rebase-stacked-git-branches/)."
+%}
 
+<!-- begin_excerpt -->
 I generally prefer to keep my git history as a straight line. And my branches (when I have to use them) based on the HEAD of **main**. I pull **main** and rebase my branch onto it fairly often to keep up to date with the latest changes.
 
 Recently I’ve been in the unfortunate position where it made sense to use a branch off a branch. This can be a pain to keep up to date with the latest changes on **main**.
+<!-- end_excerpt -->
 
 {% include figure.html
   img_src="/public/assets/branch-off-branch.excalidraw.png"

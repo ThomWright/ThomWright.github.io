@@ -4,9 +4,9 @@ title: 'What takes one second?'
 tags: [tcp, debugging]
 ---
 
-<!-- markdownlint-disable MD036 MD033 -->
+I had an interesting debugging challenge recently, investigating strange latencies in several services. One symptom I've observed is a outgoing requests taking one second longer than usual. Why one second?
 
-I've had an interesting debugging challenge recently, investigating strange latencies in several services. One symptom I've observed is a outgoing requests taking one second longer than usual. Why one second?
+<!-- markdownlint-disable MD036 MD033 -->
 
 There didn’t seem to be anything in our applications themselves which would cause this. No suspicious timeouts, retries, locks or weird sleeps.
 

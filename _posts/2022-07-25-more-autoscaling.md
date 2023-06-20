@@ -3,12 +3,16 @@ layout: post
 title: "Auto-scaling: positive feedback loops"
 tags: [microservices, reliability, queues]
 ---
-
 <!-- markdownlint-disable MD033 -->
 
-[No chairs this time](/2022/05/05/auto-scaling/).
+{% include callout.html
+  type="aside"
+  content="[No chairs this time](/2022/05/05/auto-scaling/)."
+%}
 
+<!-- begin_excerpt -->
 Consider a scenario where we have two services, A and B. A is consuming messages from a queue and sending requests to B. The message queue is backing up. There is a growing number of pending messages which Service A hasn’t received yet.
+<!-- end_excerpt -->
 
 {% include figure.html
   img_src="/public/assets/auto-scale-services.png"

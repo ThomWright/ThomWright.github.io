@@ -11,7 +11,9 @@ toc: true
 >
 > -- Homer Simpson
 
+<!-- begin_excerpt -->
 Retries are used to increase availability in the presence of errors at the cost of increased latency. The concept seems simple at a high level, but there is a fair amount of complexity hidden inside it. How effective any particular approach is will depend on context, including the pattern of incoming requests and the pattern of failure causing the errors.
+<!-- end_excerpt -->
 
 Incoming requests might be bursty or consistent, responsive to backpressure or uncontrollable. Failure could be random and transient, or a long-lived correlated outage. It could be caused by the rate of incoming requests (a load-dependent failure) or there could be another cause. These can all have an effect on how retries behave.
 

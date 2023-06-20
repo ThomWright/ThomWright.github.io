@@ -8,11 +8,13 @@ redirect_from:
   - /wip/alerting-for-slos/
 ---
 
-<!-- markdownlint-disable MD033 -->
-
+<!-- begin_excerpt -->
 Getting alerts right can be hard. It’s not uncommon to see alerts which are too noisy, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short. This can cause alert fatigue, and result in real incidents being ignored. On the other hand, many alerts are not sensitive enough and errors can occur at high rates without detection.
 
 In this post I’ll talk through how I approach writing alerts which find a better balance.
+<!-- end_excerpt -->
+
+<!-- markdownlint-disable MD033 -->
 
 ## Definitions
 
