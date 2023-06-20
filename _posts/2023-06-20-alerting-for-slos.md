@@ -3,9 +3,9 @@ layout: post
 title: Designing alerts for SLOs
 tags: [alerting, observability, reliability]
 toc: true
-# redirect_from:
-#   - /wip/alerting-for-slos
-#   - /wip/alerting-for-slos/
+redirect_from:
+  - /wip/alerting-for-slos
+  - /wip/alerting-for-slos/
 ---
 
 <!-- markdownlint-disable MD033 -->
