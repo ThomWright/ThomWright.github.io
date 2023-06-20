@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Typography Test
+toc: true
 guest_author:
   name: Me (Thom Wright)
   url: https://thomwright.co.uk

@@ -2,6 +2,7 @@
 layout: post
 title: Correlation IDs in Node.js
 tags: [microservices, reliability, observability]
+toc: true
 ---
 
 Much has already been written about the need for correlation IDs in microservice architectures. If this is a new concept for you, I encourage you to read [_Building Microservices_](https://shop.oreilly.com/product/0636920033158.do) by Sam Newman. Or if you want a quick intro, try [this blog post](https://hilton.org.uk/blog/microservices-correlation-id).

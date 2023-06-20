@@ -2,6 +2,7 @@
 layout: post
 title: Pagination
 tags: [reliability, databases]
+toc: true
 ---
 
 <!-- markdownlint-disable MD033 -->

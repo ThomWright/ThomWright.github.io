@@ -2,6 +2,7 @@
 layout: post
 title: Why can't we have exactly-once message processing?
 tags: [reliability, queues]
+toc: true
 ---
 
 <!-- markdownlint-disable MD036 MD033 -->

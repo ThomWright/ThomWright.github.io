@@ -2,6 +2,7 @@
 layout: post
 title: Retries upon retries
 tags: [microservices, reliability]
+toc: true
 ---
 
 <!-- markdownlint-disable MD036 MD033 -->

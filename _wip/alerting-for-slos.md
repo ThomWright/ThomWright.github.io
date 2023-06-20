@@ -2,6 +2,7 @@
 layout: post
 title: Designing alerts for SLOs
 tags: [alerting, observability, reliability]
+toc: true
 # redirect_from:
 #   - /wip/alerting-for-slos
 #   - /wip/alerting-for-slos/
@@ -12,10 +13,6 @@ tags: [alerting, observability, reliability]
 Getting alerts right can be hard. It’s not uncommon to see alerts which are too noisy, paging on-call engineers for small numbers of errors, where either the error rate was very low or the duration of the error-producing event was very short. This can cause alert fatigue, and result in real incidents being ignored. On the other hand, many alerts are not sensitive enough and errors can occur at high rates without detection.
 
 In this post I’ll talk through how I approach writing alerts which find a better balance.
-
-I'll present a [simple example](#simple-example) which has some problems, and set out to improve it. To do that, we need to know how to [measure success](#measuring-success). I'll start by considering [sensitivity and precision](#improving-sensitivity-and-precision), introduce [burn rates](#burn-rates) and [error budgets](#error-budget-consumption) to determine appropriate [detection times](#detection-time), and show how to handle different [levels of urgency](#urgency). Putting the pieces together we can [design a better set of alerts](#final-design). Finally I'll go through actually [writing the new alerting rules](#writing-the-alerting-rules).
-
-If you like you can jump straight to the [conclusions](#conclusions).
 
 ## Definitions
 
