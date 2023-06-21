@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Typography Test
+tags: [test, typography]
 toc: true
 guest_author:
   name: Me (Thom Wright)

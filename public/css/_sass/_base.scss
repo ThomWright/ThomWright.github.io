@@ -192,6 +192,11 @@ figcaption {
   .date {
     color: $base-font-color-lighter;
   }
+
+  .tags {
+    padding-left: $base-padding / 2;
+    font-size: small;
+  }
 }
 
 .breadcrumb {

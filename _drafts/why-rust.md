@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Why Rust?
-tags: [language, rust, types]
+tags: [rust, types, tools]
 ---
 
 <!-- begin_excerpt -->

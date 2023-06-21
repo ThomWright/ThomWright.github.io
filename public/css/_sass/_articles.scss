@@ -58,6 +58,9 @@ article {
     padding-top: 1em;
     font-style: italic;
     color: $base-font-color-lighter;
+    > * {
+      @include horizontal-padding($base-padding / 4);
+    }
   }
 
   img {

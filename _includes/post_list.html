@@ -8,12 +8,7 @@
       <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span>
       {{ post.title }}
     </a>
-    {% if post.tags and post.tags.size != 0 %}
-    {{/* <br> */}}
-    <span class="tags">
-      <ul>{% for tag in post.tags %}<li>{{ tag }}</li>{% unless forloop.last %} &middot; {% endunless %}{% endfor %}</ul>
-    </span>
-    {% endif %}
+    {% include tags.html tags=post.tags %}
   </li>
   {% endfor %}
 </ul>

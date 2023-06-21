@@ -1,0 +1,7 @@
+{% assign tags = include.tags %}
+
+{% if tags and tags.size != 0 %}
+<span class="tags">
+  <ul>{% for tag in tags %}<li>{{ tag }}</li>{% unless forloop.last %} &middot; {% endunless %}{% endfor %}</ul>
+</span>
+{% endif %}
