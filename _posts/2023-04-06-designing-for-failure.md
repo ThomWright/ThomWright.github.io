@@ -102,8 +102,8 @@ We can use the following constraints to help us understand which patterns are ap
 - **Idempotency (side effects)**&nbsp;– Is it required that retries cause no additional state changes? Even when a subset of the desired side effects failed? Is it required that a side effect happens at most once, exactly once or at least once? (See [Why can't we have exactly-once message processing?]({% post_url 2022-05-24-at-least-once-delivery %}))
 - **Idempotency (response)**&nbsp;– Is it required that retries always receive the same response? Even when the operation failed?
 - **Consistency**&nbsp;– Is it required that the system is always in a consistent state? Is eventual consistency acceptable? Are there acceptable inconsistent states?
-- **Synchronicity**&nbsp;– Is it required that all writes are done synchronously before returning a response? Can any be deferred until later?
-- **Atomicity**&nbsp;– Is it possible to do all writes atomically? Is it possible to do some subsets atomically?
+- **Synchronicity**&nbsp;– Is it required that all writes are done before returning a response? Can any be deferred until later?
+- **Atomicity**&nbsp;– Is it possible to ensure that either all writes succeed or none of them do? Is it possible to do this for some subset of writes?
 - **Client behaviour**&nbsp;– Are we in control of the client? Will it reliably retry until success?
 
 For the previous example, we could say: the operation *cannot* be atomic, *must* be idempotent and eventually consistent, and *can* be asynchronous.
