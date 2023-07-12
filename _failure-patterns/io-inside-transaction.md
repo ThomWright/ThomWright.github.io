@@ -19,6 +19,12 @@ The following is not a solution to the problem:
 3. Perform a write operation on another system (e.g. an HTTP POST request)
 4. Commit the transaction
 
+{% include figure.html
+  img_src="/public/assets/failure-patterns/io-in-tx.png"
+  caption="An error occurring after writing to an external system."
+  size="med"
+%}
+
 It can be tempting to think of the two writes being atomic, but this is not the case. For example, if the system crashes between steps 3 and 4 then the HTTP request will succeed, but the write to the database will be rolled back.
 
 In fact, in terms of consistency, it is no different to the following:
