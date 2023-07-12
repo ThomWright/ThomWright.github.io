@@ -37,7 +37,7 @@ Listening TCP sockets have a [*SYN* queue](https://blog.cloudflare.com/*syn*-pac
 {% include figure.html
   img_src="/public/assets/one-second/tcp-handshake.png"
   caption="TCP handshake"
-  size="med"
+  size="large"
 %}
 
 If the Accept queue fills up, new incoming *SYN*s and *ACK*s will be dropped. If the *SYN* queue fills up, [*SYN* Cookies](https://blog.cloudflare.com/*syn*-packet-handling-in-the-wild/#*syn*flood) can be used (and are enabled by default in the kernel).
@@ -69,7 +69,7 @@ TCP connection reuse isn't without its own potential problems. Race conditions c
 {% include figure.html
   img_src="/public/assets/one-second/tcp-race.png"
   caption="TCP race condition"
-  size="small"
+  size="med"
 %}
 
 We can mitigate this by setting the server's timeout to a suitably higher value than the client's (often double), but this becomes harder when you don't control both!
