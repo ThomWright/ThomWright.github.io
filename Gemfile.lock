@@ -262,6 +262,3 @@ PLATFORMS
 DEPENDENCIES
   github-pages (~> 228)
   jekyll (~> 3.9)
-
-BUNDLED WITH
-   2.4.12
