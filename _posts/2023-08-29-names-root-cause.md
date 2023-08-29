@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Names matter: Root cause"
+tags: [naming, incidents, postmortems]
 ---
 
 "Root cause" is a misleading term for the concept it represents. At least for computer scientists who consider a "root" to be singular. For other people who know what real trees actually look like, it's a perfectly good term.
