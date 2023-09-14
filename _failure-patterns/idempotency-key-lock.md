@@ -7,6 +7,7 @@ tagline: Protect against concurrent retries
 related:
   - idempotency-key
   - atomic-read-then-write
+  - at-most-once-guard
 ---
 
 ## Context
@@ -24,7 +25,7 @@ The result of a process, either `SUCCESS` or `FAILURE`, needs to be recorded in 
   size="small"
 %}
 
-It would be possible for a race condition to occur, like so:
+If concurrency was allowed, it would be possible for a race condition to occur, like so:
 
 1. Request: `GET x : ∅`
 2. Retry: `GET x : ∅`
@@ -49,11 +50,11 @@ Take a lock on the idempotency key:
     content="All sorts of problems can happen with locks. What happens if the application crashes before releasing it? What if the lock times out before the operation completes? It's worth considering the likelihood and impact of these sorts of scenarios, based on whether you are using the lock for **correctness** or **efficiency**."
 %}
 
-Doing this automatically for every top-level write operation can reduce the cognitive load of needing to think through possible concurrency problems, but possibly
+Doing this automatically for every top-level write operation can reduce the cognitive load of needing to think through possible concurrency problems. However, it is often not necessary.
 
 ## Alternatives
 
-There are often alternatives to locks, especially if correctness if your goal and your storage system supports [atomic read-then-write]({% link _failure-patterns/atomic-read-then-write.md %}) operations.
+There are often alternatives to locks, especially if correctness if your goal and your storage system supports [atomic read-then-write]({% link _failure-patterns/atomic-read-then-write.md %}) operations, and if operations on other systems are idempotent.
 
 ## See also
 
