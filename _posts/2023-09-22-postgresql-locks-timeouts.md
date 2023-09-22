@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to cause an incident with a read-only user in PostgreSQL
+tags: [reliability, databases, postgresql, incidents]
 ---
 
 It’s easy to have a false sense of security when accessing a database with a read-only user. I’d like to talk about how locks work in PostgreSQL, and how this can lead to problems when using read-only users.
