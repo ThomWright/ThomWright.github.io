@@ -42,7 +42,7 @@ We can have any number of these running concurrently, like so.
   size="med"
 %}
 
-However, these locks conflict with the most-conflicting lock: `ACCESS EXCLUSIVE`. This is generally taken out by `ALTER TABLE` statements. This means we can’t read data in the table at the same time as modifying the structure of the table.
+However, these locks conflict with the most-conflicting lock: `ACCESS EXCLUSIVE`. This is taken out by (most) `ALTER TABLE` statements. This means we can’t read data in the table at the same time as modifying the structure of the table.
 
 {% include figure.html
   img_src="/public/assets/postgres-locks-timeouts/select-alter.png"
@@ -50,10 +50,7 @@ However, these locks conflict with the most-conflicting lock: `ACCESS EXCLUSIVE`
   size="med"
 %}
 
-{% include callout.html
-  type="aside"
-  content="If anyone knows what is happening under the covers which requires this exclusive locking, please get in touch!"
-%}
+[This](https://github.com/postgres/postgres/blob/ac22a95/src/backend/commands/tablecmds.c#L4333-L4366) is the code which decides which lock mode to use for `ALTER TABLE`, along with some explanations of why that mode is required.
 
 The strategy PostgreSQL uses when trying to acquire a lock on an already locked table is to put the lock request into a queue. This can result in the scenario where an `ACCESS SHARED` lock exists for a long time, which blocks an `ACCESS EXCLUSIVE` lock, which in turns blocks *all subsequent `ACCESS SHARED` locks*.
 
