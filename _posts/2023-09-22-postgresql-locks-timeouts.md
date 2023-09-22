@@ -122,7 +122,7 @@ Next, we can make sure that the migrator doesn’t spend too long sitting in the
 {% include figure.html
   img_src="/public/assets/postgres-locks-timeouts/migrator-lock-timeout.png"
   img_src_2="/public/assets/postgres-locks-timeouts/migrator-statement-timeout.png"
-  caption="Applying timeouts to the reader"
+  caption="Applying timeouts to the migrator"
   size="small"
 %}
 
@@ -131,7 +131,7 @@ Lastly, we probably don’t want application queries piling up in the lock queue
 {% include figure.html
   img_src="/public/assets/postgres-locks-timeouts/application-lock-timeout.png"
   img_src_2="/public/assets/postgres-locks-timeouts/application-statement-timeout.png"
-  caption="Applying timeouts to the reader"
+  caption="Applying timeouts to the application"
   size="small"
 %}
 
