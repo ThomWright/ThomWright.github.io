@@ -1,21 +1,39 @@
 
 {% assign img_src = include.img_src %}
 {% assign caption = include.caption %}
+{% assign img_src_2 = include.img_src_2 %}
 {% if include.alt %}
   {% assign alt = include.alt %}
 {% else %}
   {% assign alt = include.caption %}
 {% endif %}
+{% if include.alt_2 %}
+  {% assign alt_2 = include.alt_2 %}
+{% else %}
+  {% assign alt_2 = include.caption %}
+{% endif %}
 {% assign size = include.size %}
 
 <figure>
-  <div
-      {% if size %} class="{{size}}-img" {% endif %}
-  >
-    <img
-      src="{{ img_src }}"
-      alt="{{ alt }}"
-    />
+  <div class="img-row">
+    <div
+        {% if size %} class="{{size}}-img" {% endif %}
+    >
+      <img
+        src="{{ img_src }}"
+        alt="{{ alt }}"
+      />
+    </div>
+    {% if img_src_2 %}
+    <div
+        {% if size %} class="{{size}}-img" {% endif %}
+    >
+      <img
+        src="{{ img_src_2 }}"
+        alt="{{ alt_2 }}"
+      />
+    </div>
+    {% endif %}
   </div>
   <figcaption>{{ caption | markdownify }}</figcaption>
 </figure>

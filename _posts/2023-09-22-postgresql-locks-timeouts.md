@@ -107,27 +107,29 @@ That is, we want to make sure that migrators can’t block applications for too 
 
 The first thing we can do is make sure no reader transactions hang around holding locks for too long. Two locks are good for that: `idle_in_transaction_session_timeout` and `statement_timeout`.
 
-<!-- markdownlint-disable MD033 -->
-<figure class="multi-img">
-  <img class="small-img" src="/public/assets/postgres-locks-timeouts/reader-idle-timeout.png" alt="Applying an idle in transaction timeout to the reader"/>
-  <img class="small-img" src="/public/assets/postgres-locks-timeouts/reader-statement-timeout.png" alt="Applying a statement timeout to the reader"/>
-  <figcaption>Applying timeouts to the reader</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/postgres-locks-timeouts/reader-idle-timeout.png"
+  img_src_2="/public/assets/postgres-locks-timeouts/reader-statement-timeout.png"
+  caption="Applying timeouts to the reader"
+  size="small"
+%}
 
 Next, we can make sure that the migrator doesn’t spend too long sitting in the lock queue, or holding any locks itself. We can use `lock_timeout` and `statement_timeout`. The statement timeout is arguably enough, but it can be nice to configure them separately, e.g. “don’t wait more than 1 second for a lock, but if you manage to start you have 5 seconds to do your work”.
 
-<figure class="multi-img">
-  <img class="small-img" src="/public/assets/postgres-locks-timeouts/migrator-lock-timeout.png" alt="Applying a lock timeout to the migrator"/>
-  <img class="small-img" src="/public/assets/postgres-locks-timeouts/migrator-statement-timeout.png" alt="Applying a statement timeout to the migrator"/>
-  <figcaption>Applying timeouts to the migrator</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/postgres-locks-timeouts/migrator-lock-timeout.png"
+  img_src_2="/public/assets/postgres-locks-timeouts/migrator-statement-timeout.png"
+  caption="Applying timeouts to the reader"
+  size="small"
+%}
 
 Lastly, we probably don’t want application queries piling up in the lock queue for too long, or taking too long to run. After all, an application could run a long `SELECT` statement (or let a transaction sit idle having run a `SELECT`) which would block any `ALTER TABLE` statements. We would want to use `lock_timeout`, `statement_timeout` and `idle_in_transaction_session_timeout` here.
 
-<figure class="multi-img">
-  <img class="small-img" src="/public/assets/postgres-locks-timeouts/application-lock-timeout.png" alt="Applying a lock timeout to the application"/>
-  <img class="small-img" src="/public/assets/postgres-locks-timeouts/application-statement-timeout.png" alt="Applying a statement timeout to the application"/>
-  <figcaption>Applying timeouts to the application</figcaption>
-</figure>
+{% include figure.html
+  img_src="/public/assets/postgres-locks-timeouts/application-lock-timeout.png"
+  img_src_2="/public/assets/postgres-locks-timeouts/application-statement-timeout.png"
+  caption="Applying timeouts to the reader"
+  size="small"
+%}
 
 So there you have it. Be careful when running read-only queries on databases!

@@ -131,6 +131,14 @@ figure {
     min-width: 0;
     object-fit: scale-down;
   }
+
+  .img-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: $small-spacing;
+}
 }
 
 figure.multi-img {
@@ -161,18 +169,18 @@ figcaption {
 }
 
 .small-img {
-  flex: 1;
-  min-width: 320px;
+  flex: 1 1 320px;
+  // min-width: 320px;
   max-width: 360px;
 }
 .med-img {
-  flex: 1;
-  min-width: 450px;
+  flex: 1 1 450px;
+  // min-width: 450px;
   max-width: 600px;
 }
 .large-img {
-  flex: 1;
-  min-width: 650px;
+  flex: 1 1 650px;
+  // min-width: 650px;
   max-width: 750px;
 }
 .img-circle {
