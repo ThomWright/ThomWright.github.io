@@ -187,12 +187,12 @@ A high-level overview of the two approaches:
 
 <div class="table-wrapper" markdown="block">
 
-|  | Offset | Cursor |
-| --- | --- | --- |
-| Stable page boundaries | ❌ No | ✅ Yes |
-| Efficiency | ❌ O(offset + limit) | ✅ O(limit) |
-| Implementation complexity | ✅ Low | Medium |
-| Skip pages | Yes | No* |
+|                           | Offset              | Cursor     |
+|---------------------------|---------------------|------------|
+| Stable page boundaries    | ❌ No                | ✅ Yes      |
+| Efficiency                | ❌ O(offset + limit) | ✅ O(limit) |
+| Implementation complexity | ✅ Low               | Medium     |
+| Skip pages                | Yes                 | No*        |
 
 </div>
 
