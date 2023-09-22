@@ -89,6 +89,11 @@ Meanwhile the application is still trying to serve production traffic, attemptin
 
 Oh dear.
 
+{% include callout.html
+  type="warning"
+  content="I've heard the idea of using read replicas as a solution, but this might not save you. If you have applications reading from the replica, you can run into the same issue."
+%}
+
 ## Timeouts
 
 One solution to this problem is to use timeouts, of which PostgreSQL offers four:
