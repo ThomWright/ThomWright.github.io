@@ -12,7 +12,7 @@ Nowadays I mostly focus on designing and implementing reliable, observable and w
 
 I write to learn and to teach. Often this writing is a way for me to organise my thoughts and try to make sense of things, hopefully in a way that's useful to others.
 
-[All advice comes from a context](https://www.tedinski.com/2018/06/19/all-advice-has-context.html), mine included. I try to be explicit about this context, but don't always succeed.
+[All advice comes from a context](https://www.tedinski.com/2018/06/19/all-advice-has-context.html) ([see also](https://programmingisterrible.com/post/176657481103/repeat-yourself-do-more-than-one-thing-and)), mine included. I try to be explicit about this context, but don't always succeed.
 
 You can find out more about me here:
 
