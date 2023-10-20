@@ -30,12 +30,34 @@ How do we perform a transaction across more than one system, such that either al
 
 ## Solution
 
-Use a distributed transaction by implementing e.g. [two-phase](https://en.wikipedia.org/wiki/Two-phase_commit_protocol) or [three-phase commit](https://en.wikipedia.org/wiki/Three-phase_commit_protocol).
+Use a distributed transaction by implementing e.g. the [two-phase](https://en.wikipedia.org/wiki/Two-phase_commit_protocol) or [three-phase](https://en.wikipedia.org/wiki/Three-phase_commit_protocol) commit protocols.
 
 {% include callout.html
   type="warning"
   content="It is worth carefully reading the assumptions and drawbacks for these protocols to decide whether they are appropriate for your use case."
 %}
+
+Two-phase commit has two types of participant:
+
+1. A single *coordinator*
+2. Several *participants*, each storing some data
+
+The basic algorithm is (for the success case):
+
+1. **Prepare** – The *coordinator* sends requests to each *participant* to execute their own transaction, up to but not including committing.
+
+    Each *participant* replies saying that they can successfully commit the transaction.
+
+2. **Commit** – After receiving successful responses from all *participants*, the *coordinator* sends requests to all *participants* to commit.
+
+There is significant complicity in implementing robust distributed transactions. It is worth considering the following scenarios:
+
+- What if the *coordinator* crashes part way through the commit phase?
+- What if a *participant* crashes after the prepare phase and before committing?
+
+To ensure (eventual) atomicity, to solve the first case the *coordinator* must have a crash-recovery mechanism, e.g. a [Write-Ahead Log (WAL)](https://en.wikipedia.org/wiki/Write-ahead_logging), and use it to continue in any in-progress transactions after a crash. To solve the second case, participants must persist their uncommitted changes. Any pending transactions (uncommitted changes and associated locks) must continue to be held after recovering from a crash.
+
+## Alternatives
 
 For longer-running transactions, consider using a [saga]({% link _failure-patterns/saga.md %}).
 

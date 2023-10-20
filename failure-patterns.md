@@ -77,17 +77,21 @@ When consistency is important, you will generally need to choose (at least) one 
 
 <div class="table-wrapper" markdown="block">
 
-|                         | **Number of systems**   | **Consistency**       | **Atomicity**   | **Synchronicity** | **Complexity** |
-|:--                      |:--                    |:--              |:--                |:--                |:--      |
-| ACID transaction        | One                   | Consistent\*    | Atomic\*          | Sync              | Simple   |
-| Distributed transaction | Many                  | Consistent\*    | Atomic\*          | Sync              | Complex  |
-| Transactional outbox    | Many                  | Eventual        | Non-atomic        | Async             | Moderate |
-| Saga                    | Many                  | Eventual        | Non-atomic        | Async             | Complex  |
+|                         | **Number of systems** | **Synchronicity** | **Atomicity** | **Consistency** | **Complexity** |
+|:------------------------|:----------------------|:------------------|:--------------|:----------------|:---------------|
+| ACID transaction        | One                   | Sync              | Atomic        | Consistent\*    | Simple         |
+| Distributed transaction | Many                  | Sync + Async\*\*  | Atomic        | Eventual        | Complex        |
+| Completer               | Many                  | Sync + Async\*\*  | Non-atomic    | Eventual        | Moderate       |
+| Transactional outbox    | Many                  | Async             | Non-atomic    | Eventual        | Moderate       |
+| Saga                    | Many                  | Async             | Non-atomic    | Eventual        | Complex        |
 
 </div>
 
 <!-- markdownlint-disable-next-line MD036 -->
-*\* Depends on [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %})*
+*\* Depends on the [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %}) used.*
+
+<!-- markdownlint-disable-next-line MD036 -->
+*\*\* Attempts to do all work synchronously, but will continue asynchronously in the case of failure.*
 
 ## More patterns
 
