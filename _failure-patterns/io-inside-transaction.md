@@ -25,7 +25,7 @@ The following is not a solution to the problem:
   size="med"
 %}
 
-It can be tempting to think of the two writes being atomic, but this is not the case. For example, if the system crashes between steps 3 and 4 then the HTTP request will succeed, but the write to the database will be rolled back.
+It can be tempting to think of the two writes being atomic, but this is not the case. For example, if the system crashes between steps 3 and 4 (or the [transaction times out](https://www.postgresql.org/docs/15/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT), or...) then the HTTP request will succeed, but the write to the database will be rolled back.
 
 In fact, in terms of consistency, it is no different to the following:
 
@@ -36,3 +36,13 @@ Both scenarios can result in the HTTP request succeeding but the write to the da
 
 1. It is **clearly not atomic**, and not does pretend to be so.
 2. It has higher database **connection utilisation**. The first scenario is holding a database connection in step 3 without using it. The longer the request takes, the lower the connection utilisation. Database connections can be scarce resources, and letting them sit idle while doing other I/O can result in worse throughput and latency.
+
+This technique can also make deadlocks more likely. Consider the following scenario:
+
+1. Begin a transaction
+2. Write to table A (acquires a lock)
+3. Perform a write operation on another system (e.g. an HTTP POST request)
+4. Write to table B (acquires another lock)
+5. Commit the transaction
+
+The longer step 3 takes, the more likely it is that another operation could attempt to acquire conflicting locks in the opposite order (B then A).
