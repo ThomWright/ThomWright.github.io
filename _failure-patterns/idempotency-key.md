@@ -26,7 +26,9 @@ How do we determine whether two requests have the same identity?
 
 ## Solution
 
-Require clients send a unique value, called an idempotency key, along with the request. This same value is should be sent with any retries, so the server can identify which requests are the same. Store this value in the database. If the value already exists, the request is a retry.
+Require clients send a unique value, called an idempotency key, along with the request. This same value should be sent with any retries, so the server can identify which requests are the same. Store this value in the database. If the value already exists, the request is a retry.
+
+This can be a dedicated ID in e.g. an `Idempotency-Key` header. Alternatively, it could be an existing ID naturally associated with the resource or operation.
 
 ## See also
 
