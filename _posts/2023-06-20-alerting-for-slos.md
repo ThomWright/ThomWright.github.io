@@ -563,7 +563,7 @@ The TL;DR of this post:
 2. To improve **sensitivity** (make sure we catch all significant errors), we can reduce our _error threshold_. Setting it to match our SLO rate gives us 100% sensitivity.
 3. To choose acceptable **detection times** we can look at _burn rates_ and _error budgets_. By considering how long it takes to exhaust our error budget, and how much budget we're willing to use, we can pick an appropriate _alert window_.
 4. To reduce **reset times** we can use _multiple windows_, and only alert when both the long and short window are detecting errors.
-5. We can make use of _multiple alerting rules_ with different actions for different levels of urgency. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers. In general:
+5. We can make use of _multiple alerting rules_ with different actions for different levels of **urgency**. For non-urgent events, we can notify instead of paging. This can help make life less stressful for on-call engineers. In general:
 
     <div class="table-wrapper" markdown="block">
 
