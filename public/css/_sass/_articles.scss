@@ -39,7 +39,6 @@ article {
     }
   }
 
-
   .article-content ul li {
     list-style-type: disc;
   }
@@ -141,6 +140,12 @@ article {
     }
     &.success {
       @include color($success)
+    }
+
+    .callout-content {
+      display: flex;
+      flex-direction: column;
+      gap: $small-spacing;
     }
   }
 }

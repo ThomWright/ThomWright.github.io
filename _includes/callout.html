@@ -10,6 +10,7 @@ Values:
 {% assign type = include.type %}
 {% assign content = include.content %}
 
-<aside class="{{ type }}">
-  <div class="icon"></div>{{ content | markdownify }}
+<aside class="callout {{ type }}">
+  <div class="icon"></div>
+  <div class="callout-content">{{ content | markdownify }}</div>
 </aside>

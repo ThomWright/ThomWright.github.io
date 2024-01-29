@@ -479,23 +479,52 @@ Luckily, there's another way!
 
 ### Average error rate ratio (errors / total) per service
 ### Range: 0-1
+
+### 1 hour
 - record: service:requests_error_ratio:rate1h
   expr: >
-    service:requests_errors_total:rate1h
-    /
-    service:requests_total:rate1h
-
-## Average error rates %
+    # When we have data (>0 requests)
+    (
+      service:requests_errors_total:rate1h
+      /
+      (service:requests_total:rate1h > 0)
+    )
+    # When we don't have data (default to 0% error rate)
+    OR (service:requests_total:rate1h * 0)
 
 ### 3 days
 - record: service:requests_error_ratio:rate3d
   expr: >
-    avg_over_time(service:requests_error_ratio:rate1h[3d:1h])
+    # When we have data (>0 requests)
+    (
+      sum_over_time(service:requests_errors_total:rate1h[3d:1h])
+      /
+      sum_over_time(service:requests_errors_total:rate1h[3d:1h]) > 0
+    )
+    # When we don't have data (default to 0% error rate)
+    OR (sum_over_time(service:requests_errors_total:rate1h[3d:1h]) * 0)
 ```
 
-Here we have some recording rules to pre-calculate hourly average error ratios. These are quick to calculate using recording rules: Prometheus only needs to look back over the previous hour.
+Here we have some recording rules to pre-calculate hourly error ratios. These are quick to calculate using recording rules: Prometheus only needs to look back over the previous hour.
 
-Then we use a neat trick: `avg_over_time(some_metric[3d:1h])`. This takes 1 sample per hour, and calculates the average over the last 3 days. Since each sample is an hourly average, this works nicely: an average of two or more averages is the same as the average of all the underlying samples. Prometheus only needs to consider `24 * 3 = 72` samples per time series, and there will only be 1 time series per service.
+Then we use a neat trick: `sum_over_time(some_metric:rate1h[3d:1h])`. This takes 1 sample per hour, and calculates the sum over the last 3 days. Prometheus only needs to add up `24 * 3 = 72` samples per time series. One downside, which isn't currently documented, is that this will only be calculated once per hour, on the hour. If you want better time resolution, you'll need e.g. `some_metric:rate5m[3d:5m]` instead.
+
+{% include callout.html
+  type="warning"
+  content="A previous version of this article used `avg_over_time` to average the error rates. This can produce wildly incorrect results! For example:
+
+  ```text
+  Hour       | 00:00 |  01:00
+  Requests   |   100 |     10
+  Errors     |     1 |      1
+  Error rate | 1.00% | 10.00%
+  ```
+
+  **Correct error rate** = `(1 + 1) / (100 + 10)` = 1.82% ✅
+
+  **Averaged error rate** = `(1 + 10) / 2` = 5.5% ❌
+  "
+%}
 
 We can then write our alert like so:
 
