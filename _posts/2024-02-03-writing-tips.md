@@ -44,8 +44,20 @@ Similarly, **avoid naked URLs**. E.g. prefer [GitHub](https://github.com) to <ht
 
 End sentences in full stops.
 
-- Even in bullet points.
+- Even when using bullet points.
+- If you choose not to end your list items with full stops, at least do so *consistently* within the same list.
 - Yes, even when the sentence ends with `formatted code`.
+
+### Lists
+
+Use ordered lists when:
+
+1. The order is meaningful. E.g. a list of goals in priority order, or a list of steps.
+2. It is likely someone will want to refer to each point individually. E.g. when sending someone a list of questions.
+
+The above list is ordered because so I can refer to point 2 above as the reason.
+
+Otherwise, use unordered lists.
 
 ### Continuity
 
@@ -132,3 +144,70 @@ For example, you could structure ADRs or design proposals such that the reader c
 4. optionally read the in-depth design
 5. optionally read the alternative designs
 6. optionally read the appendices with reference information
+
+## Templates
+
+Some document structures I tend to reach for.
+
+### ADR (Architecture Decision Record)
+
+A document describing a technical or architectural decision that was made, along with the justification for the decision over other possible options.
+
+- **Summary**
+
+  *Optional. Helpful to summarise the decision, especially if it's a long document.*
+
+- **Context**
+
+  *Background information needed to understand this ADR. Likely to include the current state and problem(s) to be solved.*
+
+- **Goals**
+
+  *In priority order. Consider SMART goals. Also include non-goals if helpful.*
+
+- **Decision**
+
+  *Which option was decided and why?*
+
+- **Design options**
+
+  *What options were considered? What are the pros and cons?*
+
+  - **Comparison**
+
+    *High level comparison. Consider using a table with each option as a column, and each relevant metric as a row. Score each option against each metric.*
+
+  - **[Option 1]**
+  - **[Option 2]**
+  - etc.
+- **Appendices**
+
+  *Supplementary information, stuff that's useful but not required. E.g. links to relevant blog posts.*
+
+### Technical brief
+
+A technical design for a project. Likely to follow a product brief, clearly justifying the reason for investing in the project.
+
+1. Context
+   1. Problem summary
+   2. Document purpose and scope
+   3. Goals
+   4. Technical requirements
+   5. Scale requirements
+2. Solution
+   1. High-level architecture
+   2. System components
+   3. End-to-end flows
+   4. Internal and external dependencies
+   5. [Optional] Extra sections for more in depth design
+3. Project
+   1. Milestones
+4. Appendix
+   1. Related resources
+   2. Glossary
+
+## Further reading
+
+- [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
+  - [More on design docs](https://www.industrialempathy.com/posts/design-doc-a-design-doc/)
+- [Squarespace RFC template](https://static1.squarespace.com/static/56ab961ecbced617ccd2461e/t/5d792e5a4dac4074658ce64b/1568222810968/Squarespace+RFC+Template.pdf)
