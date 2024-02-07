@@ -82,7 +82,7 @@ Use **bold** to draw the eye and **highlight important points**. Use *italics* f
 
 ### Capitalisation
 
-Capitalise proper nouns, including company names, e.g. Stripe, Amazon.
+Capitalise proper nouns, including tool and company names, e.g. Jira, Notion, Slack, Stripe.
 
 Capitalise API, ID and URL. Don't capitalise the s when pluralising, they should be APIs, IDs, and URLs.
 
@@ -159,7 +159,9 @@ A document describing a technical or architectural decision that was made, along
 
 - **Context**
 
-  *Background information needed to understand this ADR. Likely to include the current state and problem(s) to be solved.*
+  *Background information needed to understand this ADR.*
+
+  *The current state and problem(s) to be solved.*
 
 - **Goals**
 
@@ -188,23 +190,59 @@ A document describing a technical or architectural decision that was made, along
 
 A technical design for a project. Likely to follow a product brief, clearly justifying the reason for investing in the project.
 
-1. Context
-   1. Problem summary
-   2. Document purpose and scope
-   3. Goals
-   4. Technical requirements
-   5. Scale requirements
-2. Solution
-   1. High-level architecture
-   2. System components
-   3. End-to-end flows
-   4. Internal and external dependencies
-   5. [Optional] Extra sections for more in depth design
-3. Project
-   1. Milestones
-4. Appendix
-   1. Related resources
-   2. Glossary
+- **Glossary**
+
+  *Define any potentially unfamiliar terms here.*
+
+- **Context**
+
+  *Background information needed to understand this brief.*
+
+  *The current state and problem(s) to be solved.*
+
+- **Goals**
+
+  *In priority order. Consider SMART goals. Also include non-goals if helpful.*
+
+- **Requirements**
+
+    *Product, technical, scale, etc.*
+
+- **Solution**
+  - **High-level architecture**
+
+    *Include a [system context diagram](https://c4model.com/#SystemContextDiagram).*
+
+  - **System components**
+
+    *Include a [container diagram](https://c4model.com/#ContainerDiagram) for the primary system(s) involved.*
+
+  - **End-to-end flows**
+
+    *Include sequence diagrams for primary flows, if helpful.*
+
+  - **Dependencies**
+
+    *Dependencies on other internal and external services.*
+
+  - **[Optional] Extra sections for more in depth design**
+
+    *E.g. for a particular component. Might include API specs, database schemas etc.*
+
+  - **[Optional] Extra sections for operational readiness**
+
+      *E.g. observability, scale, analytics, testing, internal and external documentation, operational tooling.*
+
+- **Project**
+  - **Milestones**
+
+  *Consider dependencies between major milestones, and how to delivery value incrementally.*
+
+  - **Risks**
+- **Related resources**
+- **Appendices**
+
+  *Supplementary information, stuff that's useful but not required - E.g. links to relevant blog posts.*
 
 ## Further reading
 
