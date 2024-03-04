@@ -16,21 +16,7 @@ It is possible for retries to arrive while a previous request is still being pro
 
 ## Example
 
-The result of a process, either `SUCCESS` or `FAILURE`, needs to be recorded in a system without an [atomic read-then-write]({% link _failure-patterns/atomic-read-then-write.md %}) operation. Once written, the record should not change.
-
-{% include figure.html
-  img_src="/public/assets/failure-patterns/state-machine-result.png"
-  alt="A state machine"
-  caption="A state machine with two terminal states"
-  size="small"
-%}
-
-If concurrency was allowed, it would be possible for a race condition to occur, like so:
-
-1. Request: `GET x : ∅`
-2. Retry: `GET x : ∅`
-3. Request: `SET x SUCCESS`
-4. Retry: `SET x FAILURE`
+I can't think of a problem where concurrency specifically is a problem. If you can, please send me one!
 
 ## Problem
 
