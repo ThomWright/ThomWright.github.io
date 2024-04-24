@@ -60,6 +60,17 @@ Sometimes inconsistency is unavoidable, whether by design, or simply because of 
 
 {% endfor %}
 
+## Other
+
+Other patterns for handling failure or edge cases.
+
+{% assign other = site.failure-patterns | where: 'group', 'other' | sort: "sort_key", "last" %}
+{% for pattern in other %}[{{ pattern.title }}]({{ pattern.url }})
+
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+
+{% endfor %}
+
 ## Antipatterns
 
 Some patterns exist which should be avoided. They may seem to offer benefits, but either do not deliver what they seem to or have other serious drawbacks.
