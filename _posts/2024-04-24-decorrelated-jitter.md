@@ -27,14 +27,15 @@ sleep = min(max_duration, random_between(min_duration, prev_sleep * 3))
 Let’s break this down into two parts:
 
 ```python
-# First: increase the sleep value by multiplying it - can produce at most 3x max_duration
+# First: increase the sleep value by multiplying it.
+# Can produce at most 3x max_duration.
 temp = random_between(min_duration, prev_sleep * 3)
 
 # Second: clamp it
 sleep = min(max_duration, temp)
 ```
 
-The `sleep` duration will generally increase every iteration. With this algorithm, when the previous `sleep` grows as large as `max_duration` there is only a 1/3 chance of applying jitter. E.g.:
+The `sleep` duration will generally increase every iteration. When the previous `sleep` grows as large as `max_duration` there is only a 1/3 chance of applying jitter. E.g.:
 
 ```python
 max_duration = 10
