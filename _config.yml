@@ -6,8 +6,7 @@ kramdown:
 
 permalink: pretty
 
-title: Thom Wright
-tagline: Thom's blog
+title: Thom's Blog
 description: Writing about software engineering
 
 url: https://thomwright.co.uk
