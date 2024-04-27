@@ -11,7 +11,7 @@
   </header>
 
 
-  <span class="breadcrumb"><a href="{% link failure-patterns.md %}">Failure pattern</a> – {{ article.tagline }}</span>
+  <span class="breadcrumb"><a href="{% link failure-patterns.md %}">Failure {% if article.group == "antipattern" %}anti{% endif %}pattern</a> – {{ article.tagline }}</span>
 
   <div class="article-content">
     {% include with_anchor_headings.html
