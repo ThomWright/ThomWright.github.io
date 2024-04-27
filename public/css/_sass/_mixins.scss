@@ -45,11 +45,16 @@
 }
 
 @mixin single-side-border($side, $color) {
+  @include single-side-border-width($side, $color, 5px);
+
+}
+
+@mixin single-side-border-width($side, $color, $width) {
   border: {
     width: 0px;
     radius: 0px;
     #{$side}: {
-      width: 5px;
+      width: $width;
       color: $color;
       style: solid;
     }

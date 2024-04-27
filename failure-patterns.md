@@ -88,21 +88,18 @@ When consistency is important, you will generally need to choose (at least) one 
 
 <div class="table-wrapper" markdown="block">
 
-|                         | **Number of systems** | **Synchronicity** | **Atomicity** | **Consistency** | **Complexity** |
-|:------------------------|:----------------------|:------------------|:--------------|:----------------|:---------------|
-| ACID transaction        | One                   | Sync              | Atomic        | Consistent\*    | Simple         |
-| Distributed transaction | Many                  | Sync + Async\*\*  | Atomic        | Eventual        | Complex        |
-| Completer               | Many                  | Sync + Async\*\*  | Non-atomic    | Eventual        | Moderate       |
-| Transactional outbox    | Many                  | Async             | Non-atomic    | Eventual        | Moderate       |
-| Saga                    | Many                  | Async             | Non-atomic    | Eventual        | Complex        |
+|                         | **Number of systems** | **Synchronicity**                   | **Atomicity** | **Consistency** | **Complexity** |
+|:------------------------|:----------------------|:------------------------------------|:--------------|:----------------|:---------------|
+| ACID transaction        | One                   | Sync                                | Atomic        | Consistent[^1]    | Simple         |
+| Distributed transaction | Many                  | Success: sync<br />Error: async[^2] | Atomic        | Eventual        | Complex        |
+| Completer               | Many                  | Success: sync<br />Error: async[^2] | Non-atomic    | Eventual        | Moderate       |
+| Transactional outbox    | Many                  | Async                               | Non-atomic    | Eventual        | Moderate       |
+| Saga                    | Many                  | Async                               | Non-atomic    | Eventual        | Complex        |
 
 </div>
 
-<!-- markdownlint-disable-next-line MD036 -->
-*\* Depends on the [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %}) used.*
-
-<!-- markdownlint-disable-next-line MD036 -->
-*\*\* Attempts to do all work synchronously, but will continue asynchronously in the case of failure.*
+[^1]: Depends on the [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %}) used.
+[^2]: Attempts to do all work synchronously, but will continue asynchronously in the case of failure.
 
 ## More patterns
 

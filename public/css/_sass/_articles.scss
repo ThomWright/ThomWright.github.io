@@ -148,4 +148,14 @@ article {
       gap: $small-spacing;
     }
   }
+
+  .footnotes {
+    margin-top: $base-padding;
+    @include single-side-border-width(top, $gray-light, 1px);
+
+    ol {
+      margin-top: $base-padding;
+      font-size: smaller;
+    }
+  }
 }
