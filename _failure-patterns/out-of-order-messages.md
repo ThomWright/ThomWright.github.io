@@ -23,19 +23,65 @@ created -> succeeded
        `-> failed
 ```
 
-With the following associated events: `PaymentCreated`, `PaymentSucceeded` and `PaymentFailed`.
+With the following associated events:
 
-It might be expected that `PaymentCreated` will always be received first, but this is not guaranteed. The `PaymentCreated` event might also contain vital information not included in the later events, so e.g. `PaymentSucceeded` cannot be processed independently.
+```protobuf
+message PaymentCreated {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  uint64 amount = 3;
+  string currency = 4;
+}
+
+message PaymentSucceeded {
+  string id = 1;
+  google.protobuf.Timestamp succeeded_at = 2;
+}
+
+message PaymentFailed {
+  string id = 1;
+  google.protobuf.Timestamp failed_at = 2;
+}
+```
+
+It might be expected that `PaymentCreated` will always be received first, but this is not guaranteed. The `PaymentCreated` event contains potentially vital information (amount and currency) not included in the later events. With this design, it might be difficult to process `PaymentSucceeded` independently without that information.
 
 ## Problem
 
 How do we gracefully handle out of order messages, even when there are hard dependencies between them?
 
-## Solution
+## Solutions
 
-If possible, design the messages such that they can be processed in any order. For example, the `PaymentSucceeded` event above could include all the information from `PaymentCreated` so it can be processed independently.
+### Independently processable messages
+
+If possible, design the messages such that they can be processed in any order. For example, the `PaymentSucceeded` event could contains all the necessary information to be processed without any preceding events.
+
+```proto
+message PaymentCreated {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  uint64 amount = 3;
+  string currency = 4;
+}
+
+message PaymentSucceeded {
+  string id = 1;
+  google.protobuf.Timestamp succeeded_at = 2;
+  uint64 amount = 3;
+  string currency = 4;
+}
+
+message PaymentFailed {
+  string id = 1;
+  google.protobuf.Timestamp failed_at = 2;
+  uint64 amount = 3;
+  string currency = 4;
+}
+```
 
 If that is not possible, then consider a design such as the following.
+
+### Ordered event log
 
 Given two events with a natural ordering `A -> B`, where we are unable to process `B` until `A` has arrived:
 
