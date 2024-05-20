@@ -4,9 +4,7 @@
   <header>
     <h1>
       <a href="{{ article.url }}">
-        {% if article.group == "antipattern" %}Antipattern: {% endif %}
-        {% if article.incomplete %}[WIP] {% endif %}
-        {{ article.title }}
+        {% if article.group == "antipattern" %}Antipattern:{% endif %} {% if article.incomplete %}[WIP] {% endif %}{{ article.title }}
       </a>
     </h1>
   </header>
