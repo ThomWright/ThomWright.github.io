@@ -25,3 +25,5 @@ Imagine an endpoint, `POST /bookings`, used to create a new booking on a website
 If the client requires this ID, e.g. to save it to its own database, then this becomes tricky. It might be possible to query the server to find this booking, but without some other unique property and a suitable API this might be difficult or impossible. Regardless, the client needs to do more work to fetch the information about the booking because it is missing from the response.
 
 Instead, consider returning the same successful response that was returned for the original request, e.g. using a [response record]({% link _failure-patterns/response-record.md %}). There is no good reason to return an error here – the client has not done anything wrong. It might simply be retrying because it didn't receive the response the first time, which is correct behaviour.
+
+The same goes for rejecting concurrent requests. If it's possible to accept the request and return a successful response (or appropriate error), then that should always be the preferred option.
