@@ -43,13 +43,15 @@ These dependency relationships are closely related to the ideas of coupling and 
 Kent Beck has [a good talk discussion coupling and cohesion](httpes://hackmd.io/@pierodibello/Continued-Learning-The-Beauty-of-Maintenance---Kent-Beck---DDD-Europe-2020) with relevant definitions which I'll use here too:
 
 - **Coupling** - A and B are coupled with respect to a particular change if changing A implies changing B.
-- **Cohesion** - If I have an element E that have sub-elements, that element is cohesive to the degree that its sub-elements are coupled, meaning that if I have to change one of these sub-elements, I have to change the others sub-elements at the same time too.
+- **Cohesion** - If I have an element E that has sub-elements, that element is cohesive to the degree that its sub-elements are coupled, meaning that if I have to change one of these sub-elements, I have to change the others sub-elements at the same time too.
 
 Notice the strong similarity between the "coupling" and "dependency" definitions.
 
 With these in mind, let's go through some guidelines.
 
 One of the overarching guidelines here is to **make services easy to change**. Change is (often) inevitable, however we generally don't know _how_ we will need to change our services in the future. There are a number of general principles we can follow to make this easier.
+
+**Minimise the amount of _implicit_ coupling**. Explicit coupling includes a service sending an HTTP request to another. Implicit coupling would be copy/pasting some core business logic from one service to another. Or when logic in one service only functions correctly if some other service performs some specific logic. If you ever see a comment like `// Assumes X never happens`, and X is controlled by another service, then you have implicit coupling. Implicit coupling can be insidious. It's easy to write, hard to discover, and often looks perfectly innocent in isolation.
 
 **Minimise the number of dependency relationships**. The more X's that depend on Y, the harder Y is to change. Note that this goes for services, classes (or other modules of code), third party SaaS products, and pretty much anything else. If we want something to be easy to change, we should reduce the number of places in which we interact with it.
 
