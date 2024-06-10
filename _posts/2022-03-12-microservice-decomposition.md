@@ -60,7 +60,7 @@ A perhaps less obvious example is when logic in one service only functions corre
   content="If some logic in service A depends on X not happening, consider (in order of priority):
 
 - Making service A responsible for ensuring that X does not happen.
-- Putting some assertions in X to detect and alert when X happens."
+- Putting some assertions in service A to detect and alert when X happens."
 %}
 
 **Minimise the number of dependency relationships**. The more X's that depend on Y, the harder Y is to change. Note that this goes for services, classes (or other modules of code), third party SaaS products, and pretty much anything else. If we want something to be easy to change, we should reduce the number of places in which we interact with it.
