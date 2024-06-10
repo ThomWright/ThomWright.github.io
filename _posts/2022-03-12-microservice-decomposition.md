@@ -51,7 +51,17 @@ With these in mind, let's go through some guidelines.
 
 One of the overarching guidelines here is to **make services easy to change**. Change is (often) inevitable, however we generally don't know _how_ we will need to change our services in the future. There are a number of general principles we can follow to make this easier.
 
-**Minimise the amount of _implicit_ coupling**. Explicit coupling would be something like a service sending an HTTP request to another service. Copy/pasting some core business logic from one service to another would be _implicit_ coupling. When the business logic needs to change, it will likely need to change in both places. A less obvious example is when logic in one service only functions correctly if some other service behaves a specific way. If you ever see a comment like `// Assumes X never happens`, and X is controlled by another service, then you likely have implicit coupling. Implicit coupling can be insidious. It's easy to write, hard to discover, and often looks perfectly innocent in isolation.
+**Minimise _implicit_ coupling**. A service sending an HTTP request from service A to B would be _explicit_ coupling. They are coupled with respect to the API contract, and it is obvious that both services need to change when this contract changes. Copy/pasting some core business logic from service B to A would be _implicit_ coupling. When the business logic needs to change, it will likely need to change in both places. But there is no way to know when changing some internal business logic whether it has been copy/pasted anywhere else, and hence whether another service needs changing. Being able to assume that internal business logic exists in only one place is key to productive development of microservices.
+
+A perhaps less obvious example is when logic in one service only functions correctly if some other service behaves a specific way. If you ever see a comment like `// Assumes X never happens`, and X is controlled by another service, then you likely have implicit coupling. Implicit coupling can be insidious. It's easy to write, hard to discover, and often looks perfectly innocent in isolation. If there is nothing to stop a load-bearing assumption from changing (or, failing that, detecting it when it does), then this is a bug waiting to happen.
+
+{% include callout.html
+  type="aside"
+  content="If some logic in service A depends on X not happening, consider (in order of priority):
+
+- Making service A responsible for ensuring that X does not happen.
+- Putting some assertions in X to detect and alert when X happens."
+%}
 
 **Minimise the number of dependency relationships**. The more X's that depend on Y, the harder Y is to change. Note that this goes for services, classes (or other modules of code), third party SaaS products, and pretty much anything else. If we want something to be easy to change, we should reduce the number of places in which we interact with it.
 
