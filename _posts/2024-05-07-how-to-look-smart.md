@@ -8,7 +8,7 @@ When reviewing a design for an asynchronous system, there are some simple questi
 
 - What happens if this message is delayed?
 - What happens if these messages arrive out of order?
-- What happens if this message is processed twice? Concurrently?
+- What happens if this message is processed twice? Concurrently? After a significant delay?
 - What happens if two related messages are processed concurrently?
 - What happens if this message handler fails partway through? Repeatedly?
 
