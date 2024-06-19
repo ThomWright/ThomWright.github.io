@@ -40,7 +40,7 @@ Probably the most common dependency relationship is when A sends HTTP requests (
 
 These dependency relationships are closely related to the ideas of coupling and cohesion. You might often hear that services (or any kind of module) should have "high cohesion, and low coupling to other services".
 
-Kent Beck has [a good talk discussion coupling and cohesion](httpes://hackmd.io/@pierodibello/Continued-Learning-The-Beauty-of-Maintenance---Kent-Beck---DDD-Europe-2020) with relevant definitions which I'll use here too:
+Kent Beck has [a good talk discussion coupling and cohesion](https://hackmd.io/@pierodibello/Continued-Learning-The-Beauty-of-Maintenance---Kent-Beck---DDD-Europe-2020) with relevant definitions which I'll use here too:
 
 - **Coupling** - A and B are coupled with respect to a particular change if changing A implies changing B.
 - **Cohesion** - If I have an element E that has sub-elements, that element is cohesive to the degree that its sub-elements are coupled, meaning that if I have to change one of these sub-elements, I have to change the others sub-elements at the same time too.
