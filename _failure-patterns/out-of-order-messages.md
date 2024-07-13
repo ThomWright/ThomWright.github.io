@@ -5,7 +5,6 @@ short: out-of-order-messages
 group: other
 tagline: Reliably process dependent messages in any order
 sort_key: 1
-incomplete: true
 ---
 
 ## Context
@@ -52,6 +51,8 @@ How do we gracefully handle out of order messages, even when there are hard depe
 
 ## Solutions
 
+Several solutions exist to this problem, each with their own trade-offs.
+
 ### Independently processable messages
 
 If possible, design the messages such that they can be processed in any order. For example, the `PaymentSucceeded` event could contains all the necessary information to be processed without any preceding events.
@@ -78,6 +79,8 @@ message PaymentFailed {
   string currency = 4;
 }
 ```
+
+This approach has the downside that lots of data might need to be sent repeatedly. This is less efficient than sending deltas (only the data that has changed), especially for large payloads.
 
 If that is not possible, then consider a design such as the following.
 
@@ -107,11 +110,9 @@ This solution relies on an ordered event log, where it is guaranteed that if an 
 
 An event log might not be necessary, but is a nice general-purpose solution to this problem.
 
-## Alternatives
-
 ### Delay and replay
 
-It can be tempted to simply delay the processing of out of order messages, in the hope that the required preceding messages will arrive soon.
+Another option is to simply delay the processing of an out of order message, in the hope that the required preceding message(s) will arrive soon.
 
 This has the drawback of creating unnecessary delays. If we delay message `B` for one minute, but the required message `A` arrives after one second, then we will process `B` 59 seconds later than necessary. Ideally, we want to process messages as soon as possible.
 
