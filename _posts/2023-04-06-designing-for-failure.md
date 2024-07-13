@@ -38,7 +38,9 @@ Operation
 
 : A logical unit of work. Operations form a tree, and might consist of several read or write sub-operations.
 
-  Again, this is quite generic, so I'll often just use the term **request** instead, especially for top-level operations.
+  An operation (e.g. register a new user) might take several attempts (e.g. retried requests) to complete.
+
+  Despite this, I'll often just use the term **request** instead, especially for top-level operations.
 
 Write
 

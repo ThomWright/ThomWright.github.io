@@ -88,18 +88,19 @@ When consistency is important, you will generally need to choose (at least) one 
 
 <div class="table-wrapper" markdown="block">
 
-|                         | **Number of systems** | **Synchronicity**                   | **Atomicity** | **Consistency** | **Complexity** |
-|:------------------------|:----------------------|:------------------------------------|:--------------|:----------------|:---------------|
-| ACID transaction        | One                   | Sync                                | Atomic        | Consistent[^1]    | Simple         |
-| Distributed transaction | Many                  | Success: sync<br />Error: async[^2] | Atomic        | Eventual        | Complex        |
-| Completer               | Many                  | Success: sync<br />Error: async[^2] | Non-atomic    | Eventual        | Moderate       |
-| Transactional outbox    | Many                  | Async                               | Non-atomic    | Eventual        | Moderate       |
-| Saga                    | Many                  | Async                               | Non-atomic    | Eventual        | Complex        |
+| **Pattern**                                                                        | **Number of systems** | **Synchronicity**                   | **Atomicity**  | **Consistency** | **Complexity** |
+|:-----------------------------------------------------------------------------------|:----------------------|:------------------------------------|:---------------|:----------------|:---------------|
+| [ACID transaction]({% link _failure-patterns/acid-transaction.md %})               | One                   | Sync                                | Atomic         | Strong          | Simple         |
+| [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %})       | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |
+| [Reliable retries]({% link _failure-patterns/reliable-retries.md %})               | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |
+| [Completer]({% link _failure-patterns/completer.md %})                             | Many                  | Success: sync<br />Error: async[^1] | Non-atomic[^2] | Eventual        | Moderate       |
+| [Distributed transaction]({% link _failure-patterns/distributed-transaction.md %}) | Many                  | Success: sync<br />Error: async[^1] | Atomic         | Eventual        | Complex        |
+| [Saga]({% link _failure-patterns/saga.md %})                                       | Many                  | Async                               | Atomic         | Eventual        | Complex        |
 
 </div>
 
-[^1]: Depends on the [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %}) used.
-[^2]: Attempts to do all work synchronously, but will continue asynchronously in the case of failure.
+[^1]: Attempts to do all work synchronously, but will continue asynchronously in the case of failure.
+[^2]: Non-atomic because some writes might fail with no guarantee that successful writes will be rolled back.
 
 ## More patterns
 

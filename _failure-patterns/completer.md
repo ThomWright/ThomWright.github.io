@@ -8,6 +8,7 @@ related:
   - transactional-outbox
   - recovery-point
   - resumable-operation
+  - reliable-retries
 ---
 
 ## Context
