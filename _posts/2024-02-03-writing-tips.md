@@ -249,3 +249,4 @@ A technical design for a project. Likely to follow a product brief, clearly just
 - [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
   - [More on design docs](https://www.industrialempathy.com/posts/design-doc-a-design-doc/)
 - [Squarespace RFC template](https://static1.squarespace.com/static/56ab961ecbced617ccd2461e/t/5d792e5a4dac4074658ce64b/1568222810968/Squarespace+RFC+Template.pdf)
+- [How to make software architecture trade-off decisions](https://scalex.dev/blog/how-to-make-architecture-trade-off-decisions-cb23482e1dfe/)
