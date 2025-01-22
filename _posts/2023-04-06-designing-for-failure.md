@@ -84,14 +84,24 @@ Another definition I like from [Zero To Production In Rust](https://www.lpalmier
 
 > An API endpoint is retry-safe (or **idempotent**) if the caller has no way to **observe** if a request has been sent to the server once or multiple times.
 
+We can think of "intended effect on the server" from the HTTP specification as meaning "observable".
+
 Given these, I see two properties one might expect from an idempotent API:
 
-1. **Side effects**&nbsp;– Multiple identical requests do not produce any side effects beyond that of a single request.
+1. **Side effects**&nbsp;– Multiple identical requests do not produce any observable side effects beyond that of a single request.
 2. **Response**&nbsp;– The client receives the same response every time it makes the same request.
 
-I think 1 is what most people mean most of the time, but I often see 2 being expected as well. HTTP semantics do not require 2, and it would be strange if they did. A GET request which always returned the same response would not be very useful if the underlying resource changes.
+I think **Side effects** is what most people mean most of the time, but I often see **Response** being expected as well. It's worth noting HTTP semantics for idempotent methods explicitly do not require the **Response** property. Arguably this property is more about *referential transparency*, but I'd argue this is also an important property when designing failure-tolerant systems.
 
-For the most part I'll be using definition 1 (side effects), with perhaps some variation in certain cases, e.g. partially failed operations where we might want retries to produce any remaining side effects.
+I'd caveat this with saying that the rules for *incomplete* operations can be a bit different if you're allowing retries to drive an operation to completion. For example, a transient failure might result in an HTTP 500 and the intended side effect *maybe* happening, it's impossible to know from the client's perspective. A subsequent retry might then ensure the side effect did happen (if it didn't already) and result in an HTTP 200. Any subsequent requests should not cause any side effects, and return the same HTTP 200 as before.
+
+Another important and related concept is one that I don't have a name for (side effect cardinality?). It describes how many times a side effect can occur for a given *completed* operation:
+
+- **At most once** – Multiple identical requests must result the side effect happening either zero or one times.
+- **Exactly once** – Multiple identical requests must result in the side effect happening exactly once.
+- **At least once** – Multiple identical requests must result in the side effect happening once or more.
+
+This might not look like idempotency, because side effects can happen more than once. However, if the **at least once** side effects are not *externally observable* – for example publishing multiple identical messages which result in an observable **exactly once** side effect elsewhere in the system – then the idempotency property generally holds when looking at the bigger picture. In other words, the message publishing side effect does not itself the "intended effect on the server", so doesn't count in terms of idempotency.
 
 ## Constraints
 
