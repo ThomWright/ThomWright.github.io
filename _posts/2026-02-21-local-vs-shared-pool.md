@@ -49,13 +49,15 @@ The [code is available on GitHub](https://github.com/ThomWright/pool-sim).
 
 ## A single pool
 
+Let's start with a single pool and the 200 RPS workload. With ~25ms average query latency, the average number of used connections — queries running at any moment — is around 5.
+
 {% include figure.html
   img_src="/public/assets/pools/app-pool.png"
   caption="A single application process with its own pool"
   size="x-small"
 %}
 
-Let's start with a single pool and the 200 RPS workload. With ~25ms average query latency, the average number of used connections — queries running at any moment — is around 5.
+If we simulate 5 minutes of traffic, we can see how many connections the pool keeps open over time.
 
 {% include figure.html
   img_src="/public/assets/pools/connections_1.png"
@@ -105,7 +107,7 @@ Let's add two more application processes and see what happens.
   size="med"
 %}
 
-Each local pool needs fewer connections, but in total they need significantly more than the shared pool. In this case, in total it averages around 23 open connections across the three pools, compared to 14 for the shared pool.
+Each local pool needs fewer connections, but in total they need significantly more than the shared pool. In this case, the three local pools average around 23 open connections in total, compared to 14 for the shared pool.
 
 Why though? Each local pool handles one third of the traffic, so the average used connections per pool drops to around 1.7 (average of 5 connections, divided by 3 processes). But each pool still has to handle its own peaks independently. Let's look at the used connection distribution for a single process in the 3-process case.
 
