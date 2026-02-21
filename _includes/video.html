@@ -1,0 +1,22 @@
+
+{% assign src = include.src %}
+{% assign caption = include.caption %}
+{% assign size = include.size %}
+
+<figure>
+  <div class="img-row">
+    <div
+        {% if size %} class="{{size}}-img" {% endif %}
+    >
+      <video
+        {% unless include.autoplay == false %} autoplay {% endunless %}
+        {% unless include.loop == false %} loop {% endunless %}
+        {% unless include.controls == false %} controls {% endunless %}
+        muted playsinline
+      >
+        <source src="{{ src }}" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+  <figcaption>{{ caption | markdownify }}</figcaption>
+</figure>

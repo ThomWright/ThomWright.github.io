@@ -127,7 +127,8 @@ figure {
 
   text-align: center;
 
-  img {
+  img,
+  video {
     min-width: 0;
     object-fit: scale-down;
   }
@@ -168,6 +169,10 @@ figcaption {
   font-style: italic;
 }
 
+.x-small-img {
+  flex: 1 1 180px;
+  max-width: 200px;
+}
 .small-img {
   flex: 1 1 320px;
   max-width: 360px;
