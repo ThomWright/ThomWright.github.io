@@ -7,8 +7,6 @@ tags: [rust, types, tools]
 <!-- begin_excerpt -->
 Rust is, for me, the best language for backend development I’ve used in my 10+ year career.
 
-Emphasis on *for me*.
-
 To explain why, it'll help to share some context on what I do and what I value.
 <!-- end_excerpt -->
 
@@ -53,13 +51,13 @@ Lastly, a flexible **module system**. I like structure, and I like being able to
 
 I guess it's no surprise that I think Rust excels in all of these areas.
 
-In fact, by using Rust I learned more about what I want from a language, because it gave me qualities I didn't know were possible. A low-level language where the compiler *actively teaches me* instead of making me feel like an idiot? Where people invest incredible effort into teaching the language and the concepts underlying it, rather than sparse, opaque, ambiguous documentation which exists... somewhere? A self-updating toolchain with version management, dependency management and a bunch of other great stuff built in which just works? A community unsatisfied with the status quo who are on a mission to make things better? I am not used to this.
+In fact, by using Rust I learned more about what I want from a language, because it gave me qualities I didn't know were possible. A low-level language where the compiler *actively teaches me* instead of making me feel like an idiot. Where people invest incredible effort into teaching the language and the concepts underlying it. A self-updating toolchain with version management, dependency management and a bunch of other great stuff built in which just works. A community unsatisfied with the status quo who are on a mission to make things better.
 
-I am used to many parts of programming being frustrating. You might have guessed from my little rants about compiler errors and Python dependency management. Perhaps I am easily frustrated, but with Rust I just don't feel that as often. I feel more relaxed. It's set up for me to succeed. I can't express how good this feels.
+I am used to many parts of programming being frustrating. You might have guessed from my little rants about compiler errors and Python dependency management. Perhaps I am easily frustrated, but with Rust I just don't feel that as often. I feel more relaxed. It's set up for me to succeed, and I can't express how good this feels.
 
 I have learned a lot from the Rust community since first getting interested. Many concepts, projects or types of systems can seem unapproachable, but now [low-level concurrency](https://marabos.nl/atomics/), [TCP implementations](https://www.youtube.com/watch?v=bzja9fQWzdA) and [memory layout](https://fasterthanli.me/articles/whats-in-the-box) don't seem quite so daunting.
 
-"Rewrite it in Rust" has become a pejorative meme, and I understand why. But to me it represents the idea that things can be better, and we can make it happen if we try hard enough. We can live in a world where we don't have memory safety CVEs, where high performance is expected by default. It takes effort, but progress can be made. Rust is not a silver bullet, but it is quite good, and I believe it is simply better than a lot of what came before it.
+"Rewrite it in Rust" has become a pejorative meme, and I understand why. But to me it represents the idea that things can be better, and we can make it happen if we try hard enough. We can live in a world where we don't have  (or very rarely have) memory safety CVEs, where high performance is expected by default. It takes effort, but progress can be made. Rust is not a silver bullet, but it is quite good, and I believe it is simply better than a lot of what came before it.
 
 I think this is borne out in the many superb Rust projects and libraries we see today. I’ll call out [`ripgrep`](https://github.com/BurntSushi/ripgrep), the [Linkerd proxy](https://github.com/linkerd/linkerd2-proxy), [`clap`](https://docs.rs/clap/latest/clap/), [`serde`](https://serde.rs/) and [`sqlx`](https://github.com/launchbadge/sqlx) as some examples I’ve really enjoyed using.
 
@@ -67,9 +65,9 @@ Note that I haven't mentioned anything about performance or (lack of) garbage co
 
 There's a good argument to be made for "letting the computer do the work" of managing memory, much like type checking, both in terms of reducing cognitive load and preventing mistakes. I certainly wouldn't want to do it manually without a computer checking if I've done it correctly. With the help of the compiler, and after developing a *good enough* mental model of how to structure code, any additional cognitive load feels like a small price to pay.
 
-In fact, for some reason I quite like not having a garbage collector. It makes loads of sense to use one for high-level languages, but I don't find myself missing it. After a year of using Rust full time, I don't think I've experienced any project being delayed by complexities introduced by lack of garbage collection. Perhaps I'm biased and I just don't see how much longer everything takes, but I don't feel any slower than I was with other languages.
+In fact, for some reason I quite like not having a garbage collector. It makes loads of sense to use one for high-level languages, but I don't find myself missing it. After more than a year of using Rust full time I haven't experienced any project, either my own or another team's, being delayed by complexities caused by not having garbage collection. Perhaps I'm biased and I just don't see how much longer everything takes, but I don't feel any slower than I was with other languages.
 
-Admittedly, writing `.clone()` a lot gets a bit tiresome, but it's almost mechanical at this point. I find people (myself included) can have a strange aversion to boxing, even in application code where it makes no difference. I do occasionally think "how can I avoid boxing this?" before remembering that it doesn't matter.
+Admittedly, writing `.clone()` a lot or occasionally need to think about boxing something can get a bit tiresome, but it's almost mechanical at this point. The `Box<MyTrait>` syntax is a bit noisy for something so unimportant at a high level, but I don't see it very often. Having to sometimes convince people that boxing stuff is *absolutely fine* can be time-consuming, but it's usually a good opportunity to discuss what matters for performance and what doesn't. A few heap allocations per request is not going to make a measurable difference.
 
 For me, development is not a sprint. I prefer to work at a sustainable pace, avoid frustrations, and be encouraged to think where it matters. Rust gives me most of what I want here.
 
