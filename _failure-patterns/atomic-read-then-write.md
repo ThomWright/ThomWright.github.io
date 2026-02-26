@@ -94,6 +94,14 @@ INSERT INTO my_versioned_data AS d (id, my_data, version)
 -- Returns 1 row always, with the current my_data and version
 ```
 
+Some potential downsides of this approach in PostgreSQL include:
+
+- a [FOR UPDATE](https://www.postgresql.org/docs/15/explicit-locking.html#ROW-LOCK-COMPATIBILITY) lock on the row is required, meaning access will become serial.
+- UPDATE triggers will fire, even though nothing was updated.
+- UPDATEs cause new rows to be created, resulting in a dead tuple.
+
+For these reasons, if the row is expected to often be present already, it might be beneficial to first do a SELECT, and only run the `INSERT... ON CONFLICT DO UPDATE` if the row is not already present.
+
 ## See also
 
 - [Atomicity (database systems)](https://en.wikipedia.org/wiki/Atomicity_(database_systems))
