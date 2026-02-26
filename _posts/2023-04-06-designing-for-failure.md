@@ -101,7 +101,7 @@ Another important and related concept is one that I don't have a name for (side 
 - **Exactly once** – Multiple identical requests must result in the side effect happening exactly once.
 - **At least once** – Multiple identical requests must result in the side effect happening once or more.
 
-This might not look like idempotency, because side effects can happen more than once. However, if the **at least once** side effects are not *externally observable* – for example publishing multiple identical messages which result in an observable **exactly once** side effect elsewhere in the system – then the idempotency property generally holds when looking at the bigger picture. In other words, the message publishing side effect does not itself the "intended effect on the server", so doesn't count in terms of idempotency.
+This might not look like idempotency, because side effects can happen more than once. However, if the **at least once** side effects are not *externally observable* – for example publishing multiple identical messages which result in an observable **exactly once** side effect elsewhere in the system – then the idempotency property generally holds when looking at the bigger picture. In other words, the message publishing side effect does not itself have the "intended effect on the server", so doesn't count in terms of idempotency.
 
 ## Constraints
 

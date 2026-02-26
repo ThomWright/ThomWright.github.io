@@ -34,7 +34,7 @@ In fact, in terms of consistency, it is no different to the following:
 
 Both scenarios can result in the HTTP request succeeding but the write to the database failing. The second scenario is arguably better for two reasons:
 
-1. It is **clearly not atomic**, and not does pretend to be so.
+1. It is **clearly not atomic**, and does not pretend to be so.
 2. It has higher database **connection utilisation**. The first scenario is holding a database connection in step 3 without using it. The longer the request takes, the lower the connection utilisation. Database connections can be scarce resources, and letting them sit idle while doing other I/O can result in worse throughput and latency.
 
 This technique can also make deadlocks more likely. Consider the following scenario:

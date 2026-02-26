@@ -11,7 +11,7 @@ related:
 
 ## Context
 
-In sometimes be useful to defer an operation, possibly because the operation takes a long time to complete or because it makes it easier to maintain consistency. The client will likely need to know when the operation completes and whether it was successful.
+It can sometimes be useful to defer an operation, possibly because the operation takes a long time to complete or because it makes it easier to maintain consistency. The client will likely need to know when the operation completes and whether it was successful.
 
 ## Example
 

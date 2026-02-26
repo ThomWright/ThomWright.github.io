@@ -51,7 +51,7 @@ There are several ways to trigger the publisher:
 
 1. On a schedule, by running as a cron job or a process [polling](https://microservices.io/patterns/data/transaction-log-tailing.html) the database. This introduces some latency.
 2. By explicitly notifying it when a new message is ready. Simple if the publisher runs in the same process as the application itself.
-3. By [tailing the transaction log](https://microservices.io/patterns/data/transaction-log-tailing.html). Arguable more complex.
+3. By [tailing the transaction log](https://microservices.io/patterns/data/transaction-log-tailing.html). Arguaby  more complex.
 
 Can be paired with [Callbacks]({% link _failure-patterns/callback.md %}) to notify clients of the result (e.g. success/failure) on completion.
 
