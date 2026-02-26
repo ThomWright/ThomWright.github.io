@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Connection pools: local vs shared"
-tags: [databases, postgresql, connection-pooling, performance]
+tags: [databases, postgresql, connection pooling, performance]
 ---
 
 I've often wondered why shared connection pools like PgBouncer are so popular compared to local, application-level pools. How much benefit do they really give, and why?
