@@ -108,6 +108,11 @@ Handler for B
 
 This solution relies on an ordered event log, where it is guaranteed that if an event with [ordinal](https://en.wikipedia.org/wiki/Ordinal_number) N exists in the log, all events with ordinal < N exist in the log and are visible.
 
+Using the payment example above, if `PaymentSucceeded` arrives before `PaymentCreated`:
+
+1. `PaymentSucceeded` arrives. It is inserted into the log. No prior `PaymentCreated` is found, so it is a no-op.
+2. `PaymentCreated` arrives. It is inserted into the log. A `PaymentSucceeded` event is found in the log, so both are processed together.
+
 An event log might not be necessary, but is a nice general-purpose solution to this problem.
 
 ### Delay and replay

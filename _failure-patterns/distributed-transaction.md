@@ -16,7 +16,7 @@ Some operations need to synchronously write to two or more transactional systems
 
 ## Prerequisites
 
-Eventual consistency, blocking and the possibility of data loss is acceptable.
+Eventual consistency, blocking and reduced availability are acceptable.
 
 It is worth introducing significant complexity.
 

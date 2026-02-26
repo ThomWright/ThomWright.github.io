@@ -95,7 +95,7 @@ When consistency is important, you will generally need to choose (at least) one 
 | [Reliable retries]({% link _failure-patterns/reliable-retries.md %})               | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |
 | [Completer]({% link _failure-patterns/completer.md %})                             | Many                  | Success: sync<br />Error: async[^1] | Non-atomic[^2] | Eventual        | Moderate       |
 | [Distributed transaction]({% link _failure-patterns/distributed-transaction.md %}) | Many                  | Success: sync<br />Error: async[^1] | Atomic         | Eventual        | Complex        |
-| [Saga]({% link _failure-patterns/saga.md %})                                       | Many                  | Async                               | Atomic         | Eventual        | Complex        |
+| [Saga]({% link _failure-patterns/saga.md %})                                       | Many                  | Async                               | Atomic (partial states visible) | Eventual        | Complex        |
 
 </div>
 

@@ -24,7 +24,12 @@ How do we ensure the system does not get left in an inconsistent state when the 
 
 ## Solution
 
-Perform all writes inside a transaction in an ACID database. Either all writes will succeed or none of them will. The transaction will be atomic and isolated, so no other transactions will see inconsistent states (depending on the [isolation level]({% post_url 2022-01-11-postgres-isolation-levels %})).
+Perform all writes inside a transaction in an ACID database. Either all writes will succeed or none of them will.
+
+{% include callout.html
+  type="warning"
+  content="Be aware that the default isolation level in many databases (e.g. `READ COMMITTED` in PostgreSQL) may not provide the level of isolation you expect. See [Transaction isolation in PostgreSQL](/2022/01/11/postgres-isolation-levels/) for more."
+%}
 
 ## See also
 

@@ -39,8 +39,8 @@ Messages with idempotency keys should have two properties:
 
 There are two ways of associating an idempotency key with a message:
 
-1. **Client-supplied** – clients (or message senders) send a dedicated idempotency key representing the identity of the message.
-2. **Server-inferred** – servers (or message receivers) infer the identity of the message using a unique set of values in the message, and use this set of values as the idempotency key.
+1. **Explicit, sent by the client** – clients (or message senders) send a dedicated idempotency key representing the identity of the message.
+2. **Inferred by the server** – servers (or message receivers) infer the identity of the message using a unique set of values in the message, and use this set of values as the idempotency key.
 
 Server-inferred keys suffer some significant issues which can make property two above (different messages have different idempotency keys) impossible to achieve. For example, in the example above of posting to a social network, there is no way for the server to know the difference between two "Hello world" messages without an idempotency key.
 
@@ -49,6 +49,8 @@ In the payment creation example above, only the client app has the knowledge abo
 {% include callout.html
   type="warning"
   content='Where possible, client-supplied idempotency keys should not be relied on for correctly maintaining _internal_ invariants. Servers must maintain their own internal invariants even if clients send different idempotency keys for retries.
+
+  For example, a payment should only be (fully) refundable once. Even if a client sends two refund requests with different idempotency keys, the server should not refund twice.
 
   The invariant of creating a payment only once per user action is an external _client invariant_.'
 %}

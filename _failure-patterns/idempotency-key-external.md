@@ -25,3 +25,5 @@ How do we ensure that side effects produced by the API are not repeated, even wh
 ## Solution
 
 If the API supports it, send an idempotency key so identical requests can be detected. This allows them to reduce the probability (or eliminate the possibility) of producing the side effect more than once.
+
+If the API does not support idempotency keys, consider using an [at-most-once guard]({% link _failure-patterns/at-most-once-guard.md %}) to prevent calling it more than once.

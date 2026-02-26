@@ -20,7 +20,7 @@ It is acceptable to end up with “garbage” un-referenced data. The data shoul
 
 ## Examples
 
-Uploading a profile image on a social network.
+Uploading a profile image on a social network. If the reference is written to the database first but the image upload then fails, the user's profile will contain a broken image link -- a dangling reference.
 
 ## Problem
 
@@ -36,4 +36,5 @@ This operation is naturally [resumable]({% link _failure-patterns/resumable-oper
 
 ## See also
 
+- [The Write-Last, Read-First Rule](https://tigerbeetle.com/blog/2025-11-06-the-write-last-read-first-rule/) -- related concepts of "System of Record" and "System of Reference"
 - [Pragmatic Formal Modelling: Coordinating a Database and Blob Store](https://elliotswart.github.io/pragmaticformalmodeling/database-blob/)

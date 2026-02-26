@@ -15,6 +15,7 @@ Some database operations are not (always) naturally idempotent. If they are perf
 
 ## Examples
 
+- Crediting a user's account £10 for a referral bonus. Without a change record, a retried request would credit £10 twice.
 - Incrementing an integer is not naturally idempotent.
 - Deleting a record by ID is sometimes naturally idempotent, but not when a new record is created with the same ID after the original request and before a retried request.
 

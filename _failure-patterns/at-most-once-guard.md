@@ -13,7 +13,11 @@ related:
 
 ## Context
 
-Sometimes side effects by a system cannot be ensured to happen exactly once, e.g. because the system does not use an idempotency key. Writing to the system more than once might cause repeated side effects.
+Some operations involve calling an external system which produces side effects. Ideally the external system supports [idempotency keys]({% link _failure-patterns/idempotency-key.md %}), allowing the call to be safely retried. When it does not, we need to decide what to do when the outcome of a call is unknown -- for example due to a network timeout or a crash.
+
+Sometimes it's possible to check by reading from the external system (e.g. a GET request), but a suitable read API might not exist, or the external system might be eventually consistent, making the result unreliable.
+
+Without a reliable way to determine the outcome, retrying the call risks producing the side effect again.
 
 ## Prerequisites
 
@@ -47,4 +51,6 @@ INSERT INTO guards (idempotency_key)
   size="med"
 %}
 
-This pattern can lead to uncertainty. If the guard record exists, did the operation succeed or fail? It can be helpful to combine with a [recovery point]({% link _failure-patterns/recovery-point.md %}) or a [response record]({% link _failure-patterns/response-record.md %}) to record the result, but this might not always succeed.
+This pattern trades **liveness** for **safety**: it guarantees the operation won't happen more than once, but if the operation fails, it will never be retried.
+
+This can lead to uncertainty. If the guard record exists but the outcome is unknown -- for example because of a network timeout -- did the operation succeed or fail? If knowing the outcome is important, consider recording it alongside the guard record when available, but be aware that if the failure occurs before the outcome can be recorded, the uncertainty remains.
