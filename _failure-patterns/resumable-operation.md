@@ -7,7 +7,6 @@ tagline: Allow operations to continue from where the previous attempt failed
 sort_key: 4
 related:
   - transactional-outbox
-  - repeatable-create
   - recovery-point
   - store-then-reference
   - completer

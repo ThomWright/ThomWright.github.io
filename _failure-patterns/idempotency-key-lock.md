@@ -40,7 +40,7 @@ Doing this automatically for every top-level write operation can reduce the cogn
 
 ## Alternatives
 
-There are often alternatives to locks, especially if correctness if your goal and your storage system supports [atomic read-then-write]({% link _failure-patterns/atomic-read-then-write.md %}) operations, and if operations on other systems are idempotent.
+There are often alternatives to idempotency key locks, especially if correctness is your only goal and your storage system supports [atomic read-then-write]({% link _failure-patterns/atomic-read-then-write.md %}) operations, and if operations on other systems are idempotent.
 
 ## See also
 

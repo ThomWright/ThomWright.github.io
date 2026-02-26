@@ -22,7 +22,7 @@ It is worth introducing significant complexity.
 
 ## Example
 
-An e-commerce platform has three services: `orders` and `inventory`. When an order is placed it needs to be record in the `orders` service and some stock needs to be reserved in the `inventory` service.
+An e-commerce platform has two services: `orders` and `inventory`. When an order is placed it needs to be recorded in the `orders` service and some stock needs to be reserved in the `inventory` service.
 
 ## Problem
 
@@ -50,7 +50,7 @@ The basic algorithm is (for the success case):
 
 2. **Commit** – After receiving successful responses from all *participants*, the *coordinator* sends requests to all *participants* to commit.
 
-There is significant complicity in implementing robust distributed transactions. It is worth considering the following scenarios:
+There is significant complexity in implementing robust distributed transactions. It is worth considering the following scenarios:
 
 - What if the *coordinator* crashes part way through the commit phase?
 - What if a *participant* crashes after the prepare phase and before committing?
