@@ -62,7 +62,7 @@ Steps 3-5 could be consolidated into a single step using a [Transactional outbox
   size="med"
 %}
 
-Relying on the client to retry is a kind of **passive recovery**. This might leave the system in an inconsistent state if e.g. the process crashes while taking the payment and the client stops retrying. In which case we might want to consider **active recovery** using a [completer]({% link _failure-patterns/completer.md %}).
+Relying on the client to retry is a kind of **passive recovery**. This might leave the system in an inconsistent state if e.g. the [process crashes]({% link _failure-patterns/glossary.md %}#crash) while taking the payment and the client stops retrying. In which case we might want to consider **active recovery** using a [completer]({% link _failure-patterns/completer.md %}).
 
 This pattern has focused on **forwards recovery**: attempting to successfully complete the operation. An alternative is **backwards recovery**: attempting to roll back. See [saga]({% link _failure-patterns/saga.md %}) for more information about backwards recovery.
 

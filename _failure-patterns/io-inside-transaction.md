@@ -25,7 +25,7 @@ The following is not a solution to the problem:
   size="med"
 %}
 
-It can be tempting to think of the two writes being atomic, but this is not the case. For example, if the system crashes between steps 3 and 4 (or the [transaction times out](https://www.postgresql.org/docs/15/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT), or...) then the HTTP request will succeed, but the write to the database will be rolled back.
+It can be tempting to think of the two writes being atomic, but this is not the case. For example, if the system [crashes]({% link _failure-patterns/glossary.md %}#crash) between steps 3 and 4 (or the [transaction times out](https://www.postgresql.org/docs/15/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT), or...) then the HTTP request will succeed, but the write to the database will be rolled back.
 
 In fact, in terms of consistency, it is no different to the following:
 

@@ -15,7 +15,7 @@ related:
 
 ## Context
 
-Some requests need to write to several independent systems. Operations on independent systems may fail independently, or the system might crash in between writes, leaving an operation partially-complete and the system in an inconsistent state.
+Some requests need to write to several independent systems. Operations on independent systems may fail independently, or the system might [crash]({% link _failure-patterns/glossary.md %}#crash) in between writes, leaving an operation partially-complete and the system in an inconsistent state.
 
 ## Prerequisites
 
