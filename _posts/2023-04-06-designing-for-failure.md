@@ -36,27 +36,37 @@ System
 
 Operation
 
-: A logical unit of work. Operations form a tree, and might consist of several read or write sub-operations.
+: A logical unit of work. Operations range from a single database read or write, to complex multi-step processes. An operation may consist of several sub-operations. See the [glossary]({% link _failure-patterns/glossary.md %}#operation) for a fuller definition.
 
-  An operation (e.g. register a new user) might take several attempts (e.g. retried requests) to complete.
+  I'll often use the term **request** instead, especially for top-level operations.
 
-  Despite this, I'll often just use the term **request** instead, especially for top-level operations.
+Process
+
+: A logical process (often an OS process) participating in the system — a running service instance, a database client, a job worker. See the [glossary]({% link _failure-patterns/glossary.md %}#process).
 
 Write
 
-: An operation which changes state, e.g. of a database, file system, message queue, or even the physical world.
+: An operation which changes state. See the [glossary]({% link _failure-patterns/glossary.md %}#write).
 
 Read
 
-: An operation which inspects state but does not change it.
+: An operation which inspects state but does not change it. See the [glossary]({% link _failure-patterns/glossary.md %}#read).
 
 Side effect
 
-: An observable state change caused by a write.
+: An observable state change caused by a write. See the [glossary]({% link _failure-patterns/glossary.md %}#side-effect).
 
 Crash
 
-: A shorthand for various issues including unexpected process termination and network partitions which result in an operation never finishing.
+: A shorthand for various issues including unexpected process termination and network partitions which result in an operation never finishing. See the [glossary]({% link _failure-patterns/glossary.md %}#crash).
+
+Definite error
+
+: An error confirming an operation definitely did not execute — the system state is as if it never happened. See the [glossary]({% link _failure-patterns/glossary.md %}#definite-error).
+
+Indefinite error
+
+: An error leaving it unknown whether an operation executed, is still executing, or will execute later. This is the core challenge behind retry safety. See the [glossary]({% link _failure-patterns/glossary.md %}#indefinite-error).
 
 A quick example: updating a username. This is a *write operation*. The application performing this operation might need to *read* from another system (to e.g. check authentication and authorisation) and then *write* the new username to a database. It would look like this, where each `|- X -|` span is an operation:
 
@@ -134,3 +144,4 @@ You can find all the [patterns listed here]({% link failure-patterns.md %}).
 - [Wikipedia: Eventual consistency](https://en.wikipedia.org/wiki/Eventual_consistency)
 - [Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
 - [Handling Failures From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)
+- [Antithesis: Distributed Systems Reliability Glossary](https://antithesis.com/docs/resources/reliability_glossary/) — formal definitions of consistency models, availability models, phenomena, faults, and testing techniques
