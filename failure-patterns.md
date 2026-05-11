@@ -9,7 +9,7 @@ order: 3
 
 Reusable building blocks to help design reliable systems in the presence of failures.
 
-See the [introductory post]({% post_url 2023-04-06-designing-for-failure %}).
+See the [introductory post]({% post_url 2023-04-06-designing-for-failure %}) and the [glossary]({% link _failure-patterns/glossary.md %}) for definitions of terms used throughout.
 
 {% include callout.html
   type="info"
