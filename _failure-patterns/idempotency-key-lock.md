@@ -12,7 +12,7 @@ related:
 
 ## Context
 
-It is possible for retries to arrive while a previous request is still being processed, for example because the client timed out or crashed. Some operations need protecting against concurrent retries, either to avoid race conditions or to prevent duplicate work.
+It is possible for retries to arrive while a previous request is still being processed – for example because the client received an [indefinite error]({% link _failure-patterns/glossary.md %}#indefinite-error) (a timeout or [crash]({% link _failure-patterns/glossary.md %}#crash)) and retried without knowing whether the first request was still running. Some operations need protecting against concurrent retries, either to avoid race conditions or to prevent duplicate work.
 
 ## Example
 
