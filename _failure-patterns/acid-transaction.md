@@ -12,7 +12,7 @@ sort_key: 1
 
 ## Context
 
-Many operations perform multiple writes on a single database, all of which must be applied (or none of them) to ensure consistency. These writes should not be observable in an inconsistent state, and should not be lost as a result of a crash.
+Many operations perform multiple writes on a single database, all of which must be applied (or none of them) to ensure consistency. These writes should not be observable in an inconsistent state, and should not be lost as a result of a [crash]({% link _failure-patterns/glossary.md %}#crash).
 
 ## Example
 

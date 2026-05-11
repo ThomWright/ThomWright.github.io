@@ -52,7 +52,7 @@ The basic algorithm is (for the success case):
 
 There is significant complexity in implementing robust distributed transactions. It is worth considering the following scenarios:
 
-- What if the *coordinator* crashes part way through the commit phase?
+- What if the *coordinator* [crashes]({% link _failure-patterns/glossary.md %}#crash) part way through the commit phase?
 - What if a *participant* crashes after the prepare phase and before committing?
 
 To ensure (eventual) atomicity, to solve the first case the *coordinator* must have a crash-recovery mechanism, e.g. a [Write-Ahead Log (WAL)](https://en.wikipedia.org/wiki/Write-ahead_logging), and use it to continue in any in-progress transactions after a crash. To solve the second case, participants must persist their uncommitted changes. Any pending transactions (uncommitted changes and associated locks) must continue to be held after recovering from a crash.
