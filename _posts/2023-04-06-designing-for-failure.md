@@ -42,7 +42,7 @@ Operation
 
 Process
 
-: A logical process (often an OS process) participating in the system — a running service instance, a database client, a job worker. See the [glossary]({% link _failure-patterns/glossary.md %}#process).
+: A logical process (often an OS process) participating in the system – a running service instance, a database client, a job worker. See the [glossary]({% link _failure-patterns/glossary.md %}#process).
 
 Write
 
@@ -62,7 +62,7 @@ Crash
 
 Definite error
 
-: An error confirming an operation definitely did not execute — the system state is as if it never happened. See the [glossary]({% link _failure-patterns/glossary.md %}#definite-error).
+: An error confirming an operation definitely did not execute – the system state is as if it never happened. See the [glossary]({% link _failure-patterns/glossary.md %}#definite-error).
 
 Indefinite error
 
@@ -103,7 +103,7 @@ Given these, I see two properties one might expect from an idempotent API:
 
 I think **Side effects** is what most people mean most of the time, but I often see **Response** being expected as well. It's worth noting HTTP semantics for idempotent methods explicitly do not require the **Response** property. Arguably this property is more about *referential transparency*, but I'd argue this can also be an important property when designing failure-tolerant systems. If the response contains some vital information (e.g. an ID of a new resource), then it might be critical that responses to retries also contain this ID for the client system to be able to function correctly.
 
-I'd caveat this with saying that the rules for *incomplete* operations can be a bit different if you're allowing retries to drive an operation to completion. For example, a transient failure might result in an HTTP 500 and the intended side effect *maybe* happening, it's impossible to know from the client's perspective. A subsequent retry might then ensure the side effect did happen (if it didn't already) and result in an HTTP 200. Any subsequent requests should not cause any side effects, and return the same HTTP 200 as before.
+I'd caveat this with saying that the rules for *incomplete* operations can be a bit different if you're allowing retries to drive an operation to completion. For example, an [indefinite error]({% link _failure-patterns/glossary.md %}#indefinite-error) – such as a transient HTTP 500 – leaves the client unable to know whether the intended side effect happened. A subsequent retry might then ensure the side effect did happen (if it didn't already) and result in an HTTP 200. Any subsequent requests should not cause any side effects, and return the same HTTP 200 as before.
 
 Another important and related concept is one that I don't have a name for (side effect cardinality?). It describes how many times a side effect can occur for a given *completed* operation:
 
@@ -144,4 +144,4 @@ You can find all the [patterns listed here]({% link failure-patterns.md %}).
 - [Wikipedia: Eventual consistency](https://en.wikipedia.org/wiki/Eventual_consistency)
 - [Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
 - [Handling Failures From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)
-- [Antithesis: Distributed Systems Reliability Glossary](https://antithesis.com/docs/resources/reliability_glossary/) — formal definitions of consistency models, availability models, phenomena, faults, and testing techniques
+- [Antithesis: Distributed Systems Reliability Glossary](https://antithesis.com/docs/resources/reliability_glossary/) – formal definitions of consistency models, availability models, phenomena, faults, and testing techniques
