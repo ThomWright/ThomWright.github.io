@@ -37,11 +37,38 @@ An observable state change produced by a write.
 
 ## Crash
 
-Shorthand for any fault that causes an operation to stop without completing – unexpected process termination, a network partition, a timeout, or similar.
+Shorthand for any fault that causes an operation to stop without completing – unexpected process termination, a [network partition](#network-partition), a timeout, or similar.
 
 *Example: a process crash between writing to a database and publishing a message leaves the system having completed only part of an operation.*
 
-See also: [Antithesis – Crash](https://antithesis.com/docs/resources/reliability_glossary/#crash), [Antithesis – Network partition](https://antithesis.com/docs/resources/reliability_glossary/#network-partition)
+See also: [Antithesis – Crash](https://antithesis.com/docs/resources/reliability_glossary/#crash)
+
+## Network partition
+
+A break in communication between parts of a distributed system, where messages between some nodes are lost or indefinitely delayed. Partitions may be one-directional or total, and temporary or permanent.
+
+*Example: a network partition between a service and its database means the service can no longer read or write, even though both are individually running.*
+
+See also: [Antithesis – Network partition](https://antithesis.com/docs/resources/reliability_glossary/#network-partition)
+
+## Eventual consistency
+
+A consistency model in which, if no new updates are made, all nodes in a distributed system will eventually converge to the same value. Reads may return stale data in the interim.
+
+*Example: after a user updates their profile picture, some servers may briefly serve the old image until the change propagates.*
+
+See also: [Antithesis – Eventual consistency](https://antithesis.com/docs/resources/reliability_glossary/#eventual-consistency)
+
+## Safety and liveness
+
+Two fundamental properties used to reason about distributed systems:
+
+- **Safety** – nothing bad ever happens. A safety property is an invariant that must hold at all times. Violations are permanent: once a safety property is broken, it cannot be undone.
+- **Liveness** – something good eventually happens. A liveness property guarantees that the system will eventually make progress.
+
+These properties often trade off against each other. A system that never acts is perfectly safe but has no liveness. A system that always acts immediately may have good liveness but risk safety violations.
+
+*Example: the [at-most-once guard]({% link _failure-patterns/at-most-once-guard.md %}) trades liveness for safety — it guarantees a side effect won't happen more than once (safety), but if the operation fails after the guard is written, it will never be retried (no liveness).*
 
 ## Definite error
 

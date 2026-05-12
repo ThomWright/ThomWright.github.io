@@ -51,6 +51,6 @@ INSERT INTO guards (idempotency_key)
   size="med"
 %}
 
-This pattern trades **liveness** for **safety**: it guarantees the operation won't happen more than once, but if the operation fails, it will never be retried.
+This pattern trades [**liveness**]({% link _failure-patterns/glossary.md %}#safety-and-liveness) for [**safety**]({% link _failure-patterns/glossary.md %}#safety-and-liveness): it guarantees the operation won't happen more than once, but if the operation fails, it will never be retried.
 
 This can lead to uncertainty. If the guard record exists but the result is indefinite – for example because of a network timeout – did the operation succeed or fail? If knowing the outcome is important, consider recording it alongside the guard record when available, but be aware that if the failure occurs before the outcome can be recorded, the uncertainty remains.
