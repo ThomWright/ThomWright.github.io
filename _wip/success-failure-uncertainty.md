@@ -14,7 +14,7 @@ Failure and uncertainty are sometimes called [definite]({% link _failure-pattern
 
 Often the third case is forgotten about. Servers respond with either a successful response or an error, and an error is assumed to mean that the task was not done. That assumption isn't safe.
 
-For example, a customer clicks "Pay". The request to the payment service times out, and the page shows "Payment failed, please try again". The customer tries again, and it works. They've now been charged twice.
+For example, a customer clicks "Pay". The request to the payment service times out, and the page shows "Payment failed, please try again". The customer tries again, and it works. They've now been charged twice, because the first request ended up succeeding.
 
 It's important to be clear on what guarantees the client can rely on for each outcome, and for the server to communicate these correctly.
 
