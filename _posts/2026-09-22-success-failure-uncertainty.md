@@ -2,6 +2,9 @@
 layout: post
 title: Success, failure, and uncertainty
 tags: [distributed systems, reliability]
+redirect_from:
+  - /wip/success-failure-uncertainty
+  - /wip/success-failure-uncertainty/
 ---
 
 In a distributed system, when a client sends a request to a server to do a task, there are three possible outcomes:
