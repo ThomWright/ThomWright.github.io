@@ -4,28 +4,32 @@ title: "Caching"
 tags: [caching, reliability, distributed systems]
 ---
 
-Too often, when I see a cache in a system, there seems to be a lot of confusion about why the cache exists and what problem it's solving. Almost as often, people _think_ they know why the cache is there, but the justification doesn't hold up to scrutiny.
+When I come across a cache in a system, I often find it surprisingly hard to get a clear answer to why it's there and what problem it's solving. Sometimes the reasons have been lost over time: the person who added it has moved on, or the system has changed around it.
+
+Other times there is an answer, but it doesn't hold up to scrutiny.
+
+Most of this can be avoided by answering two questions before adding a cache (and writing the answers down): what's the goal, and why is it a real problem worth solving? The answers also shape most of the design decisions that follow.
 
 ## Reasons to cache
 
-The first mistake I see is not being clear on the goal. Possible goals for a cache include:
+The first question is: what's the goal? Possible goals for a cache include:
 
 - **Increase availability** — by returning (potentially stale) data even when a system you depend on is unavailable
 - **Reduce latency** — by turning an expensive operation into a fast lookup of a previously computed value
 - **Reduce load** — by reducing the number of (potentially expensive) operations on a system
 - **Reduce cost** — by reducing the number of _billable_ operations on a system
 
-When you use a cache, it should be clear which of the above goals you're optimising for. These often overlap in practice — a cache that reduces load will often also reduce latency. There can be more than one goal, but that might lead you into tricky design territory.
+When you use a cache, it should be clear which of the above goals you're optimising for. These often overlap in practice — a cache that reduces load will often also reduce latency. There can be more than one, but it's often simpler to just focus on a single primary goal.
 
-The second mistake I see is using a cache to solve something that isn't a real problem.
+The second question is: why is it a real problem worth solving?
 
-For example, caches can decrease latency in some cases, sure. But hopefully you have a latency SLO, and if your latency is well within that SLO then latency isn't a real problem and a cache isn't needed to improve it. If you are doing fairly simple reads, e.g. a lookup by ID, then adding a cache is unlikely to significantly improve latency anyway.
+For example, caches can decrease latency in some cases. But if you have a latency SLO and you're well within it, then latency isn't a real problem and a cache isn't needed to improve it. If you are doing fairly simple reads, e.g. a lookup by ID, then adding a cache is unlikely to significantly improve latency anyway.
 
-Similarly, if your database can easily handle the load (or could by simply using a bigger machine), then perhaps "load" isn't really a problem worth "solving" either. Of course, if it's simply too expensive to use a big enough database for your reads then you might want to offload onto a cache (assuming your cache is cheaper to run). By fixing the _cost_ problem (with a smaller database) you've introduced a _load_ problem.
+Similarly, if your database can easily handle the load (or could by simply using a bigger machine), then perhaps load isn't really a problem worth solving either. Of course, if it's simply too expensive to use a big enough database for your reads then you might want to offload onto a cache (assuming your cache is cheaper to run). By fixing the _cost_ problem (with a smaller database) you've introduced a _load_ problem.
 
 {% include callout.html
   type="aside"
-  content="\"Too expensive\" needs to be quantified. It invites the question \"_how_ expensive is too expensive?\". Same with \"too slow\" or \"too much load\". What is your budget/SLO/capacity, and what is your utilisation? Without this, you don't know if you have a real problem or a made up problem."
+  content="\"Too expensive\" should probably be quantified. It invites the question \"_how_ expensive is too expensive?\". Same with \"too slow\" or \"too much load\". What is your budget/SLO/capacity, and what is your utilisation? Without this, you don't know if you have a real problem or a made up problem. (OK OK, SLOs can be made up, but hopefully they're a proxy for _something_ meaningful.)"
 %}
 
 So, first define the problem. Examples:
