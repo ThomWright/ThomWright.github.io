@@ -4,7 +4,7 @@ title: "Caching"
 tags: [caching, reliability, distributed systems]
 ---
 
-Too often, when I see a cache in a system, there seems to be a lot of confusion about why the cache exists, what problem it's solving. Almost as often, people _think_ they know why the cache is there, but the justification doesn't hold up to scrutiny.
+Too often, when I see a cache in a system, there seems to be a lot of confusion about why the cache exists and what problem it's solving. Almost as often, people _think_ they know why the cache is there, but the justification doesn't hold up to scrutiny.
 
 ## Reasons to cache
 
@@ -15,24 +15,24 @@ The first mistake I see is not being clear on the goal. Possible goals for a cac
 - **Reduce load** — by reducing the number of (potentially expensive) operations on a system
 - **Reduce cost** — by reducing the number of _billable_ operations on a system
 
-When you use a cache, it should be clear which of the above goals you're optimising for. These often overlap in practice — a cache that reduces load will often also reduce latency. There can be more than one goal, but that might lead you into tricky design territory, as we'll see below.
+When you use a cache, it should be clear which of the above goals you're optimising for. These often overlap in practice — a cache that reduces load will often also reduce latency. There can be more than one goal, but that might lead you into tricky design territory.
 
 The second mistake I see is using a cache to solve something that isn't a real problem.
 
 For example, caches can decrease latency in some cases, sure. But hopefully you have a latency SLO, and if your latency is well within that SLO then latency isn't a real problem and a cache isn't needed to improve it. If you are doing fairly simple reads, e.g. a lookup by ID, then adding a cache is unlikely to significantly improve latency anyway.
 
-Similarly, if your database can easily handle the load (or could by simply using a bigger machine), then perhaps "load" isn't really a problem worth "solving" either. Of course, if its simply too expensive to use a big enough database for your reads then you might want to offload onto a cache (assuming your cache is cheaper to run). By fixing the _cost_ problem you've introduce a _load_ problem.
+Similarly, if your database can easily handle the load (or could by simply using a bigger machine), then perhaps "load" isn't really a problem worth "solving" either. Of course, if it's simply too expensive to use a big enough database for your reads then you might want to offload onto a cache (assuming your cache is cheaper to run). By fixing the _cost_ problem (with a smaller database) you've introduced a _load_ problem.
 
 {% include callout.html
   type="aside"
-  content=""Too expensive" needs to be quantified. It invites the question "_how_ expensive is too expensive?". Same with "too slow" or "too much load". What is your budget/SLO/capacity, and what is your utilisation? Without this, you don't know if you have a real problem or a made up problem."
+  content="\"Too expensive\" needs to be quantified. It invites the question \"_how_ expensive is too expensive?\". Same with \"too slow\" or \"too much load\". What is your budget/SLO/capacity, and what is your utilisation? Without this, you don't know if you have a real problem or a made up problem."
 %}
 
 So, first define the problem. Examples:
 
 - **Availability** — the system you depend on could take you below your availability SLO. This is either likely, or has significant impact if it does happen.
 - **Latency** — the system you depend on is too slow to meet your latency SLO.
-- **Load** — a system is reaching capacity limits and you need to reduce the number of requests it receives. Overloading it would increase latency and/or reduce availability (this is sort of _availability_ and _latency_ in disguise, but I think worth calling out anyway).
+- **Load** — the system you depend on is reaching capacity limits and you need to reduce the number of requests it receives. Overloading it would increase latency and/or reduce availability (this is sort of _availability_ and _latency_ in disguise, but I think it's worth calling out anyway).
 - **Cost** — the system you depend on is exceeding your infrastructure budget.
 
 Notice that these tend to mention quantifiable metrics such as SLOs, capacity, and budget. Of course, you could just make up an SLO, but it _should_ be based on _something_ reasonable like user experience. Something meaningful to your business/product/system.
@@ -47,7 +47,7 @@ Let's take a look at a few common design decisions you might need to make.
 
 The worst case is when you're optimising for load because the source system can't handle the full traffic, and _all_ of your instances restart at the same time, taking down the database. This is a [metastability](https://brooker.co.za/blog/2021/05/24/metastable.html) [issue](https://brooker.co.za/blog/2021/08/27/caches.html).
 
-If your goal is availability, then this is perhaps less of a concern, assuming periods of unavailability are rare and short-live, and the rate of restarts is infrequent. Even if a subset of processes restart during the outage, the others can still serve cached values.
+If your goal is availability, then this is perhaps less of a concern, assuming periods of unavailability are rare and short-lived, and restarts are infrequent. Even if a subset of processes restart during the outage, the others can still serve cached values.
 
 ---
 
