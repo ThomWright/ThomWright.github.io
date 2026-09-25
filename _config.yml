@@ -44,6 +44,7 @@ defaults:
     values:
       public: false
       sitemap: false
+      noindex: true
   - scope:
       path: ""
       type: "failure-patterns"
