@@ -30,85 +30,74 @@ Before sending a response to the client, write it to a database. This could be i
 
 This is a special case of a [recovery point]({% link _failure-patterns/recovery-point.md %}).
 
-### Implementation options
+### Implementation decisions
 
-Consider an endpoint which makes a credit decision. A client sends an application with an idempotency key, and gets back a decision: approved for some amount, or declined. There are (at least) four ways to make retries return the same response.
+Consider an endpoint which makes a credit decision. A client sends an application with an idempotency key, and gets back a decision: approved for some amount, or declined. Implementing a response record for it involves a few decisions.
 
-In these examples, a response record stores the data the response is built from, rather than the serialised bytes.
+#### Where to store the response
 
-{% include callout.html type="aside" content="In these examples we'll be using `INSERT ... ON CONFLICT DO UPDATE SET idempotency_key = EXCLUDED.idempotency_key RETURNING ...` as \"insert-or-get\" to ensure we get the existing row if there is a conflict." %}
+The response record could be a row in a **dedicated table**, or the **existing decision row** could double as the response record.
 
-#### A. Rebuild from the decision
+Reusing the credit decision row avoids an extra table and an extra insert. But because it doubles as the response record, it can't be updated. That's fine for some data, but not for anything with a lifecycle. A Stripe payout's status changes after a `cancel` request, so the payout row can't double as the response record for `cancel`.
 
-Store the decision, and build the response from it.
+A dedicated table costs an extra insert, and more rows to store and possibly [clean up]({% link _failure-patterns/garbage-collection.md %}). In return, the credit decision is free to change later without affecting what retries return, and the response record is one generic mechanism which could be reused for multiple endpoints.
 
-1. Evaluate the application.
-2. Insert-or-get the decision by idempotency key. Join on any necessary tables to return the response. All joined data must be immutable.
+#### Where to source the data
 
-#### B. Decision as response record
-
-The same steps as A, with a rule: the decision row holds everything the response needs, and the response is built from nothing else. No joins on other tables.
-
-#### C. Separate response record
-
-Store the response alongside the decision.
-
-1. Look up a response record by idempotency key. If one exists, return it.
-2. Evaluate the application.
-3. Transaction:
-    - Insert-or-get the decision, returning it along with any data the response needs from other tables.
-    - Insert-or-get the response record, built from the data returned by the previous query.
-4. Return the response from the insert-or-get. Usually it's the one this request just stored, but it might have been stored by a concurrent request.
-
-#### D. Separate response record, no lookup
-
-The same as C, without step 1. On a retry, the insert-or-get in step 3 returns the stored response.
-
-### Comparison
-
-#### Performance
-
-A and B need a single statement, and D a single transaction. C needs a lookup, then a transaction. Depending on the implementation, that could be anywhere from two round trips (e.g. both inserts in one statement using a CTE) to five (`SELECT`, `BEGIN`, `INSERT`, `INSERT`, `COMMIT`).
-
-Whether the extra queries matter depends on your numbers. A few milliseconds is noise against an SLO in the hundreds, but might not be on a latency-critical path.
-
-#### Maintainability
-
-It's tempting to compare these on whether they're correct. But all four are correct today. There are still important differences in where the complexity lives, and what maintainers need to think about and get right when making changes.
+If the response is rebuilt from the credit decision row on every retry, everything it's built from must be immutable: the row itself, and anything joined to it.
 
 Let's imagine we want to add the interest rate to the response.
 
-- In A, it depends which rate we join on. Joining on an immutable snapshot of the rates at the time of the decision is correct. Joining on the current rate isn't: a retry after a rate change returns a different rate from the original response. Nothing fails, and the customer has been shown two different offers. If the rates table only holds current rates, that's also the obvious join to write.
-- In B, the rate has to be stored on the decision. This relies on whoever makes the change knowing and sticking to the rule.
-- In C and D, the join is fine. The response is built once, and retries return whatever was stored.
+- **Joining on the current rate** is wrong. A retry after a rate change returns a different rate from the original response. Nothing fails, and the customer has been shown two different offers. If the rates table only holds current rates, that's also the obvious join to write.
+- **Joining on an immutable snapshot** of the rates at the time of the decision is correct.
+- **Storing the rate on the decision** is correct, and keeps everything the response needs in one row.
 
-**A. Rebuild from the decision** is the simplest to write, and the hardest to keep correct. Its complexity isn't in the code at all. It's in an assumption about other tables, possibly owned by other teams, which makes it easy to miss.
+Joining on a snapshot might be correct _now_, but it imposes a constraint on the snapshot table: it must stay immutable. A rates snapshot might obviously be intended to be append-only, but other tables might not have such a clear constraint, making it easy to introduce subtle bugs later.
 
-**B. Decision as response record** narrows the complexity to one table and the code which builds the response from it, but "no joins" is still a rule someone has to know about.
+#### Serialised bytes or underlying data
 
-**C. Separate response record** is correct by construction. Unlike in B, the decision itself is free to change later, e.g. when the loan is accepted, without affecting what retries return. C also avoids re-evaluating the application on retries, which in A, B and D might have side effects of its own, such as running another credit check.
+A dedicated response record could store the serialised response, or the data it's built from.
 
-**D. Separate response record, no lookup** gives C's guarantee for one extra insert over A and B. The cost moves to retries, which evaluate the application again and throw the result away. That's fine if evaluating is safe to repeat.
+Storing the data leaves us free to change the response format, e.g. across API versions, while retries still get the same data back. Storing the bytes freezes the format too.
 
-#### Overview
+#### Check at the start or at the end
 
-| Approach | Queries | Number of tables | Where the complexity lives | Future changes must ensure |
+{% include callout.html type="aside" content="Here we'll be using `INSERT ... ON CONFLICT DO UPDATE SET idempotency_key = EXCLUDED.idempotency_key RETURNING ...` (with PostgreSQL's semantics) as \"insert-or-get\" to ensure we get the existing row if there is a conflict." %}
+
+**At the start**, look up the response record by idempotency key before doing any work, and return it if it exists. Retries skip evaluating the application entirely. The cost is an extra query on every request.
+
+**At the end**, evaluate the application, then insert-or-get the response record, and return whatever the insert-or-get gives back. Retries will return the stored response. This saves the lookup, but retries evaluate the application again only to throw away the result. That's fine if evaluating is safe to repeat. Running another credit check might affect the customer's credit report, so probably isn't.
+
+Either way, return the response as it exists in the database. If a concurrent request stored its response first, return that one.
+
+Whether the extra query matters depends on how latency-sensitive your endpoint is. Compare the expected latency of a single indexed lookup with your overall request latency budget.
+
+### Summary
+
+Some possible combinations:
+
+| Approach | Stored in | Check | Queries | Future changes must ensure |
 | --- | --- | --- | --- | --- |
-| A. Rebuild from the decision | One statement | One | Implicitly, in every table the response reads from | Nothing the response reads from ever changes |
-| B. Decision as response record | One statement | One | In one table, and a rule about how the response is built | The row is never updated, and the response is built only from it |
-| C. Separate response record | A lookup, then a transaction | Two | In one generic mechanism, including storage and clean-up | Nothing specific to retries |
-| D. Separate response record, no lookup | One transaction | Two | Same as C | Evaluating stays safe to repeat |
+| Rebuild from the decision | Decision row, with joins | End | One statement | Nothing the response reads from ever changes |
+| Decision as response record | Decision row, no joins | End | One statement | The row is never updated, and the response is built only from the one row |
+| Separate response record | Dedicated table | Start | A lookup, then a transaction | Nothing specific to retries |
+| Separate response record, no lookup | Dedicated table | End | One transaction | Evaluating stays safe to repeat |
 
-When optimising for correctness and maintainability over performance, I think a separate response record can be worth the extra queries: D if evaluating is safe to repeat, C if it isn't.
+When optimising for correctness and maintainability over performance, I think a dedicated response record and checking at the start can be worth the extra queries.
+
+### Reusing across endpoints
+
+A dedicated response record which is checked at the start can be made largely reusable across endpoints. Middleware can't usually write in the same transaction as the handler, so the work is split:
+
+1. **Middleware** looks up the response record by idempotency key, and returns it if it exists.
+2. Otherwise, it passes the handler a function to **store the response**, which the handler calls inside its own transaction.
+3. After the handler returns, the middleware **checks that the response was stored**, and logs, alerts or otherwise fails loudly if it wasn't.
 
 ### Other considerations
 
 None of these approaches fully protect against _concurrent_ requests. If two requests with the same idempotency key arrive at the same time, both might evaluate the application. A unique constraint on the idempotency key prevents duplicate writes, but not duplicate evaluations. Preventing that needs something else, such as an [idempotency key lock]({% link _failure-patterns/idempotency-key-lock.md %}).
 
-Response records also have storage costs:
-
-- They accumulate, so they might need [cleaning up]({% link _failure-patterns/garbage-collection.md %}) after some retention period.
-- Storing responses means storing whatever is in them, which might include sensitive data with its own retention requirements.
+Storing responses means storing whatever is in them, which might include sensitive data with its own retention requirements.
 
 ## See also
 
