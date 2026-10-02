@@ -1,4 +1,3 @@
-version: '3'
 services:
   github-pages:
     image: jekyll/jekyll:4.2.0
