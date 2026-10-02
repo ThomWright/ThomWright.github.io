@@ -32,6 +32,14 @@ pre.highlight {
   width: 100%;
 }
 
+// Overrides the generated Rouge themes, which load earlier with the same
+// selectors, so they can stay exactly as `rougify` produces them.
+.highlight {
+  .c, .ch, .cd, .cm, .cp, .cpf, .c1, .cs {
+    color: var(--code-comment);
+  }
+}
+
 $languages: (
   rust: "Rust",
   typescript: "TypeScript",

@@ -29,6 +29,9 @@ $theme-light: (
 
   code-bg: $gray-lightest,
   code-label-bg: $gray-light,
+  // GitHub's current muted foreground. Rouge's github theme uses an older,
+  // lighter grey that falls short of WCAG AA on the code background.
+  code-comment: #656d76,
 
   callout-aside-border: $gray-mid-light,
   callout-aside-bg: rgba($gray-mid-light, 0.05),
@@ -79,6 +82,7 @@ $theme-dark: (
 
   code-bg: #1a1a1d,
   code-label-bg: #36363b,
+  code-comment: #8b949e,
 );
 
 @each $type, $colour in $theme-dark-callouts {
