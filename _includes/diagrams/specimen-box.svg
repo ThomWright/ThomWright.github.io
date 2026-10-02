@@ -1,0 +1,23 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="374" height="262" viewBox="0 0 374 262">
+  <defs>
+    <marker id="specimen-box-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+
+  <rect class="d-shape" x="10" y="10" width="170" height="90"/>
+  <text x="95" y="36" text-anchor="middle">application</text>
+  <rect class="d-shape" x="60" y="52" width="120" height="48"/>
+  <text x="120" y="81" text-anchor="middle">publisher</text>
+
+  <!-- Queue -->
+  <path class="d-shape" d="M270,58 H356 M356,94 H270 A7,18 0 0 1 270,58"/>
+  <ellipse class="d-shape" cx="356" cy="76" rx="7" ry="18"/>
+  <path class="d-line" d="M180,76 H262" marker-end="url(#specimen-box-arrow)"/>
+
+  <!-- Database -->
+  <path class="d-shape" d="M35,180 V244 A35,9 0 0 0 105,244 V180"/>
+  <ellipse class="d-shape" cx="70" cy="180" rx="35" ry="9"/>
+  <path class="d-line" d="M45,100 L60,170" marker-end="url(#specimen-box-arrow)"/>
+  <path class="d-line" d="M110,100 L84,170" marker-end="url(#specimen-box-arrow)"/>
+</svg>

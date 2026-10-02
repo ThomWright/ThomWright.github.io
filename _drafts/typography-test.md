@@ -70,6 +70,30 @@ Introducing a quote:
   size="med"
 %}
 
+## Diagrams
+
+{% include diagram.html
+  name="specimen-sequence"
+  caption="A sequence diagram"
+%}
+
+{% include diagram.html
+  name="specimen-box"
+  caption="A box diagram"
+%}
+
+{% include diagram.html
+  name="specimen-state"
+  caption="A state diagram"
+%}
+
+{% include diagram.html
+  name="specimen-timeline"
+  caption="A timeline"
+%}
+
+## Callouts
+
 {% assign types = "aside success info warning alert" | split: " " %}
 {% for type in types %}
   {% capture text_content %}

@@ -1,0 +1,97 @@
+/*
+  Diagrams
+
+  The house style for inline SVG diagrams. Diagram files carry no colours or
+  stroke styles of their own: they use these classes, and everything is drawn
+  in `currentColor`. Colour classes set `color`, so they apply to a single
+  element or a whole group.
+
+  Arrowheads are markers containing a `.d-arrowhead` path. A marker inherits
+  `color` from where it is defined, not from the line using it, so each colour
+  of arrow needs its own marker (e.g. `<marker class="d-alert">`). Marker IDs
+  share the page's ID namespace, so prefix them with the diagram's name.
+ */
+
+svg.diagram {
+  // Labels on lines are knocked out with a halo in the colour behind the diagram.
+  --diagram-bg: var(--card-bg);
+
+  display: block;
+  max-width: 100%;
+  height: auto;
+
+  color: var(--diagram-ink);
+  font-family: $mono-font-family, monospace;
+  font-size: 15px;
+  font-weight: 400;
+
+  text {
+    fill: currentColor;
+    stroke: none;
+  }
+}
+
+// Colours
+
+.d-muted { color: var(--diagram-muted); }
+.d-accent { color: var(--diagram-accent); }
+.d-alert { color: var(--diagram-alert); }
+.d-success { color: var(--diagram-success); }
+
+// Lines and shapes
+
+.d-line,
+.d-shape {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+// A round cap would poke out past the tip of the arrowhead.
+svg.diagram [marker-end] { stroke-linecap: butt; }
+
+.d-thin { stroke-width: 1.5; }
+.d-thick { stroke-width: 4; stroke-linecap: butt; }
+
+.d-dashed { stroke-dasharray: 7 6; stroke-linecap: butt; }
+.d-dotted { stroke-dasharray: 0 7; stroke-width: 2.5; }
+
+.d-solid,
+.d-arrowhead {
+  fill: currentColor;
+  stroke: none;
+}
+
+// Covers whatever is behind it, e.g. a lifeline behind an activation bar.
+.d-knockout {
+  fill: var(--diagram-bg);
+}
+
+.d-cross {
+  stroke-width: 3;
+}
+
+// Text
+
+svg.diagram .d-heading {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+svg.diagram .d-bold {
+  font-weight: 700;
+}
+
+// For labels drawn over lines.
+svg.diagram .d-halo {
+  stroke: var(--diagram-bg);
+  stroke-width: 10px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+
+.diagram-container {
+  max-width: 100%;
+}

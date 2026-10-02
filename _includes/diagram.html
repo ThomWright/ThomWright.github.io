@@ -1,0 +1,23 @@
+{% comment %}
+  Inlines an SVG diagram from _includes/diagrams/ so it can use the site's
+  theme. See public/css/_sass/_diagrams.scss for the house style.
+
+  Parameters:
+    name:    file name in _includes/diagrams/, without the .svg extension
+    caption: figure caption (Markdown)
+    alt:     text alternative, defaults to the caption
+{% endcomment %}
+{% if include.alt %}
+  {% assign alt = include.alt %}
+{% else %}
+  {% assign alt = include.caption | strip_html %}
+{% endif %}
+
+<figure>
+  <div class="diagram-container" role="img" aria-label="{{ alt | escape }}">
+    {% include diagrams/{{ include.name }}.svg %}
+  </div>
+  {% if include.caption %}
+  <figcaption>{{ include.caption | markdownify }}</figcaption>
+  {% endif %}
+</figure>

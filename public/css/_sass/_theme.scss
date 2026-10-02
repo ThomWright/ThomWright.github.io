@@ -50,6 +50,13 @@ $theme-light: (
   // GitHub's current muted foreground. Rouge's github theme uses an older,
   // lighter grey that falls short of WCAG AA on the code background.
   code-comment: #656d76,
+
+  diagram-ink: #4a4f57,
+  diagram-muted: #72777e,
+  // Darker than the palette, as diagrams also use these colours for text.
+  diagram-accent: darken($brand-color, 4%),
+  diagram-alert: darken(map-get($palette-light, alert), 10%),
+  diagram-success: darken(map-get($palette-light, success), 8%),
 );
 
 $theme-dark: (
@@ -82,6 +89,12 @@ $theme-dark: (
   code-bg: #1a1a1d,
   code-label-bg: #36363b,
   code-comment: #8b949e,
+
+  diagram-ink: #c4c8ce,
+  diagram-muted: #858a91,
+  diagram-accent: lighten($brand-color, 14%),
+  diagram-alert: map-get($palette-dark, alert),
+  diagram-success: map-get($palette-dark, success),
 );
 
 @each $type in $callout-types {
