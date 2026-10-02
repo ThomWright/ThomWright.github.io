@@ -1,12 +1,19 @@
 services:
   github-pages:
-    image: jekyll/jekyll:4.2.0
-    command: jekyll serve --drafts --watch --force_polling -H 0.0.0.0 -P 4000
+    image: ruby:3.3
+    # Matches the host user so files written to _site/ aren't owned by root.
+    user: "1001:1001"
+    working_dir: /srv/jekyll
+    command: sh -c "bundle check || bundle install && bundle exec jekyll serve --drafts --watch --force_polling -H 0.0.0.0 -P 4000"
     ports:
       - "4000:4000"
     volumes:
       - ./:/srv/jekyll
+      # Caches installed gems across container restarts.
+      - bundle:/usr/local/bundle
     tty: true
     environment:
-      JEKYLL_UID: 1001
-      JEKYLL_GID: 1001
+      HOME: /tmp
+
+volumes:
+  bundle:

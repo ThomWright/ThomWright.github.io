@@ -2,22 +2,19 @@
 
 ## Developing
 
-### Dependencies
-
-For running locally, see the [Jekyll dependencies](https://jekyllrb.com/docs/installation/).
-
-```bash
-gem install bundler
-bundle install
-```
-
 ### Run
 
-On your machine:
+The site is built by GitHub Pages using the `github-pages` gem. Run it locally with Docker, which installs the same gems:
 
-`jekyll serve --watch --drafts -H 127.0.0.1 -P 4000`
+```bash
+docker compose up -d
+```
 
-Prefix with `bundle exec` if you don't have `jekyll` installed and on your PATH.
+The site, including drafts, is served at <http://localhost:4000/> and rebuilds when files change. The first start installs gems into a volume, so later starts are quick. Follow the logs with `docker compose logs -f`.
+
+The container runs as UID/GID 1001 so that `_site/` stays owned by the host user. Change `user` in `docker-compose.yml` if yours differs (`id -u`).
+
+Drafts without a `date:` are dated by their file's modification time, so editing one moves it to the top of the posts list.
 
 ### Generate the syntax highlighting styles
 
