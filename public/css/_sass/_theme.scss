@@ -5,6 +5,24 @@
   custom property (e.g. `--text`), so partials use `var(--text)`.
  */
 
+// Colours with a fixed meaning, which don't change with the brand colour.
+// The dark theme adjusts their lightness to suit a dark background.
+$palette-light: (
+  aside: $gray-mid-light,
+  info: $lighter-blue,
+  warning: $amber,
+  alert: $red,
+  success: $leaf,
+);
+
+$palette-dark: (
+  aside: darken($gray-mid-light, 4%),
+  info: lighten($lighter-blue, 4%),
+  warning: lighten($amber, 14%),
+  alert: $red,
+  success: lighten($leaf, 15%),
+);
+
 $callout-types: aside, info, warning, alert, success;
 
 $theme-light: (
@@ -20,8 +38,8 @@ $theme-light: (
   text-h4: $gray-mid,
   text-muted: $gray-mid,
 
-  link: darken($blue, 4%),
-  link-hover: darken($blue, 15%),
+  link: darken($brand-color, 4%),
+  link-hover: darken($brand-color, 15%),
 
   quote-bg: $gray-lightest,
   quote-border: $lighter-blue,
@@ -32,25 +50,6 @@ $theme-light: (
   // GitHub's current muted foreground. Rouge's github theme uses an older,
   // lighter grey that falls short of WCAG AA on the code background.
   code-comment: #656d76,
-
-  callout-aside-border: $gray-mid-light,
-  callout-aside-bg: rgba($gray-mid-light, 0.05),
-  callout-info-border: $lighter-blue,
-  callout-info-bg: rgba($lighter-blue, 0.05),
-  callout-warning-border: $amber,
-  callout-warning-bg: rgba($amber, 0.05),
-  callout-alert-border: $red,
-  callout-alert-bg: rgba($red, 0.05),
-  callout-success-border: $leaf,
-  callout-success-bg: rgba($leaf, 0.05),
-);
-
-$theme-dark-callouts: (
-  aside: #8a8a8a,
-  info: #6f9ad8,
-  warning: #e8a040,
-  alert: #e8664c,
-  success: #8cc063,
 );
 
 $theme-dark: (
@@ -73,8 +72,8 @@ $theme-dark: (
   text-h4: #b8b8b8,
   text-muted: #9a9a9a,
 
-  link: #7aa5e0,
-  link-hover: #a6c3ec,
+  link: lighten($brand-color, 14%),
+  link-hover: lighten($brand-color, 25%),
 
   quote-bg: #2a2a2e,
   quote-border: $lighter-blue,
@@ -85,11 +84,17 @@ $theme-dark: (
   code-comment: #8b949e,
 );
 
-@each $type, $colour in $theme-dark-callouts {
+@each $type in $callout-types {
+  $light: map-get($palette-light, $type);
+  $dark: map-get($palette-dark, $type);
+  $theme-light: map-merge($theme-light, (
+    callout-#{$type}-border: $light,
+    callout-#{$type}-bg: rgba($light, 0.05),
+  ));
   $theme-dark: map-merge($theme-dark, (
-    callout-#{$type}-border: $colour,
+    callout-#{$type}-border: $dark,
     // 5% (as in light) disappears on a dark background.
-    callout-#{$type}-bg: rgba($colour, 0.1),
+    callout-#{$type}-bg: rgba($dark, 0.1),
   ));
 }
 
