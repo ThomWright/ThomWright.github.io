@@ -17,10 +17,10 @@ $theme-light: (
   text: $gray-darker,
   text-h2: lighten($gray-darker, 5%),
   text-h3: lighten($gray-darker, 10%),
-  text-h4: lighten($gray-darker, 20%),
+  text-h4: $gray-mid,
   text-muted: $gray-mid,
 
-  link: $blue,
+  link: darken($blue, 4%),
   link-hover: darken($blue, 15%),
 
   quote-bg: $gray-lightest,
@@ -34,20 +34,20 @@ $theme-light: (
   callout-aside-bg: rgba($gray-mid-light, 0.05),
   callout-info-border: $lighter-blue,
   callout-info-bg: rgba($lighter-blue, 0.05),
-  callout-warning-border: $yellow,
-  callout-warning-bg: rgba($yellow, 0.05),
+  callout-warning-border: $amber,
+  callout-warning-bg: rgba($amber, 0.05),
   callout-alert-border: $red,
   callout-alert-bg: rgba($red, 0.05),
-  callout-success-border: $green,
-  callout-success-bg: rgba($green, 0.05),
+  callout-success-border: $leaf,
+  callout-success-bg: rgba($leaf, 0.05),
 );
 
 $theme-dark-callouts: (
   aside: #8a8a8a,
   info: #6f9ad8,
-  warning: #e0bb2a,
+  warning: #e8a040,
   alert: #e8664c,
-  success: #9cc078,
+  success: #8cc063,
 );
 
 $theme-dark: (
