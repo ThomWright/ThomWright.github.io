@@ -42,6 +42,64 @@ $theme-light: (
   callout-success-bg: rgba($green, 0.05),
 );
 
+$theme-dark-callouts: (
+  aside: #8a8a8a,
+  info: #6f9ad8,
+  warning: #e0bb2a,
+  alert: #e8664c,
+  success: #9cc078,
+);
+
+$theme-dark: (
+  body-bg: #111113,
+  card-bg: #232326,
+  card-footer-bg: #1e1e21,
+  card-footer-border: #2c2c30,
+  // A shadow barely shows on a dark page, so the card is lifted by being
+  // lighter than the page. A hairline outline and top highlight define its edge.
+  card-shadow: (
+    0 0 0 1px rgba(white, 0.035),
+    0 2px 4px rgba(black, 0.5),
+    0 8px 24px rgba(black, 0.45),
+    inset 0 1px 0 rgba(white, 0.06)
+  ),
+
+  text: #cfcfcf,
+  text-h2: #dedede,
+  text-h3: #c4c4c4,
+  text-h4: #b8b8b8,
+  text-muted: #9a9a9a,
+
+  link: #7aa5e0,
+  link-hover: #a6c3ec,
+
+  quote-bg: #2a2a2e,
+  quote-border: $lighter-blue,
+  rule: #36363b,
+
+  code-bg: #1a1a1d,
+  code-label-bg: #36363b,
+);
+
+@each $type, $colour in $theme-dark-callouts {
+  $theme-dark: map-merge($theme-dark, (
+    callout-#{$type}-border: $colour,
+    // 5% (as in light) disappears on a dark background.
+    callout-#{$type}-bg: rgba($colour, 0.1),
+  ));
+}
+
+@each $role in map-keys($theme-light) {
+  @if not map-has-key($theme-dark, $role) {
+    @error "Theme role `#{$role}` is missing from $theme-dark";
+  }
+}
+@each $role in map-keys($theme-dark) {
+  @if not map-has-key($theme-light, $role) {
+    @error "Theme role `#{$role}` is missing from $theme-light";
+  }
+}
+
 // Ruby Sass only evaluates custom property values when interpolated.
 @mixin theme-properties($theme) {
   @each $role, $value in $theme {
@@ -50,5 +108,12 @@ $theme-light: (
 }
 
 :root {
+  color-scheme: light dark;
   @include theme-properties($theme-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include theme-properties($theme-dark);
+  }
 }
