@@ -15,7 +15,7 @@ bundle install
 
 On your machine:
 
-`jekyll serve --incremental --watch --drafts -H 127.0.0.1 -P 4000`
+`jekyll serve --watch --drafts -H 127.0.0.1 -P 4000`
 
 Prefix with `bundle exec` if you don't have `jekyll` installed and on your PATH.
 
