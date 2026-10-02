@@ -56,7 +56,7 @@ article {
   .post-metadata {
     padding-top: 1em;
     font-style: italic;
-    color: $base-font-color-lighter;
+    color: var(--text-muted);
     > * {
       @include horizontal-padding($base-padding / 4);
     }
@@ -85,7 +85,7 @@ article {
     @mixin table-border($side) {
       border-#{$side}-width: 1px;
       border-#{$side}-style: solid;
-      border-#{$side}-color: $gray-light;
+      border-#{$side}-color: var(--rule);
     }
 
     margin-bottom: $small-spacing;
@@ -118,29 +118,15 @@ article {
       margin: 0px;
     }
 
-    @mixin color($c) {
-      border-color: $c;
-      background-color: scale-color($c, $alpha: -95%);
+    @each $type in $callout-types {
+      &.#{$type} {
+        border-color: var(--callout-#{$type}-border);
+        background-color: var(--callout-#{$type}-bg);
 
-      .icon {
-        color: $c;
+        .icon {
+          color: var(--callout-#{$type}-border);
+        }
       }
-    }
-
-    &.aside {
-      @include color($aside)
-    }
-    &.info {
-      @include color($info)
-    }
-    &.warning {
-      @include color($warning)
-    }
-    &.alert {
-      @include color($alert)
-    }
-    &.success {
-      @include color($success)
     }
 
     .callout-content {
@@ -152,7 +138,7 @@ article {
 
   .footnotes {
     margin-top: $base-padding;
-    @include single-side-border-width(top, $gray-light, 1px);
+    @include single-side-border-width(top, var(--rule), 1px);
 
     ol {
       margin-top: $base-padding;

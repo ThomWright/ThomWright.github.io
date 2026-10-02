@@ -20,28 +20,10 @@ $dark-purple:             #1e152a;
 
 $brand-color:             $blue;
 
-$aside:                   $gray-mid-light;
-$info:                    $lighter-blue;
-$warning:                 $yellow;
-$alert:                   $red;
-$success:                 $green;
-
-$base-body-bg:            $gray-lighter;
-$base-highlight:          $gray-lightest;
-$base-font-color:         $gray-darker;
-$base-font-color-lighter: $gray-mid;
-$base-font-highlight:     black;
-
-$inverse-body-bg:         invert($base-body-bg);
-$inverse-font-color:      invert($base-font-color);
-$inverse-font-highlight:  invert($base-font-highlight);
-
-$header-bg:               lighten($inverse-body-bg, 15%);
-$header-font-color:       lighten($inverse-font-color, 15%);
-$header-font-highlight:   $inverse-font-highlight;
-
-$link-color:              $blue;
-$link-color-highlight:    darken($link-color, 15%);
+// The header looks the same in both themes, so it isn't part of the theme maps.
+$header-bg:               lighten(invert($gray-lighter), 15%);
+$header-font-color:       lighten(invert($gray-darker), 15%);
+$header-font-highlight:   white;
 
 // Grid
 $tablet-width: em(768);

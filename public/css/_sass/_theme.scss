@@ -1,0 +1,54 @@
+/*
+  Theme
+
+  Colours that differ between light and dark mode. Each role becomes a CSS
+  custom property (e.g. `--text`), so partials use `var(--text)`.
+ */
+
+$callout-types: aside, info, warning, alert, success;
+
+$theme-light: (
+  body-bg: $gray-lighter,
+  card-bg: white,
+  card-footer-bg: darken(white, 2%),
+  card-footer-border: $gray-lighter,
+  card-shadow: (bottom-shadow(1), top-shadow(1)),
+
+  text: $gray-darker,
+  text-h2: lighten($gray-darker, 5%),
+  text-h3: lighten($gray-darker, 10%),
+  text-h4: lighten($gray-darker, 20%),
+  text-muted: $gray-mid,
+
+  link: $blue,
+  link-hover: darken($blue, 15%),
+
+  quote-bg: $gray-lightest,
+  quote-border: $lighter-blue,
+  rule: $gray-light,
+
+  code-bg: $gray-lightest,
+  code-label-bg: $gray-light,
+
+  callout-aside-border: $gray-mid-light,
+  callout-aside-bg: rgba($gray-mid-light, 0.05),
+  callout-info-border: $lighter-blue,
+  callout-info-bg: rgba($lighter-blue, 0.05),
+  callout-warning-border: $yellow,
+  callout-warning-bg: rgba($yellow, 0.05),
+  callout-alert-border: $red,
+  callout-alert-bg: rgba($red, 0.05),
+  callout-success-border: $green,
+  callout-success-bg: rgba($green, 0.05),
+);
+
+// Ruby Sass only evaluates custom property values when interpolated.
+@mixin theme-properties($theme) {
+  @each $role, $value in $theme {
+    --#{$role}: #{$value};
+  }
+}
+
+:root {
+  @include theme-properties($theme-light);
+}

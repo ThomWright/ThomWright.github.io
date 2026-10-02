@@ -1,7 +1,7 @@
 
 @mixin card {
-  @include border-shadow;
-  background-color: white;
+  box-shadow: var(--card-shadow);
+  background-color: var(--card-bg);
 
   @include horizontal-margin(auto);
 
@@ -40,8 +40,8 @@
   }
 
   footer {
-    background: darken(white, 2%);
-    border-top: 1px solid $gray-lighter;
+    background-color: var(--card-footer-bg);
+    border-top: 1px solid var(--card-footer-border);
   }
 
   a {
