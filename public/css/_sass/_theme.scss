@@ -18,7 +18,7 @@ $palette-light: (
 $palette-dark: (
   aside: darken($gray-mid-light, 4%),
   info: lighten($lighter-blue, 4%),
-  warning: lighten($amber, 14%),
+  warning: desaturate(lighten($amber, 14%), 16%),
   alert: $red,
   success: lighten($leaf, 15%),
 );
