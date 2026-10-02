@@ -60,7 +60,5 @@ exclude:
 - docker-compose.yml
 - Gemfile
 - Gemfile.lock
-- provision
 - README.md
 - tmp
-- Vagrantfile

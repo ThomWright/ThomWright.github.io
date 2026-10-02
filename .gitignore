@@ -1,6 +1,5 @@
 _site/
 node_modules
-.vagrant/
 .sass-cache/
 tmp
 .jekyll-metadata
