@@ -73,7 +73,7 @@ Introducing a quote:
 ## Diagrams
 
 {% include diagram.html
-  name="specimen-sequence"
+  name="recovery-point"
   caption="A sequence diagram"
 %}
 
