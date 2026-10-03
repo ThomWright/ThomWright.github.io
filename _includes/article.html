@@ -40,8 +40,8 @@
     <div class="post-metadata">
       <time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time>
       {% include updated.html article=article %}
-      {% if article.canonical %}
-      <a href="{{ article.canonical }}">
+      {% if article.canonical_url %}
+      <a href="{{ article.canonical_url }}">
         Original
       </a>
       {% endif %}
