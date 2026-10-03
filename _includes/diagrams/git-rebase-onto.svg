@@ -1,0 +1,46 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="341" height="240" viewBox="0 0 341 240">
+  <defs>
+    <marker id="git-rebase-onto-arrow-accent" class="d-accent" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+    <marker id="git-rebase-onto-arrow-ink" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+    <marker id="git-rebase-onto-arrow-muted" class="d-muted" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+    <marker id="git-rebase-onto-arrow-success" class="d-success" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+    <marker id="git-rebase-onto-arrow-warning" class="d-warning" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- How we got here -->
+  <path class="d-line d-success" d="M28,12 V34" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-success)"/>
+  <text class="d-bold d-success" x="44" y="29" fill="currentColor">git rebase --onto B1 Old B2</text>
+
+  <!-- Commits, each pointing to its parent -->
+  <path class="d-line" d="M132,68 L54,68" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-ink)"/>
+  <path class="d-line d-muted" d="M80.28,109.11 L49.19,80.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-muted)"/>
+  <path class="d-line d-accent" d="M192.28,109.11 L161.19,80.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-accent)"/>
+  <path class="d-line d-warning" d="M248.28,161.11 L217.19,132.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-warning)"/>
+  <circle class="d-shape" cx="36" cy="68" r="16" fill="none" stroke="currentColor"/>
+  <circle class="d-shape" cx="148" cy="68" r="16" fill="none" stroke="currentColor"/>
+  <circle class="d-shape d-muted" cx="92" cy="120" r="16" fill="none" stroke="currentColor"/>
+  <text class="d-muted" x="70" y="125" text-anchor="end" fill="currentColor">Old</text>
+  <circle class="d-shape d-accent" cx="204" cy="120" r="16" fill="none" stroke="currentColor"/>
+  <text class="d-muted" x="182" y="125" text-anchor="end" fill="currentColor">New</text>
+  <circle class="d-shape d-warning" cx="260" cy="172" r="16" fill="none" stroke="currentColor"/>
+
+  <!-- Branches -->
+  <path class="d-line" d="M188,68 H168" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-ink)"/>
+  <text class="d-bold" x="194" y="73" fill="currentColor">main</text>
+  <path class="d-line d-accent" d="M244,120 H224" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-accent)"/>
+  <text class="d-bold d-accent" x="250" y="125" fill="currentColor">B1</text>
+  <path class="d-line d-warning" d="M300,172 H280" fill="none" stroke="currentColor" marker-end="url(#git-rebase-onto-arrow-warning)"/>
+  <text class="d-bold d-warning" x="306" y="177" fill="currentColor">B2</text>
+
+  <text class="d-success" x="20" y="220" fill="currentColor">This is always gonna work</text>
+</svg>

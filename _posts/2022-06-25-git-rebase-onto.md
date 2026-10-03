@@ -18,10 +18,10 @@ I generally prefer to keep my git history as a straight line. And my branches (w
 Recently I’ve been in the unfortunate position where it made sense to use a branch off a branch. This can be a pain to keep up to date with the latest changes on **main**.
 <!-- end_excerpt -->
 
-{% include figure.html
-  img_src="/public/assets/branch-off-branch.excalidraw.png"
+{% include diagram.html
+  name="git-branch-off-branch"
   caption="Branching off an existing branch"
-  alt="A branch off a branch"
+  alt="A commit graph. B1 branches off main, and B2 branches off B1."
 %}
 
 Fortunately, a colleague introduced me to `git rebase --onto` which (while still a faff) made this process much easier.
@@ -46,17 +46,33 @@ The example given in the git documentation shows how to rebase a **topic** branc
 
 What we want to do is slightly different. Let's have a look.
 
-We start with our two branches, and a new commit on **main** which we’ve recently pulled, and then rebase the first branch onto **main**. This leaves an old commit behind, which our second branch is still based on. We then want to rebase our second branch onto the first.
+We start with our two branches, and a new commit on **main** which we’ve recently pulled.
+
+{% include diagram.html
+  name="git-rebase-start"
+  caption="Our starting point"
+  alt="A commit graph. main has a new commit. B1 branches off the commit before it, and B2 branches off B1."
+%}
+
+Then we rebase the first branch onto **main**. This leaves an old commit behind, which our second branch is still based on.
+
+{% include diagram.html
+  name="git-rebase-b1"
+  caption="After rebasing **B1** onto **main**"
+  alt="After git rebase main B1: B1 points to a New commit on top of main. B2 still branches off the Old commit, which branches off main's previous commit."
+%}
+
+We then want to rebase our second branch onto the first.
 
 In many cases `git rebase B1 B2` will work, which makes this tempting. However, if there was a merge conflict when rebasing **B1** onto **main**, then the text diffs between the *Old* and *New* commits might differ. In which case, you’ll end up with some unwanted commits on your new **B2** branch. If you had a lot of commits on **B1**, this could get very messy!
 
-{% include figure.html
-  img_src="/public/assets/git-rebase-onto.excalidraw.png"
-  caption="Using `git rebase --onto`"
-  alt="git rebase --onto"
+{% include diagram.html
+  name="git-rebase-onto"
+  alt="After git rebase --onto B1 Old B2: B2 branches off New, the head of B1. This is always gonna work."
+  name_2="git-rebase-b2"
+  alt_2="After git rebase B1 B2: B2 branches off a copy of Old, which sits on top of New. The copy is omitted if Old and New have the same text diff. This won't end nicely if there was a merge conflict in the previous rebase."
+  caption="Rebasing **B2** onto **B1**, with and without `--onto`"
 %}
-
-(You might want to open the image in a new tab to see it full size.)
 
 So there we have it. Mainly I’m just writing this as a reminder for myself if I have to do this again (let’s hope not).
 

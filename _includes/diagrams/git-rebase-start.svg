@@ -1,0 +1,30 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="341" height="176" viewBox="0 0 341 176">
+  <defs>
+    <marker id="git-rebase-start-arrow-accent" class="d-accent" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+    <marker id="git-rebase-start-arrow-ink" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+    <marker id="git-rebase-start-arrow-warning" class="d-warning" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- Commits, each pointing to its parent -->
+  <path class="d-line" d="M132,36 L54,36" fill="none" stroke="currentColor" marker-end="url(#git-rebase-start-arrow-ink)"/>
+  <path class="d-line d-accent" d="M80.28,77.11 L49.19,48.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-start-arrow-accent)"/>
+  <path class="d-line d-warning" d="M136.28,129.11 L105.19,100.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-start-arrow-warning)"/>
+  <circle class="d-shape" cx="36" cy="36" r="16" fill="none" stroke="currentColor"/>
+  <circle class="d-shape" cx="148" cy="36" r="16" fill="none" stroke="currentColor"/>
+  <circle class="d-shape d-accent" cx="92" cy="88" r="16" fill="none" stroke="currentColor"/>
+  <circle class="d-shape d-warning" cx="148" cy="140" r="16" fill="none" stroke="currentColor"/>
+
+  <!-- Branches -->
+  <path class="d-line" d="M188,36 H168" fill="none" stroke="currentColor" marker-end="url(#git-rebase-start-arrow-ink)"/>
+  <text class="d-bold" x="194" y="41" fill="currentColor">main</text>
+  <path class="d-line d-accent" d="M132,88 H112" fill="none" stroke="currentColor" marker-end="url(#git-rebase-start-arrow-accent)"/>
+  <text class="d-bold d-accent" x="138" y="93" fill="currentColor">B1</text>
+  <path class="d-line d-warning" d="M188,140 H168" fill="none" stroke="currentColor" marker-end="url(#git-rebase-start-arrow-warning)"/>
+  <text class="d-bold d-warning" x="194" y="145" fill="currentColor">B2</text>
+</svg>
