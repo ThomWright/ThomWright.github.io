@@ -84,9 +84,10 @@ type Context = {
   laneX: Record<string, number>
   /** The lane with an activation bar, inside a section. */
   barLane?: string
-  /** Dividers are y coordinates, as their width is only known at the end. */
-  out: (string | { divider: number })[]
+  out: string[]
   bars: string[]
+  /** Dividers are y coordinates, as their width is only known at the end. */
+  dividers: number[]
   /** The furthest right any label reaches. */
   right: number
 }
@@ -111,6 +112,7 @@ export function render(name: string, diagram: Sequence): string {
     laneX,
     out: [],
     bars: [],
+    dividers: [],
     right: lastX + textWidth(titles[titles.length - 1], HEADING_SIZE) / 2,
   }
   const end = layout(ctx, diagram.steps, FIRST_STEP - STEP_GAP)
@@ -127,10 +129,9 @@ export function render(name: string, diagram: Sequence): string {
     .map((x) => `M${n(x)},${LIFELINE_TOP} V${lifelineBottom}`)
     .join(' ')
 
-  const body = ctx.out.map((item) =>
-    typeof item === 'string'
-      ? item
-      : `\n  <path class="d-line d-dotted d-muted" d="M${MARGIN},${item.divider} H${width - MARGIN}" ${dotted}/>\n`,
+  // Under everything else, as arrows and their labels can cross them.
+  const dividers = ctx.dividers.map(
+    (y) => `  <path class="d-line d-dotted d-muted" d="M${MARGIN},${y} H${width - MARGIN}" ${dotted}/>`,
   )
 
   return [
@@ -143,10 +144,11 @@ export function render(name: string, diagram: Sequence): string {
     '',
     ...header,
     `  <path class="d-line d-thin d-dashed d-muted" d="${lifelines}" fill="none" stroke="currentColor" ${dashed}/>`,
+    ...dividers,
     '',
     ...ctx.bars,
     '',
-    ...body,
+    ...ctx.out,
     '</svg>',
     '',
   ].join('\n')
@@ -197,7 +199,7 @@ function parallel(ctx: Context, step: Parallel, y: number): number {
 
 function divider(ctx: Context, y: number): number {
   const at = y + DIVIDER_GAP
-  ctx.out.push({ divider: at })
+  ctx.dividers.push(at)
   // The next step starts one gap later, so it sits the same distance below.
   return at + DIVIDER_GAP - STEP_GAP
 }
