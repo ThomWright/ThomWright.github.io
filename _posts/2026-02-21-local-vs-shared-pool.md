@@ -27,16 +27,16 @@ The simulation models three application processes each making database queries. 
 
 Let's compare two pool configurations:
 
-{% include figure.html
-  img_src="/public/assets/pools/3-apps-3-pools.png"
+{% include diagram.html
+  name="pools-local"
   caption="Local pools: each application process has its own pool"
-  size="small"
+  alt="Three application processes, each with its own pool, all connecting to one database."
 %}
 
-{% include figure.html
-  img_src="/public/assets/pools/3-apps-1-pool.png"
+{% include diagram.html
+  name="pools-shared"
   caption="Shared pool: all processes share a single pool"
-  size="small"
+  alt="Three application processes connect to one shared connection pool, which connects to the database."
 %}
 
 The parameters:
@@ -54,10 +54,10 @@ The [code is available on GitHub](https://github.com/ThomWright/pool-sim).
 
 Let's start with a single pool and the 200 RPS workload. With ~25ms average query latency, the average number of used connections (queries running at any moment) is around 5.
 
-{% include figure.html
-  img_src="/public/assets/pools/app-pool.png"
+{% include diagram.html
+  name="pools-single"
   caption="A single application process with its own pool"
-  size="x-small"
+  alt="An application process connects through its connection pool to the database."
 %}
 
 If we simulate 5 minutes of traffic, we can see how many connections the pool keeps open over time.
