@@ -1,0 +1,76 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="448" height="846" viewBox="0 0 448 846" font-family="monospace" font-size="12.5">
+  <defs>
+    <marker id="pg-connect-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="137" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Application</text>
+  <text class="d-heading" x="322" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Database</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M137,45 V826 M322,45 V826" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
+  <path class="d-line d-dotted d-muted" d="M20,706 H428" stroke-dasharray="0 7" stroke-linecap="round" color="#888888"/>
+
+  <rect class="d-shape d-thin d-knockout" x="133.5" y="75" width="7" height="621" fill="none" stroke="currentColor"/>
+  <rect class="d-shape d-thin d-knockout" x="137.5" y="93" width="7" height="80" fill="none" stroke="currentColor"/>
+  <rect class="d-shape d-thin d-knockout" x="137.5" y="193" width="7" height="180" fill="none" stroke="currentColor"/>
+  <rect class="d-shape d-thin d-knockout" x="137.5" y="393" width="7" height="298" fill="none" stroke="currentColor"/>
+  <rect class="d-shape d-thin d-knockout" x="133.5" y="721" width="7" height="80" fill="none" stroke="currentColor"/>
+
+  <text x="104" y="85" text-anchor="end" fill="currentColor">Connect</text>
+  <text x="119" y="103" text-anchor="end" fill="currentColor">TCP</text>
+  <path class="d-line" d="M144.5,98 L322,138" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="218" y="110" width="30.5" height="18" fill="none"/>
+  <text x="233.25" y="123" text-anchor="middle" fill="currentColor">SYN</text>
+  <path class="d-line d-dashed" d="M322,138 L144.5,168" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="203" y="145" width="60.5" height="18" fill="none"/>
+  <text x="233.25" y="158" text-anchor="middle" fill="currentColor">SYN ACK</text>
+  <path class="d-line" d="M144.5,168 L322,208" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="218" y="180" width="30.5" height="18" fill="none"/>
+  <text x="233.25" y="193" text-anchor="middle" fill="currentColor">ACK</text>
+  <rect class="d-knockout" x="334" y="200" width="98" height="18" fill="none"/>
+  <text x="338" y="213" text-anchor="start" fill="currentColor">fork backend</text>
+  <text x="119" y="203" text-anchor="end" fill="currentColor">TLS</text>
+  <path class="d-line" d="M144.5,198 L322,238" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="191.75" y="210" width="83" height="18" fill="none"/>
+  <text x="233.25" y="223" text-anchor="middle" fill="currentColor">SSLRequest</text>
+  <path class="d-line d-dashed" d="M322,238 L144.5,268" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="225.5" y="245" width="15.5" height="18" fill="none"/>
+  <text x="233.25" y="258" text-anchor="middle" fill="currentColor">S</text>
+  <path class="d-line" d="M144.5,298 L322,338" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="188" y="310" width="90.5" height="18" fill="none"/>
+  <text x="233.25" y="323" text-anchor="middle" fill="currentColor">ClientHello</text>
+  <path class="d-line d-dashed" d="M322,338 L144.5,368" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="188" y="345" width="90.5" height="18" fill="none"/>
+  <text x="233.25" y="358" text-anchor="middle" fill="currentColor">ServerHello</text>
+  <path class="d-line" d="M144.5,368 L322,408" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="199.25" y="380" width="68" height="18" fill="none"/>
+  <text x="233.25" y="393" text-anchor="middle" fill="currentColor">Finished</text>
+  <text x="119" y="403" text-anchor="end" fill="currentColor">SCRAM</text>
+  <path class="d-line" d="M144.5,398 L322,438" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="203" y="410" width="60.5" height="18" fill="none"/>
+  <text x="233.25" y="423" text-anchor="middle" fill="currentColor">startup</text>
+  <path class="d-line d-dashed" d="M322,438 L144.5,468" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="214.25" y="445" width="38" height="18" fill="none"/>
+  <text x="233.25" y="458" text-anchor="middle" fill="currentColor">SASL</text>
+  <path class="d-line" d="M144.5,498 L322,538" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="184.25" y="510" width="98" height="18" fill="none"/>
+  <text x="233.25" y="523" text-anchor="middle" fill="currentColor">client-first</text>
+  <path class="d-line d-dashed" d="M322,538 L144.5,568" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="184.25" y="545" width="98" height="18" fill="none"/>
+  <text x="233.25" y="558" text-anchor="middle" fill="currentColor">server-first</text>
+  <rect class="d-knockout" x="20" y="560" width="105.5" height="36" fill="none"/>
+  <text x="121.5" text-anchor="end" fill="currentColor"><tspan x="121.5" y="573">hash password</tspan><tspan x="121.5" y="591">4096 times</tspan></text>
+  <path class="d-line" d="M144.5,616 L322,656" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="184.25" y="628" width="98" height="18" fill="none"/>
+  <text x="233.25" y="641" text-anchor="middle" fill="currentColor">client-final</text>
+  <path class="d-line d-dashed" d="M322,656 L144.5,686" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="210.5" y="663" width="45.5" height="18" fill="none"/>
+  <text x="233.25" y="676" text-anchor="middle" fill="currentColor">ready</text>
+  <text x="119" y="731" text-anchor="end" fill="currentColor">Query</text>
+  <path class="d-line" d="M140.5,726 L322,766" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)"/>
+  <rect class="d-knockout" x="208.5" y="738" width="45.5" height="18" fill="none"/>
+  <text x="231.25" y="751" text-anchor="middle" fill="currentColor">query</text>
+  <path class="d-line d-dashed" d="M322,766 L140.5,796" fill="none" stroke="currentColor" marker-end="url(#pg-connect-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="212.25" y="773" width="38" height="18" fill="none"/>
+  <text x="231.25" y="786" text-anchor="middle" fill="currentColor">rows</text>
+</svg>
