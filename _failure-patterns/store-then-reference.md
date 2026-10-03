@@ -3,7 +3,7 @@ layout: pattern
 title: Store-then-reference
 short: store-then-reference
 group: multiple-systems
-tagline: Prevent dangling references
+description: Prevent dangling references
 related:
   - recovery-point
   - garbage-collection

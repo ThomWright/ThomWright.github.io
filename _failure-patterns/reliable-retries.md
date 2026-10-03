@@ -3,7 +3,7 @@ layout: pattern
 title: Reliable retries
 short: reliable-retries
 group: multiple-systems
-tagline: Reliably keep retrying until success
+description: Reliably keep retrying until success
 sort_key: 6
 related:
   - transactional-outbox

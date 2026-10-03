@@ -3,7 +3,7 @@ layout: pattern
 title: Reject duplicate requests
 short: reject-duplicate
 group: antipattern
-tagline: Return an error when a duplicate request is detected
+description: Return an error when a duplicate request is detected
 related:
   - idempotency-key
   - reject-non-identical

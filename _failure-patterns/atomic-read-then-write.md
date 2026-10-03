@@ -3,7 +3,7 @@ layout: pattern
 title: Atomic read-then-write
 short: atomic-read-then-write
 group: single-system
-tagline: Concurrently write data based on current state
+description: Concurrently write data based on current state
 sort_key: 2
 related:
   - acid-transaction

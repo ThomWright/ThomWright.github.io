@@ -23,7 +23,7 @@ Rather than internal details, these patterns describe the API as seen by clients
 {% assign api_design = site.failure-patterns | where: 'group', 'api-design' | sort: "sort_key", "last" %}
 {% for pattern in api_design %}[{{ pattern.title }}]({{ pattern.url }})
 
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
 
 {% endfor %}
 
@@ -34,7 +34,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 {% assign single_system = site.failure-patterns | where: 'group', 'single-system' | sort: "sort_key", "last" %}
 {% for pattern in single_system %}[{{ pattern.title }}]({{ pattern.url }})
 
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
 
 {% endfor %}
 
@@ -45,7 +45,7 @@ When writing to a single ACID database, we get atomicity and consistency built i
 {% assign multiple_systems = site.failure-patterns | where: 'group', 'multiple-systems' | sort: "sort_key", "last" %}
 {% for pattern in multiple_systems %}[{{ pattern.title }}]({{ pattern.url }})
 
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
 
 {% endfor %}
 
@@ -56,7 +56,7 @@ Sometimes inconsistency is unavoidable, whether by design, or simply because of 
 {% assign background_processes = site.failure-patterns | where: 'group', 'background-processes' | sort: "sort_key", "last" %}
 {% for pattern in background_processes %}[{{ pattern.title }}]({{ pattern.url }})
 
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
 
 {% endfor %}
 
@@ -67,7 +67,7 @@ Other patterns for handling failure or edge cases.
 {% assign other = site.failure-patterns | where: 'group', 'other' | sort: "sort_key", "last" %}
 {% for pattern in other %}[{{ pattern.title }}]({{ pattern.url }})
 
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
 
 {% endfor %}
 
@@ -78,7 +78,7 @@ Some patterns exist which should be avoided. They may seem to offer benefits, bu
 {% assign antipatterns = site.failure-patterns | where: 'group', 'antipattern' | sort: "sort_key", "last" %}
 {% for pattern in antipatterns %}[{{ pattern.title }}]({{ pattern.url }})
 
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.tagline }}
+: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
 
 {% endfor %}
 

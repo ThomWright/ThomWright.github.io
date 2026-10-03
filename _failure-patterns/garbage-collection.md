@@ -3,7 +3,7 @@ layout: pattern
 title: Garbage collection
 short: garbage-collection
 group: background-processes
-tagline: Find and delete unused data
+description: Find and delete unused data
 ---
 
 ## Context

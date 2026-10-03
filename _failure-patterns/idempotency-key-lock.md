@@ -3,7 +3,7 @@ layout: pattern
 title: Idempotency key lock
 short: idempotency-key-lock
 group: multiple-systems
-tagline: Protect against concurrent retries
+description: Protect against concurrent retries
 related:
   - idempotency-key
   - atomic-read-then-write

@@ -3,7 +3,7 @@ layout: pattern
 title: Idempotency key
 short: idempotency-key
 group: api-design
-tagline: Identify identical requests
+description: Identify identical requests
 sort_key: 1
 related:
   - atomic-read-then-write

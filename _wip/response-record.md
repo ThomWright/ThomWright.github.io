@@ -3,7 +3,7 @@ layout: pattern
 title: Response record
 short: response-record
 group: single-system
-tagline: Return the same response for every retry
+description: Return the same response for every retry
 related:
   - acid-transaction
   - idempotency-key

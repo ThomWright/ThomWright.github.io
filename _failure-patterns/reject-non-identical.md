@@ -3,7 +3,7 @@ layout: pattern
 title: Reject non-identical retries
 short: reject-non-identical
 group: api-design
-tagline: Detect changes in request content between retries
+description: Detect changes in request content between retries
 sort_key: 2
 ---
 

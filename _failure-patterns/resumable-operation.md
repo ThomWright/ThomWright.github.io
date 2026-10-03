@@ -3,7 +3,7 @@ layout: pattern
 title: Resumable operation
 short: resumable-operation
 group: multiple-systems
-tagline: Allow operations to continue from where the previous attempt failed
+description: Allow operations to continue from where the previous attempt failed
 sort_key: 4
 related:
   - transactional-outbox

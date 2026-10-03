@@ -3,7 +3,7 @@ layout: pattern
 title: Single-use token recovery
 short: single-use-token-recovery
 group: multiple-systems
-tagline: Handle concurrent use of a single-use token
+description: Handle concurrent use of a single-use token
 related:
   - resumable-operation
   - recovery-point

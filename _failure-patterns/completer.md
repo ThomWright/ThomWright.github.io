@@ -3,7 +3,7 @@ layout: pattern
 title: Completer
 short: completer
 group: background-processes
-tagline: Complete unfinished operations, even if clients give up retrying
+description: Complete unfinished operations, even if clients give up retrying
 related:
   - transactional-outbox
   - recovery-point

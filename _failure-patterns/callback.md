@@ -3,7 +3,7 @@ layout: pattern
 title: Callback
 short: callback
 group: api-design
-tagline: Inform clients about the results of asynchronous operations
+description: Inform clients about the results of asynchronous operations
 sort_key: 3
 related:
   - transactional-outbox

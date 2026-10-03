@@ -3,7 +3,7 @@ layout: pattern
 title: I/O inside transaction
 short: io-inside-transaction
 group: antipattern
-tagline: Wrap a transaction around non-database I/O
+description: Wrap a transaction around non-database I/O
 ---
 
 ## Problem

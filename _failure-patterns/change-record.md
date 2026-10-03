@@ -3,7 +3,7 @@ layout: pattern
 title: Change record
 short: change-record
 group: single-system
-tagline: Record that a change has been made so it doesn't happen again
+description: Record that a change has been made so it doesn't happen again
 related:
   - acid-transaction
   - idempotency-key

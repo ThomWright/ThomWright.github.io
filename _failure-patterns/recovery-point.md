@@ -3,7 +3,7 @@ layout: pattern
 title: Recovery point
 short: recovery-point
 group: multiple-systems
-tagline: Record current progress to allow recovery with minimal rework
+description: Record current progress to allow recovery with minimal rework
 sort_key: 5
 related:
   - saga

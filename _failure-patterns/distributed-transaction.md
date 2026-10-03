@@ -3,7 +3,7 @@ layout: pattern
 title: Distributed transaction
 short: distributed-transaction
 group: multiple-systems
-tagline: Write to multiple systems transactionally
+description: Write to multiple systems transactionally
 sort_key: 3
 related:
   - acid-transaction

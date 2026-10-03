@@ -3,7 +3,7 @@ layout: pattern
 title: Reconciliation
 short: reconciliation
 group: background-processes
-tagline: Detect and resolve inconsistencies
+description: Detect and resolve inconsistencies
 ---
 
 ## Context

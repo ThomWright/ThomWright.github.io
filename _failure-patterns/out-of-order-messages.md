@@ -3,7 +3,7 @@ layout: pattern
 title: Handling out of order messages
 short: out-of-order-messages
 group: other
-tagline: Reliably process dependent messages in any order
+description: Reliably process dependent messages in any order
 sort_key: 1
 ---
 

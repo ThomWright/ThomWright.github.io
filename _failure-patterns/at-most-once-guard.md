@@ -3,7 +3,7 @@ layout: pattern
 title: At-most-once guard
 short: at-most-once-guard
 group: multiple-systems
-tagline: Write to a system at most once
+description: Write to a system at most once
 related:
   - recovery-point
   - response-record
