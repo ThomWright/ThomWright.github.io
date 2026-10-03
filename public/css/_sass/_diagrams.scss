@@ -37,6 +37,11 @@ svg.diagram {
 .d-accent { color: var(--diagram-accent); }
 .d-alert { color: var(--diagram-alert); }
 .d-success { color: var(--diagram-success); }
+.d-warning { color: var(--diagram-warning); }
+
+// Context that isn't part of the point being made, e.g. the other lanes when
+// a diagram is about one of them.
+.d-faded { opacity: 0.35; }
 
 // Lines and shapes
 

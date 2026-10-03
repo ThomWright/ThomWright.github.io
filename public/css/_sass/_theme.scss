@@ -57,6 +57,8 @@ $theme-light: (
   diagram-accent: darken($brand-color, 4%),
   diagram-alert: darken(map-get($palette-light, alert), 10%),
   diagram-success: darken(map-get($palette-light, success), 8%),
+  // Darker amber turns brown, and harder to tell from the alert red.
+  diagram-warning: map-get($palette-light, warning),
 );
 
 $theme-dark: (
@@ -95,6 +97,7 @@ $theme-dark: (
   diagram-accent: lighten($brand-color, 14%),
   diagram-alert: map-get($palette-dark, alert),
   diagram-success: map-get($palette-dark, success),
+  diagram-warning: map-get($palette-dark, warning),
 );
 
 @each $type in $callout-types {

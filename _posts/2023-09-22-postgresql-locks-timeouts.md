@@ -78,10 +78,10 @@ While they’re making a coffee, someone else deploys a schema migration which d
 
 Meanwhile the application is still trying to serve production traffic, attempting normal reads and writes. All of these will get stuck in the lock queue behind the `ACCESS EXCLUSIVE`.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/example.png"
+{% include diagram.html
+  name="pg-locks-example"
   caption="A bad situation!"
-  size="large"
+  alt="Timeline of three connections. The reader begins a transaction, selects, and sits around holding a shared lock. The migrator's ALTER TABLE waits in the lock queue until the reader commits, then takes an exclusive lock. The application's SELECT waits behind the migrator until the migrator commits."
 %}
 
 Oh dear.
@@ -110,29 +110,32 @@ That is, we want to make sure that migrators can’t block applications for too 
 
 The first thing we can do is make sure no reader transactions hang around holding locks for too long. Two locks are good for that: `idle_in_transaction_session_timeout` and `statement_timeout`.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/reader-idle-timeout.png"
-  img_src_2="/public/assets/postgres-locks-timeouts/reader-statement-timeout.png"
+{% include diagram.html
+  name="pg-locks-reader-idle-timeout"
+  alt="The same timeline, focused on the reader: idle_in_transaction_session_timeout covers the time the reader sits idle in its transaction."
+  name_2="pg-locks-reader-statement-timeout"
+  alt_2="The same timeline, focused on the reader: statement_timeout covers the reader's SELECT."
   caption="Applying timeouts to the reader"
-  size="small"
 %}
 
 Next, we can make sure that the migrator doesn’t spend too long sitting in the lock queue, or holding any locks itself. We can use `lock_timeout` and `statement_timeout`. The statement timeout is arguably enough, but it can be nice to configure them separately, e.g. “don’t wait more than 1 second for a lock, but if you manage to start you have 5 seconds to do your work”.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/migrator-lock-timeout.png"
-  img_src_2="/public/assets/postgres-locks-timeouts/migrator-statement-timeout.png"
+{% include diagram.html
+  name="pg-locks-migrator-lock-timeout"
+  alt="The same timeline, focused on the migrator: lock_timeout covers the time its ALTER TABLE waits in the lock queue."
+  name_2="pg-locks-migrator-statement-timeout"
+  alt_2="The same timeline, focused on the migrator: statement_timeout covers its ALTER TABLE, from waiting in the lock queue until the statement finishes."
   caption="Applying timeouts to the migrator"
-  size="small"
 %}
 
 Lastly, we probably don’t want application queries piling up in the lock queue for too long, or taking too long to run. After all, an application could run a long `SELECT` statement (or let a transaction sit idle having run a `SELECT`) which would block any `ALTER TABLE` statements. We would want to use `lock_timeout`, `statement_timeout` and `idle_in_transaction_session_timeout` here.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/application-lock-timeout.png"
-  img_src_2="/public/assets/postgres-locks-timeouts/application-statement-timeout.png"
+{% include diagram.html
+  name="pg-locks-app-lock-timeout"
+  alt="The same timeline, focused on the application: lock_timeout covers the time its SELECT waits in the lock queue."
+  name_2="pg-locks-app-statement-timeout"
+  alt_2="The same timeline, focused on the application: statement_timeout covers its SELECT, from waiting in the lock queue until the statement finishes."
   caption="Applying timeouts to the application"
-  size="small"
 %}
 
 So there you have it. Be careful when running read-only queries on databases!
