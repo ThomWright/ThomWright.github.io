@@ -1,0 +1,34 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="372" height="260" viewBox="0 0 372 260" font-family="monospace" font-size="12.5">
+  <text class="d-heading" x="20" y="35" fill="currentColor" font-size="14.17" font-weight="bold">Remaining error budget</text>
+
+  <g class="d-accent" color="#477dca">
+    <path class="d-line d-dashed" d="M71.5,109.33 H321.5" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+  </g>
+  <g class="d-success" color="#5e9e3a">
+    <path class="d-line" d="M71.5,56 L321.5,82.67" fill="none" stroke="currentColor"/>
+    <text class="d-bold" x="329.5" y="87.67" fill="currentColor" font-weight="bold">0.5</text>
+  </g>
+  <g>
+    <path class="d-line" d="M71.5,56 L321.5,109.33" fill="none" stroke="currentColor"/>
+    <text class="d-bold" x="329.5" y="114.33" fill="currentColor" font-weight="bold">1</text>
+  </g>
+  <g class="d-warning" color="#d97706">
+    <path class="d-line" d="M71.5,56 L321.5,162.67" fill="none" stroke="currentColor"/>
+    <text class="d-bold" x="329.5" y="167.67" fill="currentColor" font-weight="bold">2</text>
+  </g>
+  <g class="d-alert" color="#ed6145">
+    <path class="d-line" d="M71.5,56 L321.5,216" fill="none" stroke="currentColor"/>
+    <text class="d-bold" x="329.5" y="221" fill="currentColor" font-weight="bold">3</text>
+  </g>
+
+  <!-- Axes -->
+  <path class="d-line" d="M71.5,56 V216 H321.5" fill="none" stroke="currentColor"/>
+  <path class="d-line" d="M66.5,56 H71.5" fill="none" stroke="currentColor"/>
+  <text x="60.5" y="61" text-anchor="end" fill="currentColor">100%</text>
+  <path class="d-line" d="M66.5,109.33 H71.5" fill="none" stroke="currentColor"/>
+  <text x="60.5" y="114.33" text-anchor="end" fill="currentColor">0%</text>
+  <path class="d-line" d="M71.5,216 V221" fill="none" stroke="currentColor"/>
+  <text x="71.5" y="245" text-anchor="middle" fill="currentColor">-30d</text>
+  <path class="d-line" d="M321.5,216 V221" fill="none" stroke="currentColor"/>
+  <text x="321.5" y="245" text-anchor="middle" fill="currentColor">now</text>
+</svg>

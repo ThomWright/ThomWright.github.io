@@ -69,6 +69,13 @@ svg.diagram [marker-end] { stroke-linecap: butt; }
   stroke: none;
 }
 
+// A shape filled with a faint wash of its colour, so overlaps show through.
+.d-tint {
+  fill: currentColor;
+  fill-opacity: 0.15;
+  stroke-width: 1.5;
+}
+
 // Covers whatever is behind it, e.g. a lifeline behind an activation bar, or
 // a line behind a label. A label's knockout is a rect behind it: a halo
 // stroke wide enough to bridge the gaps between glyphs leaves holes inside

@@ -1,0 +1,22 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="342" height="260" viewBox="0 0 342 260" font-family="monospace" font-size="12.5">
+  <text class="d-heading" x="20" y="35" fill="currentColor" font-size="14.17" font-weight="bold">Error rate</text>
+
+  <rect class="d-shape d-tint d-warning" x="71.5" y="206" width="250" height="10" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" color="#d97706"/>
+  <rect class="d-shape d-tint d-warning" x="259" y="156" width="62.5" height="60" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" color="#d97706"/>
+  <rect class="d-shape d-tint d-warning" x="301.5" y="72" width="20" height="144" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" color="#d97706"/>
+
+  <!-- Axes -->
+  <path class="d-line" d="M71.5,56 V216 H321.5" fill="none" stroke="currentColor"/>
+  <path class="d-line" d="M66.5,206 H71.5" fill="none" stroke="currentColor"/>
+  <text x="60.5" y="211" text-anchor="end" fill="currentColor">0.1%</text>
+  <path class="d-line" d="M66.5,156 H71.5" fill="none" stroke="currentColor"/>
+  <text x="60.5" y="161" text-anchor="end" fill="currentColor">0.6%</text>
+  <path class="d-line" d="M66.5,72 H71.5" fill="none" stroke="currentColor"/>
+  <text x="60.5" y="77" text-anchor="end" fill="currentColor">1.44%</text>
+  <path class="d-line" d="M71.5,216 V221" fill="none" stroke="currentColor"/>
+  <text x="71.5" y="245" text-anchor="middle" fill="currentColor">-3d</text>
+  <path class="d-line" d="M259,216 V221" fill="none" stroke="currentColor"/>
+  <text x="259" y="245" text-anchor="middle" fill="currentColor">-6h</text>
+  <path class="d-line" d="M301.5,216 V221" fill="none" stroke="currentColor"/>
+  <text x="301.5" y="245" text-anchor="middle" fill="currentColor">-1h</text>
+</svg>

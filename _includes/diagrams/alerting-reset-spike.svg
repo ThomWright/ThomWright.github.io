@@ -1,0 +1,22 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="353" height="260" viewBox="0 0 353 260" font-family="monospace" font-size="12.5">
+  <defs>
+    <marker id="alerting-reset-spike-arrow-alert" class="d-alert" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" color="#ed6145">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="20" y="35" fill="currentColor" font-size="14.17" font-weight="bold">Error rate</text>
+
+  <rect class="d-shape d-tint d-warning" x="71.5" y="196.8" width="250" height="19.2" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" color="#d97706"/>
+  <rect class="d-shape d-tint d-alert" x="134" y="69.33" width="41.67" height="146.67" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" color="#ed6145"/>
+  <path class="d-line d-alert" d="M125.67,142.67 L84,142.67" fill="none" stroke="currentColor" marker-end="url(#alerting-reset-spike-arrow-alert)" color="#ed6145"/>
+
+  <!-- Axes -->
+  <path class="d-line" d="M71.5,56 V216 H321.5" fill="none" stroke="currentColor"/>
+  <path class="d-line" d="M66.5,196.8 H71.5" fill="none" stroke="currentColor"/>
+  <text x="60.5" y="201.8" text-anchor="end" fill="currentColor">1.44%</text>
+  <path class="d-line" d="M71.5,216 V221" fill="none" stroke="currentColor"/>
+  <text x="71.5" y="245" text-anchor="middle" fill="currentColor">-1h</text>
+  <path class="d-line" d="M321.5,216 V221" fill="none" stroke="currentColor"/>
+  <text x="321.5" y="245" text-anchor="middle" fill="currentColor">now</text>
+</svg>

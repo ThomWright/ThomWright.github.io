@@ -1,0 +1,25 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="372" height="260" viewBox="0 0 372 260" font-family="monospace" font-size="12.5">
+  <defs>
+    <marker id="alerting-adjustments-arrow-ink" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="20" y="35" fill="currentColor" font-size="14.17" font-weight="bold">Error threshold</text>
+  <text class="d-heading" x="321.5" y="245" text-anchor="end" fill="currentColor" font-size="14.17" font-weight="bold">Alert window</text>
+
+  <rect class="d-shape d-tint d-warning" x="196.5" y="120" width="125" height="96" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" color="#d97706"/>
+  <g class="d-accent" color="#477dca">
+    <path class="d-line d-dashed" d="M71.5,160 H321.5" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+    <text x="329.5" y="165" fill="currentColor">SLO</text>
+  </g>
+  <path class="d-line" d="M184,144 L96.5,144" fill="none" stroke="currentColor" marker-end="url(#alerting-adjustments-arrow-ink)"/>
+  <path class="d-line" d="M259,120 L259,160" fill="none" stroke="currentColor" marker-end="url(#alerting-adjustments-arrow-ink)"/>
+  <text x="140.25" y="107" text-anchor="middle" fill="currentColor">Higher</text>
+  <text x="140.25" y="127" text-anchor="middle" fill="currentColor">precision</text>
+  <text x="259" y="83" text-anchor="middle" fill="currentColor">Higher</text>
+  <text x="259" y="103" text-anchor="middle" fill="currentColor">sensitivity</text>
+
+  <!-- Axes -->
+  <path class="d-line" d="M71.5,56 V216 H321.5" fill="none" stroke="currentColor"/>
+</svg>

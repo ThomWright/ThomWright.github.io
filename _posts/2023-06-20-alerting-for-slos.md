@@ -75,46 +75,41 @@ We could write this as:
   content="This alerting rule is deliberately not using the `for:` clause. The problems with this clause are well described in Google's [Site Reliability Workbook](https://sre.google/workbook/alerting-on-slos/#3-incrementing-alert-duration)."
 %}
 
-I'll be using these diagrams a lot, so I'll quickly introduce them. What you see below is the error rate over the last hour, with a short burst of errors in red. As time progresses, that burst moves to the left. If this is a 1% error rate for 2 minutes, then that's a 0.4% average over 5 minutes. This will trigger the alert.
+I'll be using these diagrams a lot, so I'll quickly introduce them. What you see below is the error rate over the last 15 minutes, with a short burst of errors in red. As time progresses, that burst moves to the left. If this is a 1% error rate for 2 minutes, then that's a 0.4% average over 5 minutes. This will trigger the alert.
 
-{% include figure.html
-  img_src="/public/assets/alerting/intro-2.png"
+{% include diagram.html
+  name="alerting-burst"
   caption="A short burst of errors."
-  size="small"
 %}
 
-A general intuition: if the area of the red box is larger than the yellow box (within the alert window), then an alert will fire.
+A general intuition: if the area of the red box is larger than the orange box (within the alert window), then an alert will fire.
 
 Neither of the below will fire.
 
 <div class="multi-figure">
-{% include figure.html
-  img_src="/public/assets/alerting/intro-3.png"
+{% include diagram.html
+  name="alerting-burst-past"
   caption="The errors happened too long ago for the alert to fire."
-  size="small"
 %}
 
-{% include figure.html
-  img_src="/public/assets/alerting/intro-4.png"
+{% include diagram.html
+  name="alerting-burst-low"
   caption="The average error rate is too low to trigger the alert."
-  size="small"
 %}
 </div>
 
 So what's the problem with this alerting rule? To start, there are cases when it _should_ fire but doesn't. That is, there are **significant events that are missed**. Below is an example case, where the blue dashed line represents the SLO rate. The error rate is a continuous 0.15%, which if continued undetected would eventually blow the error budget and cause us to fail our SLO.
 
-{% include figure.html
-  img_src="/public/assets/alerting/simple-steady.png"
+{% include diagram.html
+  name="alerting-steady"
   caption="False negative: steady 0.15% error rate."
-  size="small"
 %}
 
 There's another problem too. A one-off error spike of > 1% for 1 minute (> 0.2% average over 5 minutes) _would_ trigger the alert. If it only lasts a minute, the issue would have resolved itself before an engineer was able to respond. We'll define significance later, but for now let's just say this is _not a significant event_. While it might be worth investigating, it's probably not worth waking anyone up for.
 
-{% include figure.html
-  img_src="/public/assets/alerting/fp-spike.png"
+{% include diagram.html
+  name="alerting-spike"
   caption="False positive: 1% spike for 1 minute."
-  size="small"
 %}
 
 ## Measuring success
@@ -157,10 +152,9 @@ Widening the alert window has the effect of making the rule **more precise**. Th
 
 Consider the 2 minute period of 1% error rate above. With a 5 minute window, that's an average of 0.4%, which will trigger an alert. With a 1 hour window it averages out at 0.033%, which is below the threshold.
 
-{% include figure.html
-  img_src="/public/assets/alerting/wider-window.png"
+{% include diagram.html
+  name="alerting-wider-window"
   caption="A wider alert window."
-  size="small"
 %}
 
 **Detection times** and **reset times** are also affected by the alert window: wider windows take longer both to detect a given error rate and to reset after the errors are resolved. Detection times are also naturally shorter for higher error rates, as shown in the table below for our example 0.2% error threshold.
@@ -212,10 +206,9 @@ So we now have this alerting rule:
 
 This is arguably better: it has improved both sensitivity and precision, with a slightly longer detection time.
 
-{% include figure.html
-  img_src="/public/assets/alerting/adjustments.png"
+{% include diagram.html
+  name="alerting-adjustments"
   caption="Adjusting the error threshold and alert window."
-  size="med"
 %}
 
 At this point we might ask ourselves:
@@ -237,10 +230,9 @@ A burn rate of 1 will use up the exact error budget in the SLO window. For our e
   content="For simplicity I'll assume near-constant request and error rates."
 %}
 
-{% include figure.html
-  img_src="/public/assets/alerting/remaining-budget.png"
+{% include diagram.html
+  name="alerting-remaining-budget"
   caption="Burn rates using up an error budget."
-  size="small"
 %}
 
 Given an SLO and an error rate we can work out a burn rate, and how long it will take to exhaust the error budget:
@@ -299,10 +291,9 @@ error_budget_consumed = (2 * 5) / (720 * 60) = 0.023%
 
 I like to think of this _error budget consumption_ number as the area of the boxes in the diagram below.
 
-{% include figure.html
-  img_src="/public/assets/alerting/10-pc-budget.png"
+{% include diagram.html
+  name="alerting-budget-10-pc"
   caption="Detection thresholds for three alerts with 10% error budget consumption. Each has the same area."
-  size="small"
 %}
 
 This is also a good measure of **significance**. Events are significant when they consume a large proportion of the error budget. This can be because of either a high error rate or a long duration.
@@ -368,18 +359,16 @@ This is looking good, but still has a problem with reset time. Taking the 14.4 b
 
 The diagram below shows why. Any large enough spike of errors within the 1 hour window will trigger the alert, even if it has already stopped.
 
-{% include figure.html
-  img_src="/public/assets/alerting/reset-spike.png"
+{% include diagram.html
+  name="alerting-reset-spike"
   caption="An alert uselessly firing after the errors have stopped."
-  size="small"
 %}
 
 We can counter this by combining two windows, our existing window and a shorter window. Taking our 1 hour window as an example, we could fire an alert only if both windows detect a high enough error rate. As the high error rate period to the left, the short window will stop firing and the alert will reset.
 
-{% include figure.html
-  img_src="/public/assets/alerting/reset-short-window.png"
-  caption="Using a short window to select only current errors. Short window shown in orange."
-  size="small"
+{% include diagram.html
+  name="alerting-reset-short-window"
+  caption="Using a short window, the last 5 minutes, to select only current errors."
 %}
 
 With that in mind, we can adjust our alerting rules like so:
@@ -412,10 +401,9 @@ Note that if you're using a different SLO over the same window, e.g. 99.95% or 9
 
 Visually, it looks like this:
 
-{% include figure.html
-  img_src="/public/assets/alerting/multi-alert.png"
+{% include diagram.html
+  name="alerting-multi-alert"
   caption="Multiple alert detection zones (not to scale)."
-  size="small"
 %}
 
 The advantages of this system:
