@@ -46,7 +46,7 @@ However, these locks conflict with the most-conflicting lock: `ACCESS EXCLUSIVE`
 
 {% include diagram.html
   name="pg-locks-select-alter"
-  caption="Two `SELECT`s running on a table"
+  caption="A `SELECT` and an `ALTER TABLE` on a table"
   alt="A SELECT holds an ACCESS SHARE lock on the table, which conflicts with the ACCESS EXCLUSIVE lock an ALTER TABLE ADD COLUMN needs."
 %}
 
