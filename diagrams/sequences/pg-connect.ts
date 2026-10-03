@@ -11,12 +11,12 @@ export default {
       { note: 'fork backend', lane: 'db' },
       { section: 'TLS', lane: 'app', steps: [
         { from: 'app', to: 'db', label: 'SSLRequest', reply: 'S', concurrent: true },
-        { from: 'app', to: 'db', label: 'ClientHello', reply: 'ServerHello' },
+        { from: 'app', to: 'db', label: 'ClientHello', reply: 'ServerHello', immediate: true },
         { from: 'app', to: 'db', label: 'Finished', immediate: true },
       ]},
       { section: 'SCRAM', lane: 'app', steps: [
         { from: 'app', to: 'db', label: 'startup', reply: 'SASL', concurrent: true },
-        { from: 'app', to: 'db', label: 'client-first', reply: 'server-first' },
+        { from: 'app', to: 'db', label: 'client-first', reply: 'server-first', immediate: true },
         { note: 'hash password\n4096 times', lane: 'app', left: true },
         { from: 'app', to: 'db', label: 'client-final', reply: 'ready' },
       ]},
