@@ -76,6 +76,10 @@
   {% if page.date %}
   <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
   {% endif %}
+  {% if page.changes %}
+  {% assign latest_change = page.changes | sort: "date" | last %}
+  <meta property="article:modified_time" content="{{ latest_change.date | date_to_xmlschema }}">
+  {% endif %}
   {% if page.tags %}
   {% for tag in page.tags %}
   <meta property="article:tag" content="{{ tag }}">
