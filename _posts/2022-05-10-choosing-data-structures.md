@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Choosing appropriate data structures
+description: "How do we choose which data structures to use in our code? In some instances it's fairly obvious. When the amount of data we're working with is the primary constraint, we probably need to choose the most efficient structure for what we're trying to achieve."
 tags: types
 ---
 

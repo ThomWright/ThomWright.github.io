@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Git rebase --onto
+title: Git rebase &#45;&#45;onto
+description: "I generally prefer to keep my git history as a straight line. And my branches (when I have to use them) based on the HEAD of **main**. I pull **main** and rebase my branch onto it fairly often to keep up to date with the latest changes."
 changes:
   - date: 2022-11-07
     summary: Added the newer `--update-refs` alternative.

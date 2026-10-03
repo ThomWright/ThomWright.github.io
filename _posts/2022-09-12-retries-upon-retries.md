@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Retries upon retries
+description: "Retries are used to increase availability in the presence of errors at the cost of increased latency. The concept seems simple at a high level, but there is a fair amount of complexity hidden inside it. How effective any particular approach is will depend on context, including the pattern of incoming requests and the pattern of failure causing the errors."
 tags: [microservices, reliability]
 toc: true
 ---

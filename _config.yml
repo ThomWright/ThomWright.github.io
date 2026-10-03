@@ -8,6 +8,7 @@ permalink: pretty
 
 title: Thom's Blog
 description: Writing about software engineering
+locale: en_GB
 
 url: https://thomwright.co.uk
 shorturl: thomwright.co.uk
@@ -16,6 +17,7 @@ baseurl: ""
 plugins:
   - jekyll-sitemap
   - jekyll-redirect-from
+  - jekyll-seo-tag
 
 author:
   name: Thom Wright
