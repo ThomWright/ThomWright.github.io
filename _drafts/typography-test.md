@@ -59,13 +59,13 @@ Introducing a quote:
 > A block quote
 
 {% include figure.html
-  img_src="/public/assets/one-second/tcp-race.png"
+  img_src="/public/assets/retries/1-perfect-latencies.png"
   caption="A small-width image with a caption"
   size="small"
 %}
 
 {% include figure.html
-  img_src="/public/assets/one-second/tcp-handshake.png"
+  img_src="/public/assets/pools/connections_3.png"
   caption="A medium-width image with a caption"
   size="med"
 %}

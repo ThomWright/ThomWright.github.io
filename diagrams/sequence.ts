@@ -12,13 +12,15 @@ export type Sequence = {
   steps: Step[]
 }
 
-export type Step = Call | LaneFailure | Divider | Section | Parallel
+export type Step = Call | LaneFailure | LaneNote | Divider | Section | Parallel
 
 /**
  * A message from one lane to another, with an optional reply.
  *
  * `reply: true` draws an unlabelled reply. `fail` draws the call stopping
  * at a cross partway across, labelled with the given text, and no reply.
+ * `duration` is how long the call takes to arrive, as a multiple of the
+ * usual, e.g. so it crosses messages in a parallel branch.
  */
 export type Call = {
   from: string
@@ -26,13 +28,20 @@ export type Call = {
   label?: string
   reply?: string | true
   fail?: string
+  duration?: number
 }
 
 /** A cross on a section's lane, e.g. a crash. Only valid inside a section. */
 export type LaneFailure = { fail: string }
 
-/** A dotted line across the diagram, e.g. between attempts. */
-export type Divider = { divider: true }
+/** A note beside a lane, level with the last thing drawn. */
+export type LaneNote = { note: string; lane: string }
+
+/**
+ * A dotted line across the diagram, e.g. between attempts or at a timeout.
+ * A label sits at its right end, clear of the lanes.
+ */
+export type Divider = { divider: true | string }
 
 /** A labelled activation bar on a lane, covering its steps. */
 export type Section = { section: string; lane: string; steps: Step[] }
@@ -82,6 +91,7 @@ const DIVIDER_GAP = 40
 type Context = {
   name: string
   laneX: Record<string, number>
+  lastX: number
   /** The lane with an activation bar, inside a section. */
   barLane?: string
   out: string[]
@@ -110,6 +120,7 @@ export function render(name: string, diagram: Sequence): string {
   const ctx: Context = {
     name,
     laneX,
+    lastX,
     out: [],
     bars: [],
     dividers: [],
@@ -162,7 +173,8 @@ function layout(ctx: Context, steps: Step[], y: number): number {
   for (const step of steps) {
     if ('section' in step) y = section(ctx, step, y)
     else if ('parallel' in step) y = parallel(ctx, step, y)
-    else if ('divider' in step) y = divider(ctx, y)
+    else if ('divider' in step) y = divider(ctx, step, y)
+    else if ('note' in step) y = laneNote(ctx, step, y)
     else if ('from' in step) y = call(ctx, step, y)
     else y = laneFailure(ctx, step, y)
   }
@@ -197,9 +209,12 @@ function parallel(ctx: Context, step: Parallel, y: number): number {
   return Math.max(y, ...ends)
 }
 
-function divider(ctx: Context, y: number): number {
+function divider(ctx: Context, step: Divider, y: number): number {
   const at = y + DIVIDER_GAP
   ctx.dividers.push(at)
+  if (typeof step.divider === 'string') {
+    ctx.out.push(label(ctx, step.divider, { x: ctx.lastX + SIDE_LABEL_GAP, y: at }, 'start'))
+  }
   // The next step starts one gap later, so it sits the same distance below.
   return at + DIVIDER_GAP - STEP_GAP
 }
@@ -215,7 +230,7 @@ function call(ctx: Context, step: Call, y: number): number {
   const extraLines = (step.label ?? '').split('\n').length - 1
   const arrive = {
     x: edge(ctx, step.to, toX, -direction),
-    y: start.y + CALL_DROP + (extraLines * LINE_HEIGHT) / 2,
+    y: start.y + CALL_DROP * (step.duration ?? 1) + (extraLines * LINE_HEIGHT) / 2,
   }
 
   if (step.fail !== undefined) {
@@ -248,6 +263,14 @@ function laneFailure(ctx: Context, step: LaneFailure, y: number): number {
     step.fail,
     'right',
   )
+}
+
+function laneNote(ctx: Context, step: LaneNote, y: number): number {
+  const x = edge(ctx, step.lane, lane(ctx, step.lane), 1) + SIDE_LABEL_GAP
+  // The first line is level with `y`, and any others hang below it.
+  const extra = ((step.note.split('\n').length - 1) * LINE_HEIGHT) / 2
+  ctx.out.push(label(ctx, step.note, { x, y: y + extra }, 'start'))
+  return y + extra * 2
 }
 
 /** Draws an alert cross centred on `at`, returning its y. */

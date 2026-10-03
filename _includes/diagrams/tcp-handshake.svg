@@ -1,0 +1,26 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="470" height="288" viewBox="0 0 470 288">
+  <defs>
+    <marker id="tcp-handshake-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="121" y="30" text-anchor="middle" fill="currentColor">Client</text>
+  <text class="d-heading" x="306" y="30" text-anchor="middle" fill="currentColor">Server</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M121,45 V268 M306,45 V268" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+
+  <rect class="d-shape d-thin d-knockout" x="117.5" y="75" width="7" height="150" fill="none" stroke="currentColor"/>
+
+  <text x="103" y="85" text-anchor="end" fill="currentColor">New request</text>
+  <path class="d-line" d="M124.5,80 L306,120" fill="none" stroke="currentColor" marker-end="url(#tcp-handshake-arrow)"/>
+  <rect class="d-knockout" x="200" y="92" width="30.5" height="18" fill="none"/>
+  <text x="215.25" y="105" text-anchor="middle" fill="currentColor">SYN</text>
+  <path class="d-line d-dashed" d="M306,120 L124.5,150" fill="none" stroke="currentColor" marker-end="url(#tcp-handshake-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="185" y="127" width="60.5" height="18" fill="none"/>
+  <text x="215.25" y="140" text-anchor="middle" fill="currentColor">SYN ACK</text>
+  <path class="d-line" d="M124.5,180 L306,220" fill="none" stroke="currentColor" marker-end="url(#tcp-handshake-arrow)"/>
+  <rect class="d-knockout" x="200" y="192" width="30.5" height="18" fill="none"/>
+  <text x="215.25" y="205" text-anchor="middle" fill="currentColor">ACK</text>
+  <rect class="d-knockout" x="318" y="212" width="135.5" height="36" fill="none"/>
+  <text x="322" text-anchor="start" fill="currentColor"><tspan x="322" y="225">Connection enters</tspan><tspan x="322" y="243">Accept queue</tspan></text>
+</svg>

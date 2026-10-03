@@ -34,10 +34,10 @@ Well, partly. The question still remains: why was it taking so long to get a *SY
 
 Listening TCP sockets have a [*SYN* queue](https://blog.cloudflare.com/*syn*-packet-handling-in-the-wild/#*syn*queue). *SYN* packets wait here until an *ACK* comes back from the client to complete the three-way handshake. There an also an Accept queue, where initiated connections wait to be accepted by the application.
 
-{% include figure.html
-  img_src="/public/assets/one-second/tcp-handshake.png"
+{% include diagram.html
+  name="tcp-handshake"
   caption="TCP handshake"
-  size="large"
+  alt="For a new request, the client sends SYN to the server, the server replies with SYN ACK, and the client sends ACK. The connection then enters the server's Accept queue."
 %}
 
 If the Accept queue fills up, new incoming *SYN*s and *ACK*s will be dropped. If the *SYN* queue fills up, [*SYN* Cookies](https://blog.cloudflare.com/*syn*-packet-handling-in-the-wild/#*syn*flood) can be used (and are enabled by default in the kernel).
@@ -66,10 +66,10 @@ To me, what `hyper` does here seems a bit like a restaurant throwing away the wh
 
 TCP connection reuse isn't without its own potential problems. Race conditions can happen when it's not clear who should close the connection and when. For example, imagine the client and server both have a timeout after which they will close the connection. If the client sends a new request just before the timeout fires, but the server receives the request *after* its own timeout fires, then we have a problem.
 
-{% include figure.html
-  img_src="/public/assets/one-second/tcp-race.png"
+{% include diagram.html
+  name="tcp-race"
   caption="TCP race condition"
-  size="med"
+  alt="The client sends data on an idle connection. Before it arrives, the server's idle timeout fires and it sends FIN. The data then arrives at the closed connection, and the server replies with RST."
 %}
 
 We can mitigate this by setting the server's timeout to a suitably higher value than the client's (often double), but this becomes harder when you don't control both!
