@@ -6,16 +6,30 @@
     name:    file name in _includes/diagrams/, without the .svg extension
     caption: figure caption (Markdown)
     alt:     text alternative, defaults to the caption
+    name_2:  optional second diagram, shown beside the first where it fits
+    alt_2:   text alternative for the second diagram, defaults to the caption
 {% endcomment %}
 {% if include.alt %}
   {% assign alt = include.alt %}
 {% else %}
   {% assign alt = include.caption | strip_html %}
 {% endif %}
+{% if include.alt_2 %}
+  {% assign alt_2 = include.alt_2 %}
+{% else %}
+  {% assign alt_2 = include.caption | strip_html %}
+{% endif %}
 
 <figure>
-  <div class="diagram-container" role="img" aria-label="{{ alt | escape }}">
-    {% include diagrams/{{ include.name }}.svg %}
+  <div class="img-row">
+    <div class="diagram-container" role="img" aria-label="{{ alt | escape }}">
+      {% include diagrams/{{ include.name }}.svg %}
+    </div>
+    {% if include.name_2 %}
+    <div class="diagram-container" role="img" aria-label="{{ alt_2 | escape }}">
+      {% include diagrams/{{ include.name_2 }}.svg %}
+    </div>
+    {% endif %}
   </div>
   {% if include.caption %}
   <figcaption>{{ include.caption | markdownify }}</figcaption>

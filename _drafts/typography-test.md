@@ -78,7 +78,7 @@ Introducing a quote:
 %}
 
 {% include diagram.html
-  name="specimen-box"
+  name="outbox-int-pub"
   caption="A box diagram"
 %}
 

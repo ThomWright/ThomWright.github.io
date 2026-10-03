@@ -40,12 +40,13 @@ Essentially, instead of trying to synchronously write to many systems, we instea
 
  A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS. This could be an external process or internal to the application.
 
-<!-- markdownlint-disable MD033 -->
-<figure class="multi-img">
-  <img class="small-img" src="/public/assets/failure-patterns/outbox-ext-pub.png" alt="Outbox with an external publisher process"/>
-  <img class="small-img" src="/public/assets/failure-patterns/outbox-int-pub.png" alt="Outbox with an internal publisher"/>
-  <figcaption>An external publisher process and an internal publisher.</figcaption>
-</figure>
+{% include diagram.html
+  name="outbox-ext-pub"
+  alt="Outbox with an external publisher. The application writes to the database. A separate publisher process reads from the database and publishes to a queue."
+  name_2="outbox-int-pub"
+  alt_2="Outbox with an internal publisher. The application, and a publisher inside it, both use the database. The publisher publishes to a queue."
+  caption="An external publisher process and an internal publisher."
+%}
 
 There are several ways to trigger the publisher:
 

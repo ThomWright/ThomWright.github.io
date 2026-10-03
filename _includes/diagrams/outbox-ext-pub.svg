@@ -1,0 +1,26 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="352" height="320" viewBox="0 0 352 320">
+  <defs>
+    <marker id="outbox-ext-pub-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+
+  <rect class="d-shape" x="10" y="10" width="170" height="60"/>
+  <text x="95" y="45" text-anchor="middle">application</text>
+
+  <!-- Database -->
+  <path class="d-shape" d="M50,130 V194 A45,9 0 0 0 140,194 V130"/>
+  <ellipse class="d-shape" cx="95" cy="130" rx="45" ry="9"/>
+  <text x="95" y="176" text-anchor="middle">database</text>
+  <path class="d-line" d="M95,70 V120" marker-end="url(#outbox-ext-pub-arrow)"/>
+
+  <rect class="d-shape" x="10" y="250" width="170" height="60"/>
+  <text x="95" y="285" text-anchor="middle">publisher</text>
+  <path class="d-line" d="M95,250 V204" marker-end="url(#outbox-ext-pub-arrow)"/>
+
+  <!-- Queue -->
+  <path class="d-shape" d="M248,262 H334 M334,298 H248 A7,18 0 0 1 248,262"/>
+  <ellipse class="d-shape" cx="334" cy="280" rx="7" ry="18"/>
+  <text x="284" y="285" text-anchor="middle">queue</text>
+  <path class="d-line" d="M180,280 H240" marker-end="url(#outbox-ext-pub-arrow)"/>
+</svg>
