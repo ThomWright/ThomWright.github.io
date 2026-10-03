@@ -1,0 +1,27 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="478" height="212" viewBox="0 0 478 212">
+  <defs>
+    <marker id="retries-3-dependencies-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- Client -->
+  <circle class="d-shape" cx="38" cy="64" r="18" fill="none" stroke="currentColor"/>
+  <text x="112" y="50" text-anchor="middle" fill="currentColor">requests</text>
+  <path class="d-line" d="M56,64 H156" fill="none" stroke="currentColor" marker-end="url(#retries-3-dependencies-arrow)"/>
+
+  <rect class="d-shape" x="158" y="40" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="218" y="69" text-anchor="middle" fill="currentColor">Server 1</text>
+  <path class="d-line" d="M278,64 H336" fill="none" stroke="currentColor" marker-end="url(#retries-3-dependencies-arrow)"/>
+
+  <rect class="d-shape" x="338" y="40" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="398" y="69" text-anchor="middle" fill="currentColor">Server 2</text>
+  <path class="d-line" d="M398,88 V142" fill="none" stroke="currentColor" marker-end="url(#retries-3-dependencies-arrow)"/>
+
+  <rect class="d-shape" x="338" y="144" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="398" y="173" text-anchor="middle" fill="currentColor">Server 3</text>
+  <path class="d-line" d="M338,168 H280" fill="none" stroke="currentColor" marker-end="url(#retries-3-dependencies-arrow)"/>
+
+  <rect class="d-shape" x="158" y="144" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="218" y="173" text-anchor="middle" fill="currentColor">Dependency</text>
+</svg>

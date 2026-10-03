@@ -23,11 +23,10 @@ I've been reading articles by [Ted Kaminski](https://www.tedinski.com) and [Marc
 
 Let's start with the simplest version of this [model](https://github.com/ThomWright/retry-model). We have a client sending requests to a server, as in the diagram below. Let's assume we're providing a service to this client and we can't control its behaviour. The client is very simple and just sends requests, it doesn't retry on failure.
 
-{% include figure.html
-  img_src="/public/assets/retries/diagram-1-service.png"
+{% include diagram.html
+  name="retries-1-service"
   caption="Sending requests to a server"
-  alt="Single service diagram"
-  size="small"
+  alt="A client sends requests to a server."
 %}
 
 We'll start off by defining how this server responds to requests. The response times follow an [Erlang probability distribution](https://newrelic.com/blog/best-practices/expected-distributions-website-response-times), with a mean of **5ms**. Running 10,000 requests we see something like this:
@@ -41,11 +40,10 @@ We'll start off by defining how this server responds to requests. The response t
 
 What if that server also sends requests to a dependency, like this:
 
-{% include figure.html
-  img_src="/public/assets/retries/diagram-1-dependency.png"
+{% include diagram.html
+  name="retries-1-dependency"
   caption="A server with a dependency"
-  alt="Service with dependency"
-  size="med"
+  alt="A client sends requests to a server, which sends requests to a dependency."
 %}
 
 The latencies from the client's perspective then look like so:
@@ -112,11 +110,10 @@ It's worth noting that the decreased latency has two benefits. The first is that
 
 ### More dependencies
 
-{% include figure.html
-  img_src="/public/assets/retries/diagram-3-dependencies.png"
+{% include diagram.html
+  name="retries-3-dependencies"
   caption="A server with three dependencies"
-  alt="Server with dependencies"
-  size="med"
+  alt="A client sends requests to Server 1, which calls Server 2, which calls Server 3, which calls a dependency."
 %}
 
 Going back to the original point of this article, what if we have several servers being called in series? I'd like to show what happens using two different strategies:

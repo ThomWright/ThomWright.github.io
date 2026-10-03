@@ -1,0 +1,19 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="478" height="108" viewBox="0 0 478 108">
+  <defs>
+    <marker id="retries-1-dependency-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- Client -->
+  <circle class="d-shape" cx="38" cy="64" r="18" fill="none" stroke="currentColor"/>
+  <text x="112" y="50" text-anchor="middle" fill="currentColor">requests</text>
+  <path class="d-line" d="M56,64 H156" fill="none" stroke="currentColor" marker-end="url(#retries-1-dependency-arrow)"/>
+
+  <rect class="d-shape" x="158" y="40" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="218" y="69" text-anchor="middle" fill="currentColor">Server</text>
+  <path class="d-line" d="M278,64 H336" fill="none" stroke="currentColor" marker-end="url(#retries-1-dependency-arrow)"/>
+
+  <rect class="d-shape" x="338" y="40" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="398" y="69" text-anchor="middle" fill="currentColor">Dependency</text>
+</svg>
