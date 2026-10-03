@@ -23,10 +23,10 @@ Here, read locks do not conflict with each other, so any number of these can exi
 
 The least-conflicting table-level lock is `ACCESS SHARE` which is generally taken out by `SELECT` statements.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/select.png"
+{% include diagram.html
+  name="pg-locks-select"
   caption="A `SELECT` on a table"
-  size="med"
+  alt="A SELECT WHERE id = 1 holds an ACCESS SHARE lock on the whole table."
 %}
 
 {% include callout.html
@@ -36,28 +36,28 @@ The least-conflicting table-level lock is `ACCESS SHARE` which is generally take
 
 We can have any number of these running concurrently, like so.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/select-2.png"
+{% include diagram.html
+  name="pg-locks-select-2"
   caption="Two `SELECT`s running on a table"
-  size="med"
+  alt="Two SELECT statements each hold an ACCESS SHARE lock on the same table, without conflict."
 %}
 
 However, these locks conflict with the most-conflicting lock: `ACCESS EXCLUSIVE`. This is taken out by (most) `ALTER TABLE` statements. This means we can’t read data in the table at the same time as modifying the structure of the table.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/select-alter.png"
+{% include diagram.html
+  name="pg-locks-select-alter"
   caption="Two `SELECT`s running on a table"
-  size="med"
+  alt="A SELECT holds an ACCESS SHARE lock on the table, which conflicts with the ACCESS EXCLUSIVE lock an ALTER TABLE ADD COLUMN needs."
 %}
 
 [This](https://github.com/postgres/postgres/blob/ac22a95/src/backend/commands/tablecmds.c#L4333-L4366) is the code which decides which lock mode to use for `ALTER TABLE`, along with some explanations of why that mode is required.
 
 The strategy PostgreSQL uses when trying to acquire a lock on an already locked table is to put the lock request into a queue. This can result in the scenario where an `ACCESS SHARED` lock exists for a long time, which blocks an `ACCESS EXCLUSIVE` lock, which in turns blocks *all subsequent `ACCESS SHARED` locks*.
 
-{% include figure.html
-  img_src="/public/assets/postgres-locks-timeouts/lock-queue.png"
+{% include diagram.html
+  name="pg-locks-queue"
   caption="Statements waiting in a lock queue"
-  size="small"
+  alt="One shared lock is active. At the front of the lock queue an exclusive lock request waits, with three shared lock requests waiting behind it."
 %}
 
 In effect, as a read-only user it is possible to **block all table reads**.

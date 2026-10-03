@@ -1,0 +1,19 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="455" height="165" viewBox="0 0 455 165">
+  <!-- Queue -->
+  <g class="d-muted">
+    <text x="180" y="30" text-anchor="middle" fill="currentColor">lock queue</text>
+    <rect class="d-shape" x="20" y="45" width="320" height="80" rx="16" fill="none" stroke="currentColor"/>
+  </g>
+  <g class="d-success">
+    <rect class="d-shape" x="112" y="65" width="40" height="40" rx="8" fill="none" stroke="currentColor"/>
+    <rect class="d-shape" x="168" y="65" width="40" height="40" rx="8" fill="none" stroke="currentColor"/>
+    <rect class="d-shape" x="224" y="65" width="40" height="40" rx="8" fill="none" stroke="currentColor"/>
+  </g>
+  <rect class="d-shape d-warning" x="280" y="65" width="40" height="40" rx="8" fill="none" stroke="currentColor"/>
+
+  <!-- Active lock -->
+  <g class="d-success">
+    <rect class="d-shape" x="372" y="65" width="40" height="40" rx="8" fill="none" stroke="currentColor"/>
+    <text x="392" y="145" text-anchor="middle" fill="currentColor">active lock</text>
+  </g>
+</svg>
