@@ -22,7 +22,9 @@ export type Step = Call | LaneFailure | LaneNote | Divider | Section | Parallel
  * `duration` is how long the call takes to arrive, as a multiple of the
  * usual, e.g. so it crosses messages in a parallel branch. `immediate`
  * starts it the moment the previous step ends, e.g. a response sent as soon
- * as something arrives.
+ * as something arrives. `concurrent` starts it shortly after the previous
+ * call is sent, without waiting for that call to arrive, so both are in
+ * flight at once.
  */
 export type Call = {
   from: string
@@ -32,13 +34,17 @@ export type Call = {
   fail?: string
   duration?: number
   immediate?: boolean
+  concurrent?: boolean
 }
 
 /** A cross on a section's lane, e.g. a crash. Only valid inside a section. */
 export type LaneFailure = { fail: string }
 
-/** A note beside a lane, level with the last thing drawn. */
-export type LaneNote = { note: string; lane: string }
+/**
+ * A note beside a lane, level with the last thing drawn. It goes on the
+ * right unless `left` is set, e.g. to keep it clear of arrows.
+ */
+export type LaneNote = { note: string; lane: string; left?: boolean }
 
 /**
  * A dotted line across the diagram. Unlabelled, it separates steps, e.g.
@@ -47,7 +53,13 @@ export type LaneNote = { note: string; lane: string }
  */
 export type Divider = { divider: true | string }
 
-/** A labelled activation bar on a lane, covering its steps. */
+/**
+ * A labelled activation bar on a lane, from its first step to the last
+ * thing drawn on that lane. Sections can nest one level deep, on the same
+ * lane, e.g. for the stages of a larger step. A nested bar sits on top of
+ * its outer bar, shifted right, and its label is indented below the outer
+ * one.
+ */
 export type Section = { section: string; lane: string; steps: Step[] }
 
 /**
@@ -81,7 +93,10 @@ const STEP = CALL_DROP + REPLY_DROP + STEP_GAP
 
 const BAR_HALF_WIDTH = 3.5
 const BAR_OVERHANG = 5
+const NESTED_BAR_OFFSET = 4
 const SECTION_LABEL_GAP = 18
+// How much further left an outer section's label sits than its nested ones.
+const SECTION_INDENT = 15
 // Between a lane, or a cross on it, and a label beside it.
 const SIDE_LABEL_GAP = 16
 
@@ -90,14 +105,19 @@ const FAIL_GAP = 20
 // How far across its gap a failed call gets before it stops.
 const FAIL_FRACTION = 0.6
 
+// A labelled divider marks a moment, so how far it sits below the step
+// before it is how long after that step the moment comes.
 const DIVIDER_GAP = 40
+const SEPARATOR_GAP = 20
 
 type Context = {
   name: string
   laneX: Record<string, number>
   lastX: number
-  /** The lane with an activation bar, inside a section. */
-  barLane?: string
+  /** The innermost activation bar, inside a section. */
+  bar?: Bar
+  /** The y the last call was sent at. */
+  lastSent?: number
   out: string[]
   bars: string[]
   /** Dividers are y coordinates, as their width is only known at the end. */
@@ -106,13 +126,22 @@ type Context = {
   right: number
 }
 
+type Bar = {
+  lane: string
+  /** The bar's centre, which is off the lifeline when nested. */
+  x: number
+  /** The last y drawn on `lane`, where the bar ends. */
+  end: number
+  outer?: Bar
+}
+
 /** Renders a sequence diagram as an inline SVG, prefixing its IDs with `name`. */
 export function render(name: string, diagram: Sequence): string {
   const titles = Object.values(diagram.lanes)
   const left = Math.ceil(
     Math.max(
       MARGIN + textWidth(titles[0], HEADING_SIZE) / 2,
-      MARGIN + SECTION_LABEL_GAP + maxSectionLabelWidth(diagram.steps),
+      MARGIN + leftReach(diagram.steps, Object.keys(diagram.lanes)[0]),
     ),
   )
   const laneX: Record<string, number> = {}
@@ -186,23 +215,34 @@ function layout(ctx: Context, steps: Step[], y: number): number {
 }
 
 function section(ctx: Context, step: Section, y: number): number {
-  if (ctx.barLane) throw new Error('Sections cannot be nested')
-  const x = lane(ctx, step.lane)
+  const outer = ctx.bar
+  if (outer?.outer) throw new Error('Sections can only nest one level deep')
+  if (outer && outer.lane !== step.lane) throw new Error('A nested section must be on the same lane')
+  const laneX = lane(ctx, step.lane)
+  const nests = step.steps.some((s) => 'section' in s)
 
   // Level with the start of the first step.
-  const first = y + STEP_GAP
+  const first = startOf(ctx, step.steps[0], y)
   const top = first - BAR_OVERHANG
+  const labelX = laneX - SECTION_LABEL_GAP - (nests ? SECTION_INDENT : 0)
   ctx.out.push(
-    `  <text x="${n(x - SECTION_LABEL_GAP)}" y="${first + BASELINE_SHIFT}" text-anchor="end" fill="currentColor">${escape(step.section)}</text>`,
+    `  <text x="${n(labelX)}" y="${first + BASELINE_SHIFT}" text-anchor="end" fill="currentColor">${escape(step.section)}</text>`,
   )
-  ctx.barLane = step.lane
-  const end = layout(ctx, step.steps, y)
-  ctx.barLane = undefined
+  // Drawn before any nested bars, which are only known later, so they cover it.
+  const index = ctx.bars.push('') - 1
 
-  const bottom = end + BAR_OVERHANG
-  ctx.bars.push(
-    `  <rect class="d-shape d-thin d-knockout" x="${n(x - BAR_HALF_WIDTH)}" y="${top}" width="${BAR_HALF_WIDTH * 2}" height="${bottom - top}" fill="none" stroke="currentColor"/>`,
-  )
+  const bar = { lane: step.lane, x: laneX + (outer ? NESTED_BAR_OFFSET : 0), end: first, outer }
+  ctx.bar = bar
+  // A nested section starting straight away would put its label on this
+  // one's, so it starts a line later.
+  const end = layout(ctx, step.steps, 'section' in step.steps[0] ? y + LINE_HEIGHT : y)
+  ctx.bar = outer
+
+  const bottom = bar.end + BAR_OVERHANG
+  // The outer bar reaches past the end of a nested one.
+  if (outer) outer.end = Math.max(outer.end, bottom)
+  ctx.bars[index] =
+    `  <rect class="d-shape d-thin d-knockout" x="${n(bar.x - BAR_HALF_WIDTH)}" y="${top}" width="${BAR_HALF_WIDTH * 2}" height="${bottom - top}" fill="none" stroke="currentColor"/>`
   return end
 }
 
@@ -214,15 +254,17 @@ function parallel(ctx: Context, step: Parallel, y: number): number {
 }
 
 function divider(ctx: Context, step: Divider, y: number): number {
-  const at = y + DIVIDER_GAP
-  ctx.dividers.push(at)
   if (typeof step.divider === 'string') {
+    const at = y + DIVIDER_GAP
+    ctx.dividers.push(at)
     ctx.out.push(label(ctx, step.divider, { x: ctx.lastX + SIDE_LABEL_GAP, y: at }, 'start'))
     // Steps start one gap after the point returned.
     return at - STEP_GAP
   }
+  const at = y + SEPARATOR_GAP
+  ctx.dividers.push(at)
   // The next step starts one gap later, so it sits the same distance below.
-  return at + DIVIDER_GAP - STEP_GAP
+  return at + SEPARATOR_GAP - STEP_GAP
 }
 
 function call(ctx: Context, step: Call, y: number): number {
@@ -233,8 +275,10 @@ function call(ctx: Context, step: Call, y: number): number {
 
   const start = {
     x: edge(ctx, step.from, fromX, direction),
-    y: step.immediate ? y : y + STEP_GAP,
+    y: startOf(ctx, step, y),
   }
+  ctx.lastSent = start.y
+  touch(ctx, step.from, start.y)
   // Taller labels need a longer line, or they run into the reply's label.
   const extraLines = (step.label ?? '').split('\n').length - 1
   const arrive = {
@@ -254,9 +298,11 @@ function call(ctx: Context, step: Call, y: number): number {
 
   ctx.out.push(arrow(ctx, start, arrive, 'd-line'))
   if (step.label) ctx.out.push(label(ctx, step.label, midpoint(start, arrive)))
+  touch(ctx, step.to, arrive.y)
   if (step.reply === undefined) return arrive.y
 
   const back = { x: start.x, y: arrive.y + REPLY_DROP }
+  touch(ctx, step.from, back.y)
   ctx.out.push(arrow(ctx, arrive, back, 'd-line d-dashed', dashed))
   if (typeof step.reply === 'string') {
     ctx.out.push(label(ctx, step.reply, midpoint(arrive, back)))
@@ -265,20 +311,35 @@ function call(ctx: Context, step: Call, y: number): number {
 }
 
 function laneFailure(ctx: Context, step: LaneFailure, y: number): number {
-  if (!ctx.barLane) throw new Error('A lane failure must be inside a section')
-  return failure(
-    ctx,
-    { x: ctx.laneX[ctx.barLane], y: y + FAIL_GAP },
-    step.fail,
-    'right',
-  )
+  if (!ctx.bar) throw new Error('A lane failure must be inside a section')
+  const at = y + FAIL_GAP
+  touch(ctx, ctx.bar.lane, at)
+  return failure(ctx, { x: ctx.bar.x, y: at }, step.fail, 'right')
+}
+
+/** Where `step` starts, given that the step before it ended at `y`. */
+function startOf(ctx: Context, step: Step | undefined, y: number): number {
+  if (step && 'from' in step) {
+    if (step.concurrent) {
+      if (ctx.lastSent === undefined) throw new Error('A concurrent call needs a call before it')
+      return ctx.lastSent + STEP_GAP
+    }
+    if (step.immediate) return y
+  }
+  return y + STEP_GAP
+}
+
+/** Extends the activation bar to `y`, if `id` is the lane with the bar. */
+function touch(ctx: Context, id: string, y: number) {
+  if (ctx.bar && id === ctx.bar.lane) ctx.bar.end = Math.max(ctx.bar.end, y)
 }
 
 function laneNote(ctx: Context, step: LaneNote, y: number): number {
-  const x = edge(ctx, step.lane, lane(ctx, step.lane), 1) + SIDE_LABEL_GAP
+  const side = step.left ? -1 : 1
+  const x = edge(ctx, step.lane, lane(ctx, step.lane), side) + side * SIDE_LABEL_GAP
   // The first line is level with `y`, and any others hang below it.
   const extra = ((step.note.split('\n').length - 1) * LINE_HEIGHT) / 2
-  ctx.out.push(label(ctx, step.note, { x, y: y + extra }, 'start'))
+  ctx.out.push(label(ctx, step.note, { x, y: y + extra }, step.left ? 'end' : 'start'))
   return y + extra * 2
 }
 
@@ -308,7 +369,7 @@ type Point = { x: number; y: number }
  * on the side facing `direction`, or the lifeline itself.
  */
 function edge(ctx: Context, id: string, x: number, direction: number): number {
-  return id === ctx.barLane ? x + direction * BAR_HALF_WIDTH : x
+  return ctx.bar && id === ctx.bar.lane ? ctx.bar.x + direction * BAR_HALF_WIDTH : x
 }
 
 function lane(ctx: Context, id: string): number {
@@ -334,11 +395,11 @@ function label(
   ctx: Context,
   text: string,
   at: Point,
-  anchor: 'middle' | 'start' = 'middle',
+  anchor: 'middle' | 'start' | 'end' = 'middle',
 ): string {
   const lines = text.split('\n')
   const width = Math.max(...lines.map((l) => textWidth(l, LABEL_SIZE)))
-  const left = anchor === 'middle' ? at.x - width / 2 : at.x
+  const left = { middle: at.x - width / 2, start: at.x, end: at.x - width }[anchor]
   ctx.right = Math.max(ctx.right, left + width)
 
   const height = lines.length * LINE_HEIGHT
@@ -361,16 +422,29 @@ function midpoint(a: Point, b: Point): Point {
   return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
 }
 
-function maxSectionLabelWidth(steps: Step[]): number {
+/**
+ * How far left of the first lane its labels reach: section labels, and
+ * notes on its left.
+ */
+function leftReach(steps: Step[], firstLane: string): number {
   return Math.max(
     0,
-    ...steps.map((s) =>
-      'section' in s
-        ? textWidth(s.section, LABEL_SIZE)
-        : 'parallel' in s
-          ? Math.max(0, ...s.parallel.map(maxSectionLabelWidth))
-          : 0,
-    ),
+    ...steps.map((s) => {
+      if ('section' in s) {
+        return Math.max(
+          SECTION_LABEL_GAP +
+            (s.steps.some((t) => 'section' in t) ? SECTION_INDENT : 0) +
+            textWidth(s.section, LABEL_SIZE),
+          leftReach(s.steps, firstLane),
+        )
+      }
+      if ('parallel' in s) return Math.max(0, ...s.parallel.map((b) => leftReach(b, firstLane)))
+      if ('note' in s && s.left && s.lane === firstLane) {
+        const width = Math.max(...s.note.split('\n').map((l) => textWidth(l, LABEL_SIZE)))
+        return BAR_HALF_WIDTH + SIDE_LABEL_GAP + width
+      }
+      return 0
+    }),
   )
 }
 

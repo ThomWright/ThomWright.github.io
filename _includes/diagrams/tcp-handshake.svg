@@ -9,7 +9,7 @@
   <text class="d-heading" x="306" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Server</text>
   <path class="d-line d-thin d-dashed d-muted" d="M121,45 V238 M306,45 V238" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
 
-  <rect class="d-shape d-thin d-knockout" x="117.5" y="75" width="7" height="120" fill="none" stroke="currentColor"/>
+  <rect class="d-shape d-thin d-knockout" x="117.5" y="75" width="7" height="80" fill="none" stroke="currentColor"/>
 
   <text x="103" y="85" text-anchor="end" fill="currentColor">New request</text>
   <path class="d-line" d="M124.5,80 L306,120" fill="none" stroke="currentColor" marker-end="url(#tcp-handshake-arrow)"/>
