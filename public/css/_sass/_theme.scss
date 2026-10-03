@@ -51,8 +51,8 @@ $theme-light: (
   // lighter grey that falls short of WCAG AA on the code background.
   code-comment: #656d76,
 
-  diagram-ink: #4a4f57,
-  diagram-muted: #72777e,
+  diagram-ink: $slate-dark,
+  diagram-muted: $slate-mid-dark,
   // Darker than the palette, as diagrams also use these colours for text.
   diagram-accent: darken($brand-color, 4%),
   diagram-alert: darken(map-get($palette-light, alert), 10%),
@@ -62,10 +62,10 @@ $theme-light: (
 );
 
 $theme-dark: (
-  body-bg: #111113,
-  card-bg: #232326,
-  card-footer-bg: #1e1e21,
-  card-footer-border: #2c2c30,
+  body-bg: darken($dark-surface, 7.3%),
+  card-bg: $dark-surface,
+  card-footer-bg: darken($dark-surface, 2%),
+  card-footer-border: lighten($dark-surface, 3.7%),
   // A shadow barely shows on a dark page, so the card is lifted by being
   // lighter than the page. A hairline outline and top highlight define its edge.
   card-shadow: (
@@ -75,25 +75,25 @@ $theme-dark: (
     inset 0 1px 0 rgba(white, 0.06)
   ),
 
-  text: #cfcfcf,
-  text-h2: #dedede,
-  text-h3: #c4c4c4,
-  text-h4: #b8b8b8,
-  text-muted: #9a9a9a,
+  text: $dark-text,
+  text-h2: lighten($dark-text, 5.9%),
+  text-h3: darken($dark-text, 4.3%),
+  text-h4: darken($dark-text, 9%),
+  text-muted: darken($dark-text, 20.8%),
 
   link: lighten($brand-color, 14%),
   link-hover: lighten($brand-color, 25%),
 
-  quote-bg: #2a2a2e,
+  quote-bg: lighten($dark-surface, 2.9%),
   quote-border: $lighter-blue,
-  rule: #36363b,
+  rule: lighten($dark-surface, 7.8%),
 
-  code-bg: #1a1a1d,
-  code-label-bg: #36363b,
+  code-bg: darken($dark-surface, 3.5%),
+  code-label-bg: lighten($dark-surface, 7.8%),
   code-comment: #8b949e,
 
-  diagram-ink: #c4c8ce,
-  diagram-muted: #858a91,
+  diagram-ink: $slate-light,
+  diagram-muted: $slate-mid-light,
   diagram-accent: lighten($brand-color, 14%),
   diagram-alert: map-get($palette-dark, alert),
   diagram-success: map-get($palette-dark, success),

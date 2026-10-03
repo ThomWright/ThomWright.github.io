@@ -9,6 +9,17 @@ $gray-light:              #ebebeb;
 $gray-lighter:            #f0f0f0;
 $gray-lightest:           #f8f8f8;
 
+// The dark theme's bases. Its other surfaces and text greys are lighter or
+// darker versions of these, so the theme can be retuned from here.
+$dark-surface:            #232326; // Faintly blue
+$dark-text:               #cfcfcf;
+
+// Blue-greys for diagrams, which sit beside the brand blue.
+$slate-dark:              #4a4f57;
+$slate-mid-dark:          #72777e;
+$slate-mid-light:         #858a91;
+$slate-light:             #c4c8ce;
+
 // https://coolors.co/477dca-6190d1-5e9e3a-d97706-ed6145
 $blue:                    #477dca; // Glaucous
 $lighter-blue:            #6190d1; // Cornflower blue
