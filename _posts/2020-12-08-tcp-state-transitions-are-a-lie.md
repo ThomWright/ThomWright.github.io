@@ -1,6 +1,9 @@
 ---
 layout: post
 title: TCP state transitions are a lie
+changes:
+  - date: 2020-12-09
+    summary: Added a paper confirming the RFC's state diagram is misleading.
 tags: tcp
 ---
 

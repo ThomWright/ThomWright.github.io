@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Why can't we have exactly-once message processing?
+changes:
+  - date: 2023-03-04
+    summary: Added a note on an article that defines exactly-once processing differently.
 tags: [reliability, queues]
 toc: true
 ---

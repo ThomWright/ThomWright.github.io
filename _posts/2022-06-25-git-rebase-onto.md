@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Git rebase --onto
+changes:
+  - date: 2022-11-07
+    summary: Added the newer `--update-refs` alternative.
 tags: [tools, tips, git]
 ---
 
