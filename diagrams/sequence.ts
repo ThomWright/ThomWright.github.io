@@ -38,8 +38,9 @@ export type LaneFailure = { fail: string }
 export type LaneNote = { note: string; lane: string }
 
 /**
- * A dotted line across the diagram, e.g. between attempts or at a timeout.
- * A label sits at its right end, clear of the lanes.
+ * A dotted line across the diagram. Unlabelled, it separates steps, e.g.
+ * attempts. Labelled, it marks a moment, e.g. a timeout, so the next step
+ * starts on it. The label sits at its right end, clear of the lanes.
  */
 export type Divider = { divider: true | string }
 
@@ -214,6 +215,8 @@ function divider(ctx: Context, step: Divider, y: number): number {
   ctx.dividers.push(at)
   if (typeof step.divider === 'string') {
     ctx.out.push(label(ctx, step.divider, { x: ctx.lastX + SIDE_LABEL_GAP, y: at }, 'start'))
+    // Steps start one gap after the point returned.
+    return at - STEP_GAP
   }
   // The next step starts one gap later, so it sits the same distance below.
   return at + DIVIDER_GAP - STEP_GAP

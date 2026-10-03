@@ -5,10 +5,9 @@ export default {
   steps: [
     {
       parallel: [
-        [{ from: 'client', to: 'server', label: 'data', duration: 4 }],
+        [{ from: 'client', to: 'server', label: 'data', duration: 2.5, reply: 'RST' }],
         [{ divider: 'idle timeout' }, { from: 'server', to: 'client', label: 'FIN' }],
       ],
     },
-    { from: 'server', to: 'client', label: 'RST' },
   ],
 } satisfies Sequence
