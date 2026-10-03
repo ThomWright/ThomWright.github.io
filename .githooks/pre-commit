@@ -1,2 +1,2 @@
 #!/bin/sh
-exec node scripts/last-modified.ts --check
+node scripts/last-modified.ts --check && node scripts/description.ts

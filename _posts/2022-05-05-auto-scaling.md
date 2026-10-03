@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How many chairs do I need?
+description: "Let's imagine a scenario where I'm trying to decide how many chairs I need for my new flat."
 tags:
   - microservices
   - reliability

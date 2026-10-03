@@ -55,10 +55,18 @@ jekyll-seo-tag and jekyll-sitemap read the modified date from `last_modified_at`
 node scripts/last-modified.ts
 ```
 
-This sets `last_modified_at` to the latest change date. A pre-commit hook checks it's up to date. Enable the hook once per clone:
+This sets `last_modified_at` to the latest change date.
+
+### Give posts a description
+
+jekyll-seo-tag uses a post's `description` front matter for search results and link previews, or failing that its excerpt: everything up to the first blank line. If a post opens with an epigraph, callout or anything other than a paragraph, give it a `description`, e.g. its opening sentence. `node scripts/description.ts` lists posts that need one.
+
+### Pre-commit hook
+
+A pre-commit hook checks that `last_modified_at` is up to date and that posts have usable descriptions. Enable it once per clone:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
-Run the script's tests with `node --test 'scripts/*.test.ts'`.
+Run the scripts' tests with `node --test 'scripts/*.test.ts'`.
