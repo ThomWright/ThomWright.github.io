@@ -102,10 +102,10 @@ If we used a page size of two, either `9c67` or `4b98` would get returned in the
 
 One approach to pagination is using offsets. An offset is a number of rows to skip. In the diagram below, using `OFFSET 2` would skip the first two rows and return the second page.
 
-{% include figure.html
-  img_src="/public/assets/pagination/pages.png"
+{% include diagram.html
+  name="pagination-pages"
   caption="Four items total, page size of two"
-  size="small"
+  alt="Four rows, A to D. Page 1 holds A and B, and page 2 holds C and D."
 %}
 
 The offset is 0-based, and we calculate it from a 1-based page number like so: `page_size * (page_num - 1)`. If we want to request the second page, most recent items first, our SQL query would look like this:
@@ -122,9 +122,12 @@ This is pretty simple, but has a couple of major drawbacks: **unstable page boun
 
 Imagine we request the first page, which returns `A` and `B`. Then a new item is written to the database: `AA`. Then we request the second page, with `OFFSET 2`. What gets returned? `B` (again!) and `C`. But we probably wanted `C` and `D`.
 
-{% include figure.html
-  img_src="/public/assets/pagination/new-rows.png"
-  caption="Left: Fetch first page. Right: Fetch second page after new item added."
+{% include diagram.html
+  name="pagination-first-page"
+  alt="Rows A to D. Page 1 holds A and B."
+  name_2="pagination-second-page"
+  alt_2="A new row, AA, is now first. OFFSET 2 skips AA and A, so page 2 holds B and C."
+  caption="Fetching the first page, then the second after a new item is added"
 %}
 
 In general, modifications to the list can cause pages to overlap (as above) or gaps between pages (e.g. skipping `C` if `A` gets deleted).
@@ -137,18 +140,18 @@ Both of these problems can be solved by using a cursor-based approach.
 
 Instead of using an offset to identify page boundaries, which is unstable when the list being being modified, we can instead use a cursor. Much like a text cursor, it is stable when items (characters in this case) are added or removed before or after it.
 
-{% include figure.html
-  img_src="/public/assets/pagination/text-cursor.png"
+{% include diagram.html
+  name="pagination-text-cursor"
   caption="A text cursor"
-  size="small"
+  alt="The word Cursor, with a text cursor between Cur and sor."
 %}
 
 We use the identity of an item on a page boundary to place our cursor. If we want to get page two in the example below, we can request the two items *after* `B`.
 
-{% include figure.html
-  img_src="/public/assets/pagination/cursor.png"
+{% include diagram.html
+  name="pagination-cursor"
   caption="A cursor on a page boundary"
-  size="small"
+  alt="Rows A to D. Page 1 holds A and B, and a cursor marks the boundary just after B."
 %}
 
 Going back to our JSON example, we would write the query to fetch page two like this:
