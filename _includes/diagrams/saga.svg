@@ -1,14 +1,14 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="400" height="140" viewBox="0 0 400 140">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="400" height="140" viewBox="0 0 400 140" font-family="monospace" font-size="12.5">
   <defs>
     <marker id="saga-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z"/>
     </marker>
-    <marker id="saga-arrow-alert" class="d-alert" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <marker id="saga-arrow-alert" class="d-alert" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" color="#ed6145">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z"/>
     </marker>
   </defs>
 
-  <circle class="d-solid d-success" cx="20" cy="60" r="8"/>
+  <circle class="d-solid d-success" cx="20" cy="60" r="8" color="#5e9e3a"/>
 
   <path class="d-line" d="M28,60 H119" marker-end="url(#saga-arrow)"/>
   <text x="73" y="44" text-anchor="middle">book flight</text>
@@ -19,12 +19,12 @@
   <path class="d-line" d="M200,60 H299" marker-end="url(#saga-arrow)"/>
   <text x="250" y="44" text-anchor="middle">book hotel</text>
 
-  <g class="d-success">
+  <g class="d-success" color="#5e9e3a">
     <circle class="d-shape" cx="340" cy="60" r="40"/>
     <text x="340" text-anchor="middle"><tspan x="340" y="57">FB</tspan><tspan x="340" y="75">HB</tspan></text>
   </g>
 
-  <g class="d-alert">
+  <g class="d-alert" color="#ed6145">
     <path class="d-line" d="M128,84 Q70,110 26.5,66.5" marker-end="url(#saga-arrow-alert)"/>
     <text x="78" y="128" text-anchor="middle">cancel flight</text>
   </g>

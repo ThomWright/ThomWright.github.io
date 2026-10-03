@@ -1,15 +1,15 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="532" height="450" viewBox="0 0 532 450">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="532" height="450" viewBox="0 0 532 450" font-family="monospace" font-size="12.5">
   <defs>
     <marker id="write-guard-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
     </marker>
   </defs>
 
-  <text class="d-heading" x="91" y="30" text-anchor="middle" fill="currentColor">Application</text>
-  <text class="d-heading" x="276" y="30" text-anchor="middle" fill="currentColor">Database</text>
-  <text class="d-heading" x="461" y="30" text-anchor="middle" fill="currentColor">Other system</text>
-  <path class="d-line d-thin d-dashed d-muted" d="M91,45 V430 M276,45 V430 M461,45 V430" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
-  <path class="d-line d-dotted d-muted" d="M20,290 H512" stroke-dasharray="0 7" stroke-linecap="round"/>
+  <text class="d-heading" x="91" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Application</text>
+  <text class="d-heading" x="276" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Database</text>
+  <text class="d-heading" x="461" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Other system</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M91,45 V430 M276,45 V430 M461,45 V430" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
+  <path class="d-line d-dotted d-muted" d="M20,290 H512" stroke-dasharray="0 7" stroke-linecap="round" color="#888888"/>
 
   <rect class="d-shape d-thin d-knockout" x="87.5" y="75" width="7" height="180" fill="none" stroke="currentColor"/>
   <rect class="d-shape d-thin d-knockout" x="87.5" y="325" width="7" height="80" fill="none" stroke="currentColor"/>

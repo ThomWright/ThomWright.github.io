@@ -1,10 +1,13 @@
 /**
  * Regenerates every diagram in diagrams/sequences/ and diagrams/timelines/
- * as _includes/diagrams/<name>.svg. Run from anywhere: node diagrams/build.ts
+ * as _includes/diagrams/<name>.svg, then adds feed reader fallbacks to every
+ * diagram there, hand-written ones included. Run from anywhere:
+ * node diagrams/build.ts
  */
 
-import { readdir, writeFile } from 'node:fs/promises'
+import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
+import { addFallbacks } from './fallbacks.ts'
 import * as sequence from './sequence.ts'
 import * as timeline from './timeline.ts'
 
@@ -19,4 +22,9 @@ for (const [dir, render] of Object.entries(kinds)) {
     await writeFile(join(output, `${name}.svg`), render(name, diagram))
     console.log(`_includes/diagrams/${name}.svg`)
   }
+}
+
+for (const file of (await readdir(output)).filter((f) => f.endsWith('.svg'))) {
+  const path = join(output, file)
+  await writeFile(path, addFallbacks(await readFile(path, 'utf8')))
 }

@@ -1,14 +1,14 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="357" height="310" viewBox="0 0 357 310">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="357" height="310" viewBox="0 0 357 310" font-family="monospace" font-size="12.5">
   <defs>
     <marker id="tcp-race-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
     </marker>
   </defs>
 
-  <text class="d-heading" x="46" y="30" text-anchor="middle" fill="currentColor">Client</text>
-  <text class="d-heading" x="231" y="30" text-anchor="middle" fill="currentColor">Server</text>
-  <path class="d-line d-thin d-dashed d-muted" d="M46,45 V290 M231,45 V290" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
-  <path class="d-line d-dotted d-muted" d="M20,140 H337" stroke-dasharray="0 7" stroke-linecap="round"/>
+  <text class="d-heading" x="46" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Client</text>
+  <text class="d-heading" x="231" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Server</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M46,45 V290 M231,45 V290" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
+  <path class="d-line d-dotted d-muted" d="M20,140 H337" stroke-dasharray="0 7" stroke-linecap="round" color="#888888"/>
 
 
   <path class="d-line" d="M46,80 L231,180" fill="none" stroke="currentColor" marker-end="url(#tcp-race-arrow)"/>

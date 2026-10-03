@@ -1,55 +1,55 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="341" height="332" viewBox="0 0 341 332">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="341" height="332" viewBox="0 0 341 332" font-family="monospace" font-size="12.5">
   <defs>
-    <marker id="git-rebase-b2-arrow-accent" class="d-accent" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <marker id="git-rebase-b2-arrow-accent" class="d-accent" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" color="#477dca">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
     </marker>
-    <marker id="git-rebase-b2-arrow-alert" class="d-alert" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <marker id="git-rebase-b2-arrow-alert" class="d-alert" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" color="#ed6145">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
     </marker>
     <marker id="git-rebase-b2-arrow-ink" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
     </marker>
-    <marker id="git-rebase-b2-arrow-muted" class="d-muted" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <marker id="git-rebase-b2-arrow-muted" class="d-muted" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" color="#888888">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
     </marker>
-    <marker id="git-rebase-b2-arrow-warning" class="d-warning" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <marker id="git-rebase-b2-arrow-warning" class="d-warning" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" color="#d97706">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
     </marker>
   </defs>
 
   <!-- How we got here -->
-  <path class="d-line d-alert" d="M28,12 V34" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-alert)"/>
-  <text class="d-bold d-alert" x="44" y="29" fill="currentColor">git rebase B1 B2</text>
+  <path class="d-line d-alert" d="M28,12 V34" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-alert)" color="#ed6145"/>
+  <text class="d-bold d-alert" x="44" y="29" fill="currentColor" font-weight="bold" color="#ed6145">git rebase B1 B2</text>
 
   <!-- Commits, each pointing to its parent -->
   <path class="d-line" d="M132,68 L54,68" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-ink)"/>
-  <path class="d-line d-muted" d="M80.28,109.11 L49.19,80.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-muted)"/>
-  <path class="d-line d-accent" d="M192.28,109.11 L161.19,80.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-accent)"/>
-  <path class="d-line d-muted" d="M204,156 L204,138" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-muted)"/>
-  <path class="d-line d-warning" d="M248.28,213.11 L217.19,184.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-warning)"/>
+  <path class="d-line d-muted" d="M80.28,109.11 L49.19,80.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-muted)" color="#888888"/>
+  <path class="d-line d-accent" d="M192.28,109.11 L161.19,80.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-accent)" color="#477dca"/>
+  <path class="d-line d-muted" d="M204,156 L204,138" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-muted)" color="#888888"/>
+  <path class="d-line d-warning" d="M248.28,213.11 L217.19,184.25" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-warning)" color="#d97706"/>
   <circle class="d-shape" cx="36" cy="68" r="16" fill="none" stroke="currentColor"/>
   <circle class="d-shape" cx="148" cy="68" r="16" fill="none" stroke="currentColor"/>
-  <circle class="d-shape d-muted" cx="92" cy="120" r="16" fill="none" stroke="currentColor"/>
-  <text class="d-muted" x="70" y="125" text-anchor="end" fill="currentColor">Old</text>
-  <circle class="d-shape d-accent" cx="204" cy="120" r="16" fill="none" stroke="currentColor"/>
-  <text class="d-muted" x="182" y="125" text-anchor="end" fill="currentColor">New</text>
-  <circle class="d-shape d-dashed d-muted" cx="204" cy="172" r="16" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
-  <circle class="d-shape d-warning" cx="260" cy="224" r="16" fill="none" stroke="currentColor"/>
+  <circle class="d-shape d-muted" cx="92" cy="120" r="16" fill="none" stroke="currentColor" color="#888888"/>
+  <text class="d-muted" x="70" y="125" text-anchor="end" fill="currentColor" color="#888888">Old</text>
+  <circle class="d-shape d-accent" cx="204" cy="120" r="16" fill="none" stroke="currentColor" color="#477dca"/>
+  <text class="d-muted" x="182" y="125" text-anchor="end" fill="currentColor" color="#888888">New</text>
+  <circle class="d-shape d-dashed d-muted" cx="204" cy="172" r="16" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
+  <circle class="d-shape d-warning" cx="260" cy="224" r="16" fill="none" stroke="currentColor" color="#d97706"/>
 
   <!-- Branches -->
   <path class="d-line" d="M188,68 H168" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-ink)"/>
-  <text class="d-bold" x="194" y="73" fill="currentColor">main</text>
-  <path class="d-line d-accent" d="M244,120 H224" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-accent)"/>
-  <text class="d-bold d-accent" x="250" y="125" fill="currentColor">B1</text>
-  <path class="d-line d-warning" d="M300,224 H280" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-warning)"/>
-  <text class="d-bold d-warning" x="306" y="229" fill="currentColor">B2</text>
+  <text class="d-bold" x="194" y="73" fill="currentColor" font-weight="bold">main</text>
+  <path class="d-line d-accent" d="M244,120 H224" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-accent)" color="#477dca"/>
+  <text class="d-bold d-accent" x="250" y="125" fill="currentColor" font-weight="bold" color="#477dca">B1</text>
+  <path class="d-line d-warning" d="M300,224 H280" fill="none" stroke="currentColor" marker-end="url(#git-rebase-b2-arrow-warning)" color="#d97706"/>
+  <text class="d-bold d-warning" x="306" y="229" fill="currentColor" font-weight="bold" color="#d97706">B2</text>
 
-  <text class="d-muted" x="20" y="177" fill="currentColor">A copy of Old,</text>
-  <text class="d-muted" x="20" y="197" fill="currentColor">omitted if Old</text>
-  <text class="d-muted" x="20" y="217" fill="currentColor">and New have the</text>
-  <text class="d-muted" x="20" y="237" fill="currentColor">same text diff</text>
+  <text class="d-muted" x="20" y="177" fill="currentColor" color="#888888">A copy of Old,</text>
+  <text class="d-muted" x="20" y="197" fill="currentColor" color="#888888">omitted if Old</text>
+  <text class="d-muted" x="20" y="217" fill="currentColor" color="#888888">and New have the</text>
+  <text class="d-muted" x="20" y="237" fill="currentColor" color="#888888">same text diff</text>
 
-  <text class="d-alert" x="20" y="272" fill="currentColor">This won't end nicely if</text>
-  <text class="d-alert" x="20" y="292" fill="currentColor">there was a merge conflict</text>
-  <text class="d-alert" x="20" y="312" fill="currentColor">in the previous rebase.</text>
+  <text class="d-alert" x="20" y="272" fill="currentColor" color="#ed6145">This won't end nicely if</text>
+  <text class="d-alert" x="20" y="292" fill="currentColor" color="#ed6145">there was a merge conflict</text>
+  <text class="d-alert" x="20" y="312" fill="currentColor" color="#ed6145">in the previous rebase.</text>
 </svg>

@@ -1,24 +1,24 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="620" height="225" viewBox="0 0 620 225">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="620" height="225" viewBox="0 0 620 225" font-family="monospace" font-size="12.5">
   <!-- SELECT -->
-  <g class="d-success">
-    <text class="d-bold" x="150" y="30" fill="currentColor">ACCESS SHARE</text>
+  <g class="d-success" color="#5e9e3a">
+    <text class="d-bold" x="150" y="30" fill="currentColor" font-weight="bold">ACCESS SHARE</text>
     <rect class="d-shape" x="150" y="45" width="12" height="160" fill="none" stroke="currentColor"/>
   </g>
-  <text class="d-accent" fill="currentColor"><tspan x="20" y="110">SELECT *</tspan><tspan x="42.5" y="130">WHERE id = 1</tspan></text>
+  <text class="d-accent" fill="currentColor" color="#477dca"><tspan x="20" y="110">SELECT *</tspan><tspan x="42.5" y="130">WHERE id = 1</tspan></text>
 
   <!-- Table -->
   <path class="d-line d-thin" d="M180,115 H420 M180,145 H420 M180,175 H420" fill="none" stroke="currentColor" stroke-width="1.5"/>
   <path class="d-line" d="M180,85 H420 M300,45 V205" fill="none" stroke="currentColor"/>
   <rect class="d-shape" x="180" y="45" width="240" height="160" fill="none" stroke="currentColor"/>
-  <text class="d-bold" x="240" y="70" text-anchor="middle" fill="currentColor">id</text>
-  <text class="d-muted" x="294" y="62" text-anchor="end" fill="currentColor">PK</text>
-  <text class="d-bold" x="360" y="70" text-anchor="middle" fill="currentColor">amount</text>
+  <text class="d-bold" x="240" y="70" text-anchor="middle" fill="currentColor" font-weight="bold">id</text>
+  <text class="d-muted" x="294" y="62" text-anchor="end" fill="currentColor" color="#888888">PK</text>
+  <text class="d-bold" x="360" y="70" text-anchor="middle" fill="currentColor" font-weight="bold">amount</text>
 
   <!-- ALTER TABLE -->
-  <text class="d-alert d-bold" x="285" y="30" text-anchor="middle" fill="currentColor">CONFLICT</text>
-  <g class="d-warning">
-    <text class="d-bold" x="450" y="30" text-anchor="end" fill="currentColor">ACCESS EXCLUSIVE</text>
+  <text class="d-alert d-bold" x="285" y="30" text-anchor="middle" fill="currentColor" color="#ed6145" font-weight="bold">CONFLICT</text>
+  <g class="d-warning" color="#d97706">
+    <text class="d-bold" x="450" y="30" text-anchor="end" fill="currentColor" font-weight="bold">ACCESS EXCLUSIVE</text>
     <rect class="d-shape" x="438" y="45" width="12" height="160" fill="none" stroke="currentColor"/>
   </g>
-  <text class="d-accent" fill="currentColor"><tspan x="468" y="110">ALTER TABLE</tspan><tspan x="490.5" y="130">ADD COLUMN ...</tspan></text>
+  <text class="d-accent" fill="currentColor" color="#477dca"><tspan x="468" y="110">ALTER TABLE</tspan><tspan x="490.5" y="130">ADD COLUMN ...</tspan></text>
 </svg>

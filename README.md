@@ -29,10 +29,12 @@ The bundled Rouge is too old to have `github.dark`, hence Docker for the dark th
 
 ### Generate the diagrams
 
-Sequence diagrams and timelines are written as TypeScript in `diagrams/sequences/` and `diagrams/timelines/`, and generated as inline SVGs in `_includes/diagrams/`. GitHub Pages has no build step, so commit the generated files.
+Diagrams are inline SVGs in `_includes/diagrams/`, included in posts with `_includes/diagram.html`. Sequence diagrams and timelines are written as TypeScript in `diagrams/sequences/` and `diagrams/timelines/` and generated, and the rest are written by hand. GitHub Pages has no build step, so commit the SVGs.
+
+After adding or editing any diagram, run:
 
 ```bash
 node diagrams/build.ts
 ```
 
-Node 24 runs the TypeScript directly, with no dependencies. The diagram formats are documented in `diagrams/sequence.ts` and `diagrams/timeline.ts`, and the house style in `public/css/_sass/_diagrams.scss`.
+This regenerates the generated diagrams, and adds fallback attributes to every diagram for feed readers, which show them without the site's CSS. Node 24 runs the TypeScript directly, with no dependencies. The diagram formats are documented in `diagrams/sequence.ts` and `diagrams/timeline.ts`, the fallbacks in `diagrams/fallbacks.ts`, and the house style in `public/css/_sass/_diagrams.scss`.

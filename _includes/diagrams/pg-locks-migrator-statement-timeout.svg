@@ -1,52 +1,52 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="593" height="530" viewBox="0 0 593 530">
-  <text class="d-heading" x="20" y="30" fill="currentColor">Connection 1</text>
-  <text class="d-muted" x="20" y="52" fill="currentColor">Reader</text>
-  <text class="d-heading" x="220" y="30" fill="currentColor">Connection 2</text>
-  <text class="d-muted" x="220" y="52" fill="currentColor">Migrator</text>
-  <text class="d-heading" x="420" y="30" fill="currentColor">Connection 3/4/5/…</text>
-  <text class="d-muted" x="420" y="52" fill="currentColor">Application</text>
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="593" height="530" viewBox="0 0 593 530" font-family="monospace" font-size="12.5">
+  <text class="d-heading" x="20" y="30" fill="currentColor" font-size="14.17" font-weight="bold">Connection 1</text>
+  <text class="d-muted" x="20" y="52" fill="currentColor" color="#888888">Reader</text>
+  <text class="d-heading" x="220" y="30" fill="currentColor" font-size="14.17" font-weight="bold">Connection 2</text>
+  <text class="d-muted" x="220" y="52" fill="currentColor" color="#888888">Migrator</text>
+  <text class="d-heading" x="420" y="30" fill="currentColor" font-size="14.17" font-weight="bold">Connection 3/4/5/…</text>
+  <text class="d-muted" x="420" y="52" fill="currentColor" color="#888888">Application</text>
 
   <g class="d-faded" opacity="0.35">
-    <path class="d-line d-thin d-dashed d-muted" d="M20,320 H420" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
-    <path class="d-line d-thin d-dashed d-muted" d="M220,420 H420" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+    <path class="d-line d-thin d-dashed d-muted" d="M20,320 H420" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
+    <path class="d-line d-thin d-dashed d-muted" d="M220,420 H420" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
   </g>
 
   <g class="d-faded" opacity="0.35">
     <!-- Connection 1 -->
-    <path class="d-line d-thick d-success" d="M20,110 V320" fill="none" stroke="currentColor" stroke-width="4"/>
-    <text class="d-accent" x="40" y="95" fill="currentColor">BEGIN</text>
-    <text class="d-accent" x="40" y="135" fill="currentColor">SELECT *</text>
-    <text class="d-accent" x="62.5" y="155" fill="currentColor">WHERE id = 1</text>
-    <text class="d-muted" x="40" y="215" fill="currentColor">sits around...</text>
-    <text class="d-accent" x="40" y="315" fill="currentColor">COMMIT</text>
+    <path class="d-line d-thick d-success" d="M20,110 V320" fill="none" stroke="currentColor" stroke-width="4" color="#5e9e3a"/>
+    <text class="d-accent" x="40" y="95" fill="currentColor" color="#477dca">BEGIN</text>
+    <text class="d-accent" x="40" y="135" fill="currentColor" color="#477dca">SELECT *</text>
+    <text class="d-accent" x="62.5" y="155" fill="currentColor" color="#477dca">WHERE id = 1</text>
+    <text class="d-muted" x="40" y="215" fill="currentColor" color="#888888">sits around...</text>
+    <text class="d-accent" x="40" y="315" fill="currentColor" color="#477dca">COMMIT</text>
   </g>
 
   <!-- Connection 2 -->
-  <path class="d-line d-thick d-alert" d="M220,130 V320" fill="none" stroke="currentColor" stroke-width="4"/>
-  <path class="d-line d-thick d-warning" d="M220,320 V420" fill="none" stroke="currentColor" stroke-width="4"/>
-  <text class="d-accent" x="240" y="115" fill="currentColor">BEGIN</text>
-  <text class="d-muted" x="240" y="155" fill="currentColor">ALTER TABLE</text>
-  <text class="d-muted" x="262.5" y="175" fill="currentColor">ADD COLUMN</text>
-  <text class="d-muted" x="240" y="215" fill="currentColor">waits...</text>
-  <text class="d-accent" x="240" y="345" fill="currentColor">ALTER TABLE</text>
-  <text class="d-accent" x="262.5" y="365" fill="currentColor">ADD COLUMN</text>
-  <text class="d-accent" x="240" y="415" fill="currentColor">COMMIT</text>
+  <path class="d-line d-thick d-alert" d="M220,130 V320" fill="none" stroke="currentColor" stroke-width="4" color="#ed6145"/>
+  <path class="d-line d-thick d-warning" d="M220,320 V420" fill="none" stroke="currentColor" stroke-width="4" color="#d97706"/>
+  <text class="d-accent" x="240" y="115" fill="currentColor" color="#477dca">BEGIN</text>
+  <text class="d-muted" x="240" y="155" fill="currentColor" color="#888888">ALTER TABLE</text>
+  <text class="d-muted" x="262.5" y="175" fill="currentColor" color="#888888">ADD COLUMN</text>
+  <text class="d-muted" x="240" y="215" fill="currentColor" color="#888888">waits...</text>
+  <text class="d-accent" x="240" y="345" fill="currentColor" color="#477dca">ALTER TABLE</text>
+  <text class="d-accent" x="262.5" y="365" fill="currentColor" color="#477dca">ADD COLUMN</text>
+  <text class="d-accent" x="240" y="415" fill="currentColor" color="#477dca">COMMIT</text>
 
   <g class="d-faded" opacity="0.35">
     <!-- Connection 3/4/5/… -->
-    <path class="d-line d-thick d-alert" d="M420,210 V420" fill="none" stroke="currentColor" stroke-width="4"/>
-    <path class="d-line d-thick d-success" d="M420,420 V510" fill="none" stroke="currentColor" stroke-width="4"/>
-    <text class="d-accent" x="440" y="195" fill="currentColor">BEGIN</text>
-    <text class="d-muted" x="440" y="235" fill="currentColor">SELECT *</text>
-    <text class="d-muted" x="462.5" y="255" fill="currentColor">WHERE id = 1</text>
-    <text class="d-muted" x="440" y="295" fill="currentColor">waits...</text>
-    <text class="d-accent" x="440" y="445" fill="currentColor">SELECT *</text>
-    <text class="d-accent" x="462.5" y="465" fill="currentColor">WHERE id = 1</text>
-    <text class="d-accent" x="440" y="505" fill="currentColor">COMMIT</text>
+    <path class="d-line d-thick d-alert" d="M420,210 V420" fill="none" stroke="currentColor" stroke-width="4" color="#ed6145"/>
+    <path class="d-line d-thick d-success" d="M420,420 V510" fill="none" stroke="currentColor" stroke-width="4" color="#5e9e3a"/>
+    <text class="d-accent" x="440" y="195" fill="currentColor" color="#477dca">BEGIN</text>
+    <text class="d-muted" x="440" y="235" fill="currentColor" color="#888888">SELECT *</text>
+    <text class="d-muted" x="462.5" y="255" fill="currentColor" color="#888888">WHERE id = 1</text>
+    <text class="d-muted" x="440" y="295" fill="currentColor" color="#888888">waits...</text>
+    <text class="d-accent" x="440" y="445" fill="currentColor" color="#477dca">SELECT *</text>
+    <text class="d-accent" x="462.5" y="465" fill="currentColor" color="#477dca">WHERE id = 1</text>
+    <text class="d-accent" x="440" y="505" fill="currentColor" color="#477dca">COMMIT</text>
   </g>
 
   <!-- Timeout -->
   <path class="d-line d-thick" d="M220,130 V400 M204,130 H236 M204,400 H236" fill="none" stroke="currentColor" stroke-width="4"/>
   <rect class="d-knockout" x="68.5" y="371" width="135.5" height="20" fill="none"/>
-  <text class="d-bold" x="72.5" y="385" fill="currentColor">statement_timeout</text>
+  <text class="d-bold" x="72.5" y="385" fill="currentColor" font-weight="bold">statement_timeout</text>
 </svg>
