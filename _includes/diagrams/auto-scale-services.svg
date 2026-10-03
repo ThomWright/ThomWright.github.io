@@ -1,0 +1,24 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="518" height="108" viewBox="0 0 518 108">
+  <defs>
+    <marker id="auto-scale-services-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- Queue, with pending messages -->
+  <path class="d-shape" d="M30,42 H130 M130,86 H30 A7,22 0 0 1 30,42" fill="none" stroke="currentColor"/>
+  <ellipse class="d-shape" cx="130" cy="64" rx="7" ry="22" fill="none" stroke="currentColor"/>
+  <g class="d-muted">
+    <rect class="d-solid" x="56" y="56" width="16" height="16" rx="2" fill="currentColor"/>
+    <rect class="d-solid" x="78" y="56" width="16" height="16" rx="2" fill="currentColor"/>
+    <rect class="d-solid" x="100" y="56" width="16" height="16" rx="2" fill="currentColor"/>
+  </g>
+  <path class="d-line" d="M137,64 H196" fill="none" stroke="currentColor" marker-end="url(#auto-scale-services-arrow)"/>
+
+  <rect class="d-shape" x="198" y="40" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="258" y="69" text-anchor="middle" fill="currentColor">Service A</text>
+  <path class="d-line" d="M318,64 H376" fill="none" stroke="currentColor" marker-end="url(#auto-scale-services-arrow)"/>
+
+  <rect class="d-shape" x="378" y="40" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="438" y="69" text-anchor="middle" fill="currentColor">Service B</text>
+</svg>
