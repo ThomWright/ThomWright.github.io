@@ -20,7 +20,9 @@ export type Step = Call | LaneFailure | LaneNote | Divider | Section | Parallel
  * `reply: true` draws an unlabelled reply. `fail` draws the call stopping
  * at a cross partway across, labelled with the given text, and no reply.
  * `duration` is how long the call takes to arrive, as a multiple of the
- * usual, e.g. so it crosses messages in a parallel branch.
+ * usual, e.g. so it crosses messages in a parallel branch. `immediate`
+ * starts it the moment the previous step ends, e.g. a response sent as soon
+ * as something arrives.
  */
 export type Call = {
   from: string
@@ -29,6 +31,7 @@ export type Call = {
   reply?: string | true
   fail?: string
   duration?: number
+  immediate?: boolean
 }
 
 /** A cross on a section's lane, e.g. a crash. Only valid inside a section. */
@@ -228,7 +231,10 @@ function call(ctx: Context, step: Call, y: number): number {
   const direction = Math.sign(toX - fromX)
   if (direction === 0) throw new Error(`Call from ${step.from} to itself`)
 
-  const start = { x: edge(ctx, step.from, fromX, direction), y: y + STEP_GAP }
+  const start = {
+    x: edge(ctx, step.from, fromX, direction),
+    y: step.immediate ? y : y + STEP_GAP,
+  }
   // Taller labels need a longer line, or they run into the reply's label.
   const extraLines = (step.label ?? '').split('\n').length - 1
   const arrive = {

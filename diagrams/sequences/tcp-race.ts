@@ -5,8 +5,14 @@ export default {
   steps: [
     {
       parallel: [
-        [{ from: 'client', to: 'server', label: 'data', duration: 2.5, reply: 'RST' }],
-        [{ divider: 'idle timeout' }, { from: 'server', to: 'client', label: 'FIN' }],
+        [
+          { from: 'client', to: 'server', label: 'data', duration: 2.5 },
+          { from: 'server', to: 'client', label: 'RST', duration: 2, immediate: true },
+        ],
+        [
+          { divider: 'idle timeout' },
+          { from: 'server', to: 'client', label: 'FIN', duration: 2 },
+        ],
       ],
     },
   ],
