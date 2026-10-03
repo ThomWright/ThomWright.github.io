@@ -4,7 +4,7 @@
     <text class="d-bold" x="150" y="30" fill="currentColor" font-weight="bold">ACCESS SHARE</text>
     <rect class="d-shape" x="150" y="45" width="12" height="160" fill="none" stroke="currentColor"/>
   </g>
-  <text class="d-accent" fill="currentColor" color="#477dca"><tspan x="20" y="110">SELECT *</tspan><tspan x="42.5" y="130">WHERE id = 1</tspan></text>
+  <text fill="currentColor"><tspan x="20" y="110">SELECT *</tspan><tspan x="42.5" y="130">WHERE id = 1</tspan></text>
 
   <!-- Table -->
   <path class="d-line d-thin" d="M180,115 H420 M180,145 H420 M180,175 H420" fill="none" stroke="currentColor" stroke-width="1.5"/>

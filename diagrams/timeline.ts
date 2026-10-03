@@ -26,7 +26,7 @@ export type Lane = {
   bars: Bar[]
 }
 
-/** A statement, highlighted unless `muted`, e.g. while it waits. */
+/** A statement, `muted` while it isn't running, e.g. while it waits. */
 export type Text = { row: number; text: string; muted?: boolean }
 
 /** A lock held or waited for, from one row to another. */
@@ -138,7 +138,7 @@ export function render(name: string, timeline: Timeline): string {
       return `  <path class="d-line d-thick ${STATE_CLASS[b.state]}" d="M${x},${n(rowY(b.from))} V${n(rowY(b.to))}" fill="none" stroke="currentColor" stroke-width="4"/>`
     })
     const texts = l.text.map(
-      (t) => `  ${text(x + TEXT_INDENT, t.row, t.text, t.muted ? 'd-muted' : 'd-accent')}`,
+      (t) => `  ${text(x + TEXT_INDENT, t.row, t.text, t.muted ? 'd-muted' : '')}`,
     )
     const lines = [`  <!-- ${l.title} -->`, ...bars, ...texts]
     return [...(faded(id) ? fade(lines) : lines), '']
@@ -202,9 +202,9 @@ function bracket(t: Timeout, x: number, labelLeft: number, labelWidth: number): 
   const y = rowY(t.labelRow)
   return [
     '  <!-- Timeout -->',
-    `  <path class="d-line d-thick" d="M${x},${top} V${bottom} M${x - h},${top} H${x + h} M${x - h},${bottom} H${x + h}" fill="none" stroke="currentColor" stroke-width="4"/>`,
+    `  <path class="d-line d-thick d-accent" d="M${x},${top} V${bottom} M${x - h},${top} H${x + h} M${x - h},${bottom} H${x + h}" fill="none" stroke="currentColor" stroke-width="4"/>`,
     `  <rect class="d-knockout" x="${n(labelLeft - LABEL_PADDING)}" y="${n(y + TEXT_CENTRE - ROW / 2)}" width="${n(labelWidth + LABEL_PADDING * 2)}" height="${ROW}" fill="none"/>`,
-    `  <text class="d-bold" x="${n(labelLeft)}" y="${n(y + BASELINE_SHIFT)}" fill="currentColor">${escape(t.label)}</text>`,
+    `  <text class="d-bold d-accent" x="${n(labelLeft)}" y="${n(y + BASELINE_SHIFT)}" fill="currentColor">${escape(t.label)}</text>`,
   ]
 }
 
