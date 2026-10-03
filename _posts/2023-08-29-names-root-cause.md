@@ -34,9 +34,8 @@ When doing Root Cause Analysis, think of real trees instead of data structures.
 
 That said, it *can* be worth thinking in terms of tree structures, but one where the incident is the root node, and the root causes are the leaf nodes. Names are hard.
 
-{% include figure.html
-  img_src="/public/assets/names-root/tree-ds.png"
-  alt="A tree data structure"
+{% include diagram.html
+  name="names-root-tree"
   caption="The roots are leaves"
-  size="small"
+  alt="A tree with the incident at its root. Each edge asks Why?, branching out until it reaches two leaves: root cause #1 and root cause #2."
 %}

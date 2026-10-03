@@ -1,0 +1,36 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="550" height="248" viewBox="0 0 550 248">
+  <defs>
+    <marker id="names-root-tree-arrow" class="d-muted" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <g class="d-muted">
+    <path class="d-line" d="M78,120 L180,120" fill="none" stroke="currentColor" marker-end="url(#names-root-tree-arrow)"/>
+    <rect class="d-knockout" x="110" y="111" width="38" height="20" fill="none"/>
+    <text x="129" y="125" text-anchor="middle" fill="currentColor">Why?</text>
+    <path class="d-line" d="M216.1,111.95 L322.11,58.94" fill="none" stroke="currentColor" marker-end="url(#names-root-tree-arrow)"/>
+    <rect class="d-knockout" x="250.11" y="76.45" width="38" height="20" fill="none"/>
+    <text x="269.11" y="90.45" text-anchor="middle" fill="currentColor">Why?</text>
+    <path class="d-line" d="M216.1,128.05 L322.11,181.06" fill="none" stroke="currentColor" marker-end="url(#names-root-tree-arrow)"/>
+    <rect class="d-knockout" x="250.11" y="145.55" width="38" height="20" fill="none"/>
+    <text x="269.11" y="159.55" text-anchor="middle" fill="currentColor">Why?</text>
+    <path class="d-line" d="M358,50 L460,50" fill="none" stroke="currentColor" marker-end="url(#names-root-tree-arrow)"/>
+    <rect class="d-knockout" x="390" y="41" width="38" height="20" fill="none"/>
+    <text x="409" y="55" text-anchor="middle" fill="currentColor">Why?</text>
+  </g>
+
+  <g class="d-alert">
+    <circle class="d-shape" cx="60" cy="120" r="18" fill="none" stroke="currentColor"/>
+    <text x="60" y="95" text-anchor="middle" fill="currentColor">Incident</text>
+  </g>
+  <circle class="d-shape" cx="200" cy="120" r="18" fill="none" stroke="currentColor"/>
+  <circle class="d-shape" cx="340" cy="50" r="18" fill="none" stroke="currentColor"/>
+
+  <g class="d-accent">
+    <circle class="d-shape" cx="480" cy="50" r="18" fill="none" stroke="currentColor"/>
+    <circle class="d-shape" cx="340" cy="190" r="18" fill="none" stroke="currentColor"/>
+    <text x="480" y="93" text-anchor="middle" fill="currentColor">Root cause #1</text>
+    <text x="340" y="233" text-anchor="middle" fill="currentColor">Root cause #2</text>
+  </g>
+</svg>
