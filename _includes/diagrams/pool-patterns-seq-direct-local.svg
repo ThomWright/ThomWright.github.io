@@ -1,0 +1,21 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="315" height="200" viewBox="0 0 315 200" font-family="monospace" font-size="12.5">
+  <defs>
+    <marker id="pool-patterns-seq-direct-local-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="76" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Application</text>
+  <text class="d-heading" x="261" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Database</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M76,45 V180 M261,45 V180" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
+
+  <rect class="d-shape d-thin d-knockout" x="72.5" y="75" width="7" height="80" fill="none" stroke="currentColor"/>
+
+  <text x="58" y="85" text-anchor="end" fill="currentColor">Query</text>
+  <path class="d-line" d="M79.5,80 L261,120" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-direct-local-arrow)"/>
+  <rect class="d-knockout" x="147.5" y="92" width="45.5" height="18" fill="none"/>
+  <text x="170.25" y="105" text-anchor="middle" fill="currentColor">query</text>
+  <path class="d-line d-dashed" d="M261,120 L79.5,150" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-direct-local-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="151.25" y="127" width="38" height="18" fill="none"/>
+  <text x="170.25" y="140" text-anchor="middle" fill="currentColor">rows</text>
+</svg>

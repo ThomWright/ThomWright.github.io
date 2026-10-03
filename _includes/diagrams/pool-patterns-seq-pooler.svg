@@ -1,0 +1,36 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="515" height="388" viewBox="0 0 515 388" font-family="monospace" font-size="12.5">
+  <defs>
+    <marker id="pool-patterns-seq-pooler-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="91" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Application</text>
+  <text class="d-heading" x="276" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Pooler</text>
+  <text class="d-heading" x="461" y="30" text-anchor="middle" fill="currentColor" font-size="14.17" font-weight="bold">Database</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M91,45 V368 M276,45 V368 M461,45 V368" fill="none" stroke="currentColor" stroke-dasharray="7 6" color="#888888"/>
+
+  <rect class="d-shape d-thin d-knockout" x="87.5" y="75" width="7" height="98" fill="none" stroke="currentColor"/>
+  <rect class="d-shape d-thin d-knockout" x="87.5" y="193" width="7" height="150" fill="none" stroke="currentColor"/>
+
+  <text x="73" y="85" text-anchor="end" fill="currentColor">Connect</text>
+  <path class="d-line" d="M94.5,80 L276,138" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-pooler-arrow)"/>
+  <rect class="d-knockout" x="128.75" y="83" width="113" height="54" fill="none"/>
+  <text x="185.25" text-anchor="middle" fill="currentColor"><tspan x="185.25" y="96">connect</tspan><tspan x="185.25" y="114">(6 round trips</tspan><tspan x="185.25" y="132">+ hashing)</tspan></text>
+  <path class="d-line d-dashed" d="M276,138 L94.5,168" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-pooler-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="162.5" y="145" width="45.5" height="18" fill="none"/>
+  <text x="185.25" y="158" text-anchor="middle" fill="currentColor">ready</text>
+  <text x="73" y="203" text-anchor="end" fill="currentColor">Query</text>
+  <path class="d-line" d="M94.5,198 L276,238" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-pooler-arrow)"/>
+  <rect class="d-knockout" x="162.5" y="210" width="45.5" height="18" fill="none"/>
+  <text x="185.25" y="223" text-anchor="middle" fill="currentColor">query</text>
+  <path class="d-line" d="M276,238 L461,278" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-pooler-arrow)"/>
+  <rect class="d-knockout" x="345.75" y="250" width="45.5" height="18" fill="none"/>
+  <text x="368.5" y="263" text-anchor="middle" fill="currentColor">query</text>
+  <path class="d-line d-dashed" d="M461,278 L276,308" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-pooler-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="349.5" y="285" width="38" height="18" fill="none"/>
+  <text x="368.5" y="298" text-anchor="middle" fill="currentColor">rows</text>
+  <path class="d-line d-dashed" d="M276,308 L94.5,338" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-seq-pooler-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="166.25" y="315" width="38" height="18" fill="none"/>
+  <text x="185.25" y="328" text-anchor="middle" fill="currentColor">rows</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="460" height="328" viewBox="0 0 460 328" font-family="monospace" font-size="12.5">
+  <defs>
+    <marker id="pool-patterns-poolers-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <rect class="d-shape" x="20" y="20" width="96" height="48" fill="none" stroke="currentColor"/>
+  <text x="68" y="49" text-anchor="middle" fill="currentColor">Application</text>
+  <rect class="d-shape" x="128" y="20" width="96" height="48" fill="none" stroke="currentColor"/>
+  <text x="176" y="49" text-anchor="middle" fill="currentColor">Application</text>
+  <rect class="d-shape" x="236" y="20" width="96" height="48" fill="none" stroke="currentColor"/>
+  <text x="284" y="49" text-anchor="middle" fill="currentColor">Application</text>
+  <rect class="d-shape" x="344" y="20" width="96" height="48" fill="none" stroke="currentColor"/>
+  <text x="392" y="49" text-anchor="middle" fill="currentColor">Application</text>
+
+  <path class="d-line" d="M68,68 V92 Q68,100 76,100 H384 Q392,100 392,92 V68 M176,68 V100 M284,68 V100" fill="none" stroke="currentColor"/>
+  <path class="d-line" d="M150,100 V158" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-poolers-arrow)"/>
+  <path class="d-line" d="M310,100 V158" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-poolers-arrow)"/>
+
+  <rect class="d-shape" x="90" y="160" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="150" y="189" text-anchor="middle" fill="currentColor">Pooler</text>
+  <rect class="d-shape" x="250" y="160" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="310" y="189" text-anchor="middle" fill="currentColor">Pooler</text>
+
+  <path class="d-line" d="M150,208 V222 Q150,230 158,230 H212 Q220,230 220,238 V258" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-poolers-arrow)"/>
+  <path class="d-line" d="M310,208 V222 Q310,230 302,230 H248 Q240,230 240,238 V258" fill="none" stroke="currentColor" marker-end="url(#pool-patterns-poolers-arrow)"/>
+
+  <rect class="d-shape" x="170" y="260" width="120" height="48" fill="none" stroke="currentColor"/>
+  <text x="230" y="289" text-anchor="middle" fill="currentColor">Database</text>
+</svg>
