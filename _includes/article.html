@@ -14,6 +14,7 @@
     </h1>
     <div class="post-metadata">
       <time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time>
+      {% include updated.html article=article %}
       {% if article.guest_author %}
       <span>Guest Author: <a href="{{ article.guest_author.url }}">{{ article.guest_author.name }}</a></span>
       {% endif %}
@@ -41,6 +42,7 @@
     </h1>
     <div class="post-metadata">
       <time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time>
+      {% include updated.html article=article %}
       {% if article.guest_author %}
       <span>Guest Author: <a href="{{ article.guest_author.url }}">{{ article.guest_author.name }}</a></span>
       {% endif %}
@@ -69,6 +71,18 @@
       anchorClass="heading_anchor"
       hideHeaderContent=true
     %}
+
+    {% if article.changes %}
+    <section class="changes">
+      <h2 id="changes">Changes</h2>
+      <ul>
+        {% assign changes = article.changes | sort: "date" | reverse %}
+        {% for change in changes %}
+        <li><time datetime="{{ change.date | date: "%Y-%m-%d" }}">{{ change.date | date_to_string }}</time>: {{ change.summary | markdownify | remove: "<p>" | remove: "</p>" | strip }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
   </div>
 
   <footer>

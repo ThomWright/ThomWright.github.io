@@ -1,0 +1,11 @@
+{% comment %}
+  Shows when a post was last changed, linking to its list of changes.
+
+  Parameters:
+    article: the post, whose `changes` front matter is a list of
+             { date, summary } entries, one per substantive revision
+{% endcomment %}
+{% if include.article.changes %}
+  {% assign latest_change = include.article.changes | sort: "date" | last %}
+  <span>Updated <a href="{{ include.article.url }}#changes"><time datetime="{{ latest_change.date | date: "%Y-%m-%d" }}">{{ latest_change.date | date_to_string }}</time></a></span>
+{% endif %}
