@@ -24,7 +24,8 @@ export type Step = Call | LaneFailure | LaneNote | Divider | Section | Parallel
  * starts it the moment the previous step ends, e.g. a response sent as soon
  * as something arrives. `concurrent` starts it shortly after the previous
  * call is sent, without waiting for that call to arrive, so both are in
- * flight at once.
+ * flight at once. `calls` are made by the receiving lane before it replies,
+ * the first as soon as the call arrives, e.g. a proxy forwarding it.
  */
 export type Call = {
   from: string
@@ -35,6 +36,7 @@ export type Call = {
   duration?: number
   immediate?: boolean
   concurrent?: boolean
+  calls?: Call[]
 }
 
 /** A cross on a section's lane, e.g. a crash. Only valid inside a section. */
@@ -299,13 +301,18 @@ function call(ctx: Context, step: Call, y: number): number {
   ctx.out.push(arrow(ctx, start, arrive, 'd-line'))
   if (step.label) ctx.out.push(label(ctx, step.label, midpoint(start, arrive)))
   touch(ctx, step.to, arrive.y)
-  if (step.reply === undefined) return arrive.y
 
-  const back = { x: start.x, y: arrive.y + REPLY_DROP }
+  const [first, ...rest] = step.calls ?? []
+  const replyFrom = first
+    ? { x: arrive.x, y: layout(ctx, [{ ...first, immediate: true }, ...rest], arrive.y) }
+    : arrive
+  if (step.reply === undefined) return replyFrom.y
+
+  const back = { x: start.x, y: replyFrom.y + REPLY_DROP }
   touch(ctx, step.from, back.y)
-  ctx.out.push(arrow(ctx, arrive, back, 'd-line d-dashed', dashed))
+  ctx.out.push(arrow(ctx, replyFrom, back, 'd-line d-dashed', dashed))
   if (typeof step.reply === 'string') {
-    ctx.out.push(label(ctx, step.reply, midpoint(arrive, back)))
+    ctx.out.push(label(ctx, step.reply, midpoint(replyFrom, back)))
   }
   return back.y
 }
