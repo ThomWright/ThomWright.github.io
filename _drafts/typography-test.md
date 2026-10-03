@@ -88,7 +88,7 @@ Introducing a quote:
 %}
 
 {% include diagram.html
-  name="specimen-timeline"
+  name="pg-locks-example"
   caption="A timeline"
 %}
 
