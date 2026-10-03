@@ -59,6 +59,8 @@ $theme-light: (
   diagram-success: darken(map-get($palette-light, success), 8%),
   // Darker amber turns brown, and harder to tell from the alert red.
   diagram-warning: map-get($palette-light, warning),
+
+  image-filter: none,
 );
 
 $theme-dark: (
@@ -98,6 +100,9 @@ $theme-dark: (
   diagram-alert: map-get($palette-dark, alert),
   diagram-success: map-get($palette-dark, success),
   diagram-warning: map-get($palette-dark, warning),
+
+  // Takes the glare off images with white backgrounds, such as charts.
+  image-filter: brightness(0.85),
 );
 
 @each $type in $callout-types {

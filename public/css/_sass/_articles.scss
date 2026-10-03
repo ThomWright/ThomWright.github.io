@@ -65,6 +65,7 @@ article {
   img,
   video {
     max-width: 100%;
+    filter: var(--image-filter);
   }
 
   .article-content>figure {
