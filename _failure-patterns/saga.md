@@ -48,11 +48,10 @@ For the travel booking example, we might have three states:
 
 And two forward operations: `book flight` and `book hotel`. If we end up in a state where we've booked the flight but cannot book the hotel (e.g. because it is full), then we need the backward operation: `cancel flight`.
 
-{% include figure.html
-  img_src="/public/assets/failure-patterns/saga.png"
-  alt="State diagram for the travel booking example"
+{% include diagram.html
+  name="saga"
+  alt="State diagram. From the initial state, with nothing booked, book flight leads to state FB. From FB, book hotel leads to state FB HB, or cancel flight leads back to the initial state. The initial state and FB HB are acceptable terminal states."
   caption="A saga with three states, two forward transitions and a backwards transition (compensating action). Acceptable terminal states in green."
-  size="med"
 %}
 
 You will want some way to drive progress (either forwards or backwards). This can be a centralised system, such as a [completer]({% link _failure-patterns/completer.md %}) (known as *orchestration*), or distributed using e.g. [transactional outboxes]({% link _failure-patterns/transactional-outbox.md %}) (known as *choreography*).

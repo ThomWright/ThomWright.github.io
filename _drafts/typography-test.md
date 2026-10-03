@@ -83,7 +83,7 @@ Introducing a quote:
 %}
 
 {% include diagram.html
-  name="specimen-state"
+  name="saga"
   caption="A state diagram"
 %}
 
