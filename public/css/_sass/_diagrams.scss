@@ -13,7 +13,7 @@
  */
 
 svg.diagram {
-  // Labels on lines are knocked out with a halo in the colour behind the diagram.
+  // Knockouts are filled with the colour behind the diagram.
   --diagram-bg: var(--card-bg);
 
   display: block;
@@ -64,7 +64,10 @@ svg.diagram [marker-end] { stroke-linecap: butt; }
   stroke: none;
 }
 
-// Covers whatever is behind it, e.g. a lifeline behind an activation bar.
+// Covers whatever is behind it, e.g. a lifeline behind an activation bar, or
+// a line behind a label. A label's knockout is a rect behind it: a halo
+// stroke wide enough to bridge the gaps between glyphs leaves holes inside
+// some of them.
 .d-knockout {
   fill: var(--diagram-bg);
 }
@@ -82,14 +85,6 @@ svg.diagram .d-heading {
 
 svg.diagram .d-bold {
   font-weight: 700;
-}
-
-// For labels drawn over lines.
-svg.diagram .d-halo {
-  stroke: var(--diagram-bg);
-  stroke-width: 10px;
-  stroke-linejoin: round;
-  paint-order: stroke fill;
 }
 
 .diagram-container {

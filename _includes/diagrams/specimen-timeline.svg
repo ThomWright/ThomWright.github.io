@@ -40,7 +40,7 @@
     <text x="464" y="258">WHERE id = 1</text>
     <text x="440" y="293">waits...</text>
   </g>
-  <text class="d-bold d-halo" x="432" y="355">lock_timeout</text>
+  <text class="d-bold" x="432" y="355">lock_timeout</text>
   <path class="d-line d-thick d-success" d="M420,422 V500"/>
   <g class="d-accent">
     <text x="440" y="440">SELECT *</text>
