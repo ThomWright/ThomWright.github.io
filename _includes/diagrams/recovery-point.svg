@@ -1,0 +1,46 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="532" height="624" viewBox="0 0 532 624">
+  <defs>
+    <marker id="recovery-point-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="91" y="30" text-anchor="middle" fill="currentColor">Application</text>
+  <text class="d-heading" x="276" y="30" text-anchor="middle" fill="currentColor">Database</text>
+  <text class="d-heading" x="461" y="30" text-anchor="middle" fill="currentColor">Other system</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M91,45 V604 M276,45 V604 M461,45 V604" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+
+  <rect class="d-shape d-thin d-knockout" x="87.5" y="75" width="7" height="336" fill="none" stroke="currentColor"/>
+  <rect class="d-shape d-thin d-knockout" x="87.5" y="481" width="7" height="98" fill="none" stroke="currentColor"/>
+
+  <text x="73" y="85" text-anchor="end" fill="currentColor">Request</text>
+  <path class="d-line" d="M94.5,80 L276,138" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)"/>
+  <rect class="d-knockout" x="143.75" y="83" width="83" height="54" fill="none"/>
+  <text x="185.25" text-anchor="middle" fill="currentColor"><tspan x="185.25" y="96">read</tspan><tspan x="185.25" y="114">checkpoint</tspan><tspan x="185.25" y="132">ID_x</tspan></text>
+  <path class="d-line d-dashed" d="M276,138 L94.5,168" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="166.25" y="145" width="38" height="18" fill="none"/>
+  <text x="185.25" y="158" text-anchor="middle" fill="currentColor">null</text>
+  <path class="d-line" d="M94.5,198 L461,238" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)"/>
+  <rect class="d-knockout" x="255" y="210" width="45.5" height="18" fill="none"/>
+  <text x="277.75" y="223" text-anchor="middle" fill="currentColor">write</text>
+  <path class="d-line d-dashed" d="M461,238 L94.5,268" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)" stroke-dasharray="7 6"/>
+  <path class="d-line" d="M94.5,298 L276,356" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)"/>
+  <rect class="d-knockout" x="143.75" y="301" width="83" height="54" fill="none"/>
+  <text x="185.25" text-anchor="middle" fill="currentColor"><tspan x="185.25" y="314">write</tspan><tspan x="185.25" y="332">checkpoint</tspan><tspan x="185.25" y="350">ID_x = 1</tspan></text>
+  <path class="d-line d-dashed" d="M276,356 L94.5,386" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)" stroke-dasharray="7 6"/>
+  <g class="d-alert">
+    <path class="d-line d-cross" d="M84,399 l14,14 M98,399 l-14,14" fill="none" stroke="currentColor"/>
+  <rect class="d-knockout" x="103" y="398" width="180.5" height="18" fill="none"/>
+  <text x="107" y="411" text-anchor="start" fill="currentColor">crash or client timeout</text>
+  </g>
+
+  <path class="d-line d-dotted d-muted" d="M20,446 H512" stroke-dasharray="0 7" stroke-linecap="round"/>
+
+  <text x="73" y="491" text-anchor="end" fill="currentColor">Retry</text>
+  <path class="d-line" d="M94.5,486 L276,544" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)"/>
+  <rect class="d-knockout" x="143.75" y="489" width="83" height="54" fill="none"/>
+  <text x="185.25" text-anchor="middle" fill="currentColor"><tspan x="185.25" y="502">read</tspan><tspan x="185.25" y="520">checkpoint</tspan><tspan x="185.25" y="538">ID_x</tspan></text>
+  <path class="d-line d-dashed" d="M276,544 L94.5,574" fill="none" stroke="currentColor" marker-end="url(#recovery-point-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="177.5" y="551" width="15.5" height="18" fill="none"/>
+  <text x="185.25" y="564" text-anchor="middle" fill="currentColor">1</text>
+</svg>

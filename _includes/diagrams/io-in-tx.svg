@@ -1,0 +1,34 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="508" height="454" viewBox="0 0 508 454">
+  <defs>
+    <marker id="io-in-tx-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="67" y="30" text-anchor="middle" fill="currentColor">Application</text>
+  <text class="d-heading" x="252" y="30" text-anchor="middle" fill="currentColor">Database</text>
+  <text class="d-heading" x="437" y="30" text-anchor="middle" fill="currentColor">Other system</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M67,45 V434 M252,45 V434 M437,45 V434" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+
+
+  <path class="d-line" d="M67,80 L252,120" fill="none" stroke="currentColor" marker-end="url(#io-in-tx-arrow)"/>
+  <rect class="d-knockout" x="136.75" y="92" width="45.5" height="18" fill="none"/>
+  <text x="159.5" y="105" text-anchor="middle" fill="currentColor">BEGIN</text>
+  <path class="d-line d-dashed" d="M252,120 L67,150" fill="none" stroke="currentColor" marker-end="url(#io-in-tx-arrow)" stroke-dasharray="7 6"/>
+  <path class="d-line" d="M67,180 L252,220" fill="none" stroke="currentColor" marker-end="url(#io-in-tx-arrow)"/>
+  <rect class="d-knockout" x="151.75" y="192" width="15.5" height="18" fill="none"/>
+  <text x="159.5" y="205" text-anchor="middle" fill="currentColor">W</text>
+  <path class="d-line d-dashed" d="M252,220 L67,250" fill="none" stroke="currentColor" marker-end="url(#io-in-tx-arrow)" stroke-dasharray="7 6"/>
+  <path class="d-line" d="M67,280 L437,320" fill="none" stroke="currentColor" marker-end="url(#io-in-tx-arrow)"/>
+  <rect class="d-knockout" x="244.25" y="292" width="15.5" height="18" fill="none"/>
+  <text x="252" y="305" text-anchor="middle" fill="currentColor">W</text>
+  <path class="d-line d-dashed" d="M437,320 L67,350" fill="none" stroke="currentColor" marker-end="url(#io-in-tx-arrow)" stroke-dasharray="7 6"/>
+  <path class="d-line" d="M67,380 L178,404" fill="none" stroke="currentColor"/>
+  <rect class="d-knockout" x="96" y="384" width="53" height="18" fill="none"/>
+  <text x="122.5" y="397" text-anchor="middle" fill="currentColor">COMMIT</text>
+  <g class="d-alert">
+    <path class="d-line d-cross" d="M171,397 l14,14 M185,397 l-14,14" fill="none" stroke="currentColor"/>
+  <rect class="d-knockout" x="114" y="416" width="128" height="18" fill="none"/>
+  <text x="178" y="429" text-anchor="middle" fill="currentColor">crash or timeout</text>
+  </g>
+</svg>

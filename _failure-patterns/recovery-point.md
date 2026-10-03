@@ -55,11 +55,10 @@ For the example above, we might have three states: `OrderReceived`, `PaymentSucc
 
 Steps 3-5 could be consolidated into a single step using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
 
-{% include figure.html
-  img_src="/public/assets/failure-patterns/recovery-point.png"
-  alt="Sequence diagram for a recovery point"
+{% include diagram.html
+  name="recovery-point"
+  alt="Sequence diagram. Request: the application reads checkpoint ID_x from the database and gets null, writes to the other system, writes checkpoint ID_x = 1, then crashes or times out. Retry: reading checkpoint ID_x returns 1, so the application does not write to the other system again."
   caption="Recovering from failure using a recovery point. The retry does not write to the external system again."
-  size="med"
 %}
 
 Relying on the client to retry is a kind of **passive recovery**. This might leave the system in an inconsistent state if e.g. the [process crashes]({% link _failure-patterns/glossary.md %}#crash) while taking the payment and the client stops retrying. In which case we might want to consider **active recovery** using a [completer]({% link _failure-patterns/completer.md %}).

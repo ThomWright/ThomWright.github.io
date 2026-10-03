@@ -26,3 +26,13 @@ docker run --rm ruby:3.3-alpine sh -c "gem install rouge -v '~> 4.0' >/dev/null 
 ```
 
 The bundled Rouge is too old to have `github.dark`, hence Docker for the dark theme. Rouge 5 needs a native extension that doesn't build on the Alpine image, hence `~> 4.0`.
+
+### Generate the sequence diagrams
+
+Sequence diagrams are written as TypeScript in `diagrams/sequences/`, and generated as inline SVGs in `_includes/diagrams/`. GitHub Pages has no build step, so commit the generated files.
+
+```bash
+node diagrams/build.ts
+```
+
+Node 24 runs the TypeScript directly, with no dependencies. The diagram format is documented in `diagrams/sequence.ts`, and the house style in `public/css/_sass/_diagrams.scss`.

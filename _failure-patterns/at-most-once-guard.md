@@ -44,11 +44,10 @@ INSERT INTO guards (idempotency_key)
   RETURNING idempotency_key;
 ```
 
-{% include figure.html
-  img_src="/public/assets/failure-patterns/write-guard.png"
-  alt="Sequence diagram for writing a guard record"
+{% include diagram.html
+  name="write-guard"
+  alt="Sequence diagram. Request: the application writes a guard record to the database, which replies new, then writes to the other system. Retry: the application writes the guard record again, the database replies exists, and the application does not write to the other system again."
   caption="Writing a guard record"
-  size="med"
 %}
 
 This pattern trades [**liveness**]({% link _failure-patterns/glossary.md %}#safety-and-liveness) for [**safety**]({% link _failure-patterns/glossary.md %}#safety-and-liveness): it guarantees the operation won't happen more than once, but if the operation fails, it will never be retried.

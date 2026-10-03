@@ -1,0 +1,26 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="488" height="259" viewBox="0 0 488 259">
+  <defs>
+    <marker id="optimistic-conc-fix-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="59" y="30" text-anchor="middle" fill="currentColor">Request 1</text>
+  <text class="d-heading" x="244" y="30" text-anchor="middle" fill="currentColor">Database</text>
+  <text class="d-heading" x="429" y="30" text-anchor="middle" fill="currentColor">Request 2</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M59,45 V239 M244,45 V239 M429,45 V239" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+
+
+  <path class="d-line" d="M59,80 L244,129" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-fix-arrow)"/>
+  <rect class="d-knockout" x="121.25" y="87.5" width="60.5" height="36" fill="none"/>
+  <text x="151.5" text-anchor="middle" fill="currentColor"><tspan x="151.5" y="100.5">W x: 2</tspan><tspan x="151.5" y="118.5">if x: 1</tspan></text>
+  <path class="d-line d-dashed" d="M244,129 L59,159" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-fix-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="132.5" y="136" width="38" height="18" fill="none"/>
+  <text x="151.5" y="149" text-anchor="middle" fill="currentColor">x: 2</text>
+  <path class="d-line" d="M429,130 L244,179" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-fix-arrow)"/>
+  <rect class="d-knockout" x="306.25" y="137.5" width="60.5" height="36" fill="none"/>
+  <text x="336.5" text-anchor="middle" fill="currentColor"><tspan x="336.5" y="150.5">W x: 2</tspan><tspan x="336.5" y="168.5">if x: 1</tspan></text>
+  <path class="d-line d-dashed" d="M244,179 L429,209" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-fix-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="313.75" y="186" width="45.5" height="18" fill="none"/>
+  <text x="336.5" y="199" text-anchor="middle" fill="currentColor">error</text>
+</svg>

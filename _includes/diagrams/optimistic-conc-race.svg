@@ -1,0 +1,38 @@
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="488" height="350" viewBox="0 0 488 350">
+  <defs>
+    <marker id="optimistic-conc-race-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="d-heading" x="59" y="30" text-anchor="middle" fill="currentColor">Request 1</text>
+  <text class="d-heading" x="244" y="30" text-anchor="middle" fill="currentColor">Database</text>
+  <text class="d-heading" x="429" y="30" text-anchor="middle" fill="currentColor">Request 2</text>
+  <path class="d-line d-thin d-dashed d-muted" d="M59,45 V330 M244,45 V330 M429,45 V330" fill="none" stroke="currentColor" stroke-dasharray="7 6"/>
+
+
+  <path class="d-line" d="M59,80 L244,120" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)"/>
+  <rect class="d-knockout" x="136.25" y="92" width="30.5" height="18" fill="none"/>
+  <text x="151.5" y="105" text-anchor="middle" fill="currentColor">R x</text>
+  <path class="d-line d-dashed" d="M244,120 L59,150" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="132.5" y="127" width="38" height="18" fill="none"/>
+  <text x="151.5" y="140" text-anchor="middle" fill="currentColor">x: 1</text>
+  <path class="d-line" d="M59,180 L244,220" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)"/>
+  <rect class="d-knockout" x="125" y="192" width="53" height="18" fill="none"/>
+  <text x="151.5" y="205" text-anchor="middle" fill="currentColor">W x: 2</text>
+  <path class="d-line d-dashed" d="M244,220 L59,250" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="132.5" y="227" width="38" height="18" fill="none"/>
+  <text x="151.5" y="240" text-anchor="middle" fill="currentColor">x: 2</text>
+  <path class="d-line" d="M429,130 L244,170" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)"/>
+  <rect class="d-knockout" x="321.25" y="142" width="30.5" height="18" fill="none"/>
+  <text x="336.5" y="155" text-anchor="middle" fill="currentColor">R x</text>
+  <path class="d-line d-dashed" d="M244,170 L429,200" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="317.5" y="177" width="38" height="18" fill="none"/>
+  <text x="336.5" y="190" text-anchor="middle" fill="currentColor">x: 1</text>
+  <path class="d-line" d="M429,230 L244,270" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)"/>
+  <rect class="d-knockout" x="310" y="242" width="53" height="18" fill="none"/>
+  <text x="336.5" y="255" text-anchor="middle" fill="currentColor">W x: 2</text>
+  <path class="d-line d-dashed" d="M244,270 L429,300" fill="none" stroke="currentColor" marker-end="url(#optimistic-conc-race-arrow)" stroke-dasharray="7 6"/>
+  <rect class="d-knockout" x="317.5" y="277" width="38" height="18" fill="none"/>
+  <text x="336.5" y="290" text-anchor="middle" fill="currentColor">x: 2</text>
+</svg>

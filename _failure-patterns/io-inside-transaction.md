@@ -19,10 +19,10 @@ The following is not a solution to the problem:
 3. Perform a write operation on another system (e.g. an HTTP POST request)
 4. Commit the transaction
 
-{% include figure.html
-  img_src="/public/assets/failure-patterns/io-in-tx.png"
+{% include diagram.html
+  name="io-in-tx"
+  alt="Sequence diagram. The application begins a transaction, writes to the database, then writes to the other system. Its COMMIT never reaches the database, because of a crash or timeout."
   caption="An error occurring after writing to an external system."
-  size="med"
 %}
 
 It can be tempting to think of the two writes being atomic, but this is not the case. For example, if the system [crashes]({% link _failure-patterns/glossary.md %}#crash) between steps 3 and 4 (or the [transaction times out](https://www.postgresql.org/docs/15/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT), or...) then the HTTP request will succeed, but the write to the database will be rolled back.

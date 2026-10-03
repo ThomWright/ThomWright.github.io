@@ -25,10 +25,10 @@ Some write operations depend on the result of a previous read. Concurrent reques
 
 **Optimistic concurrency.** Each row in a table has an integer `version` column, which gets incremented on every update. Clients fetch a version, say 1, make some changes then try to write a new version, 2 in this case. Clients send the current version (1) along with the update request. The application checks that this version matches the version in the database. If they don't match, the update should be rejected. Race conditions can occur, as illustrated below.
 
-{% include figure.html
-  img_src="/public/assets/failure-patterns/optimistic-conc-race.png"
+{% include diagram.html
+  name="optimistic-conc-race"
+  alt="Sequence diagram. Request 1 and Request 2 each read x from the database and get 1. Request 1 writes x: 2, then Request 2 writes x: 2 over it."
   caption="Optimistic concurrency: race condition. Both requests read `x`, see version 1, and write version 2. The second overwrites the first."
-  size="med"
 %}
 
 ## Problem
@@ -51,10 +51,10 @@ Read-then-write isn’t the only problematic access pattern to watch out for. Se
 
 Using this pattern, one of the two requests in the optimistic concurrency example above will fail.
 
-{% include figure.html
-  img_src="/public/assets/failure-patterns/optimistic-conc-fix.png"
+{% include diagram.html
+  name="optimistic-conc-fix"
+  alt="Sequence diagram. Request 1 and Request 2 each send write x: 2 if x: 1 to the database. Request 1 gets x: 2 back, and Request 2 gets an error."
   caption="Optimistic concurrency: fixed using atomic read-then-write operations."
-  size="med"
 %}
 
 Using PostgreSQL, it's possible to implement this pattern with `INSERT ... ON CONFLICT` and conditional updates.
