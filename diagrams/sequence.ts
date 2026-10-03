@@ -69,10 +69,11 @@ const STEP = CALL_DROP + REPLY_DROP + STEP_GAP
 const BAR_HALF_WIDTH = 3.5
 const BAR_OVERHANG = 5
 const SECTION_LABEL_GAP = 18
+// Between a lane, or a cross on it, and a label beside it.
+const SIDE_LABEL_GAP = 16
 
 const CROSS_HALF = 7
 const FAIL_GAP = 20
-const FAIL_LABEL_GAP = 16
 // How far across its gap a failed call gets before it stops.
 const FAIL_FRACTION = 0.6
 
@@ -259,7 +260,7 @@ function failure(
 
   const labelled =
     placement === 'right'
-      ? label(ctx, text, { x: at.x + FAIL_LABEL_GAP, y: at.y }, 'start')
+      ? label(ctx, text, { x: at.x + SIDE_LABEL_GAP, y: at.y }, 'start')
       : label(ctx, text, { x: at.x, y: at.y + c + LINE_HEIGHT - BASELINE_SHIFT })
 
   ctx.out.push('  <g class="d-alert">', `  ${cross}`, labelled, '  </g>')
