@@ -4,6 +4,7 @@ title: "Connection pools: local vs shared"
 changes:
   - date: 2026-10-03
     summary: Corrected the restart benefit (it saves database work, not client latency) and added the cost of connecting to the pooler.
+last_modified_at: 2026-10-03
 tags: [databases, postgresql, connection pooling, performance]
 ---
 

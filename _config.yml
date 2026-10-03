@@ -62,4 +62,5 @@ exclude:
 - Gemfile.lock
 - README.md
 - diagrams
+- scripts
 - tmp

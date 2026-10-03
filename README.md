@@ -38,3 +38,27 @@ node diagrams/build.ts
 ```
 
 This regenerates the generated diagrams, and adds fallback attributes to every diagram for feed readers, which show them without the site's CSS. Node 24 runs the TypeScript directly, with no dependencies. The diagram formats are documented in `diagrams/sequence.ts`, `diagrams/timeline.ts` and `diagrams/plot.ts`, the fallbacks in `diagrams/fallbacks.ts`, and the house style in `public/css/_sass/_diagrams.scss`.
+
+### Record changes to a post
+
+When a published post changes substantively, add an entry to its `changes` front matter. The post header then shows "Updated" with the latest date, linking to a list of changes at the end of the post.
+
+```yaml
+changes:
+  - date: 2026-10-03
+    summary: Corrected the claim about restarts.
+```
+
+jekyll-seo-tag and jekyll-sitemap read the modified date from `last_modified_at` instead, so after editing `changes`, run:
+
+```bash
+node scripts/last-modified.ts
+```
+
+This sets `last_modified_at` to the latest change date. A pre-commit hook checks it's up to date. Enable the hook once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Run the script's tests with `node --test 'scripts/*.test.ts'`.
