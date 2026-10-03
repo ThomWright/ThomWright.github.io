@@ -8,7 +8,7 @@ export default {
       lane: 'client',
       steps: [
         { from: 'client', to: 'server', label: 'SYN', reply: 'SYN ACK' },
-        { from: 'client', to: 'server', label: 'ACK' },
+        { from: 'client', to: 'server', label: 'ACK', immediate: true },
       ],
     },
     { note: 'Connection enters\nAccept queue', lane: 'server' },
