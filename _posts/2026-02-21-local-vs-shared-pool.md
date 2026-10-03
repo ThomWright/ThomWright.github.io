@@ -39,7 +39,7 @@ Let's compare two pool configurations:
 The parameters:
 
 - **200 requests per second** total
-- **~25ms** average query latency – giving an average concurrency of around 5 (by [Little's Law](https://en.wikipedia.org/wiki/Little%27s_law): L = λW = 200 × 0.025)
+- **~25ms** average query latency, giving an average concurrency of around 5 (by [Little's Law](https://en.wikipedia.org/wiki/Little%27s_law): L = λW = 200 × 0.025)
 - **~50ms** average time to create a new connection
 - **0.1%** chance of destroying a connection after each use, to simulate connection churn
 
@@ -49,7 +49,7 @@ The [code is available on GitHub](https://github.com/ThomWright/pool-sim).
 
 ## A single pool
 
-Let's start with a single pool and the 200 RPS workload. With ~25ms average query latency, the average number of used connections – queries running at any moment – is around 5.
+Let's start with a single pool and the 200 RPS workload. With ~25ms average query latency, the average number of used connections (queries running at any moment) is around 5.
 
 {% include figure.html
   img_src="/public/assets/pools/app-pool.png"
@@ -83,7 +83,7 @@ It helps to look at the distribution of used connections.
 
 Used connections can spike up to around 16, even though the average is 5. To understand why the pool size tracks the peaks rather than the average, consider two extremes.
 
-Imagine a pool that creates a new connection for every request and destroys it immediately after. The number of open connections at any moment equals the used connections – averaging 5.
+Imagine a pool that creates a new connection for every request and destroys it immediately after. The number of open connections at any moment equals the used connections, averaging 5.
 
 Now imagine a pool that never destroys connections. It keeps growing until it reaches the peak used connections, then stays there. Pool size approaches the maximum rather than the average.
 
@@ -95,7 +95,7 @@ Our pool sits in between. It keeps connections alive for reuse, but occasionally
   size="med"
 %}
 
-Higher churn means fewer idle connections kept around, so the pool stays smaller – but at the cost of creating connections more often.
+Higher churn means fewer idle connections kept around, so the pool stays smaller, but at the cost of creating connections more often.
 
 ## Local vs shared
 
@@ -123,13 +123,13 @@ Why though? Each local pool handles one third of the traffic, so the average use
   size="med"
 %}
 
-It might not be obvious, but the distribution in this case is more spread out relative to its mean. Lower average traffic means more variability – the process spends a lot of time with zero or one used connection, but occasionally spikes. Each local pool has to be sized for those spikes, and with three pools doing the same thing independently, the total connection count adds up.
+It might not be obvious, but the distribution in this case is more spread out relative to its mean. Lower average traffic means more variability: the process spends a lot of time with zero or one used connection, but occasionally spikes. Each local pool has to be sized for those spikes, and with three pools doing the same thing independently, the total connection count adds up.
 
 The shared pool, on the other hand, sees the combined traffic from all three processes. Individual spikes tend to average out, so the combined distribution is tighter relative to its mean.
 
 Another way of thinking about it: each application process can use connections created by _other_ processes' requests, so they're less likely to need a new connection. This results in fewer connections overall.
 
-This is a property of the Poisson distribution. For a Poisson with arrival rate λ, the mean μ = λ and the standard deviation σ = √λ. As λ increases, σ also increases – but more slowly. The ratio σ/μ (standard deviation relative to the mean) gets smaller, meaning higher-traffic processes have proportionally less variability.
+This is a property of the Poisson distribution. For a Poisson with arrival rate λ, the mean μ = λ and the standard deviation σ = √λ. As λ increases, σ also increases, but more slowly. The ratio σ/μ (standard deviation relative to the mean) gets smaller, meaning higher-traffic processes have proportionally less variability.
 
 {% include video.html
   src="/public/assets/pools/poisson_variance.mp4"
@@ -137,7 +137,7 @@ This is a property of the Poisson distribution. For a Poisson with arrival rate 
   size="med"
 %}
 
-The shared pool sees the combined traffic from all processes, so it effectively operates at a higher λ. Its distribution is tighter relative to its mean – it doesn't need to keep as many spare connections around to cover rare spikes.
+The shared pool sees the combined traffic from all processes, so it effectively operates at a higher λ. Its distribution is tighter relative to its mean, so it doesn't need to keep as many spare connections around to cover rare spikes.
 
 We can see this directly in the example below. Three independent Poisson distributions combine into a single Poisson with three times the mean. But the peak of the combined distribution is less than the sum of the three individual peaks.
 
@@ -148,7 +148,7 @@ We can see this directly in the example below. Three independent Poisson distrib
   controls=false
 %}
 
-The difference between the sum of individual peaks and the combined peak – shown as 2.8 in the diagram above – is the saving from using a shared pool. Admittedly I've simplified the maths a bit by using one standard deviation above the mean as a proxy for the peak, but the principle holds.
+The difference between the sum of individual peaks and the combined peak (shown as 2.8 in the diagram above) is the saving from using a shared pool. Admittedly I've simplified the maths a bit by using one standard deviation above the mean as a proxy for the peak, but the principle holds.
 
 The effect becomes even more pronounced with 10 processes.
 
@@ -170,11 +170,11 @@ The effect becomes even more pronounced with 10 processes.
   size="med"
 %}
 
-Each process is now handling 20 RPS, averaging less than one used connection. The distribution is almost entirely zeros and ones, with rare spikes. The pools in total now need around 48 open connections to cover those spikes – up from 23 with three processes. Compare that with the shared pool sitting at around 14 open connections.
+Each process is now handling 20 RPS, averaging less than one used connection. The distribution is almost entirely zeros and ones, with rare spikes. The pools in total now need around 48 open connections to cover those spikes, up from 23 with three processes. Compare that with the shared pool sitting at around 14 open connections.
 
 ## Practical implications
 
-The simulation might be a simplification, but the principle applies to real systems. The more application processes you have, the more a shared pool helps. With a small number of processes the saving is modest, but with tens or hundreds it becomes significant.
+The simulation is a simplification, but the principle applies to real systems. The more application processes you have, the more a shared pool helps. With a small number of processes the saving is modest, but with tens or hundreds it becomes significant.
 
 A shared pool also helps during restarts and scale-out events. When a process restarts or a new replica comes up, it doesn't need to spend time creating fresh connections – it can immediately borrow existing connections from the pool. This is especially valuable when connections are expensive to establish, as they often are with TLS and authentication overhead. For a concrete example, [PostgreSQL's SCRAM-SHA-256 authentication](https://github.com/launchbadge/sqlx/issues/4005) can add significant latency to connection establishment.
 
