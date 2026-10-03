@@ -3,9 +3,6 @@ layout: post
 title: Typography Test
 tags: [test, typography]
 toc: true
-guest_author:
-  name: Me (Thom Wright)
-  url: https://thomwright.co.uk
 ---
 
 <!--markdownlint-disable MD059-->

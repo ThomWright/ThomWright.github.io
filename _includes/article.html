@@ -15,9 +15,6 @@
     <div class="post-metadata">
       <time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time>
       {% include updated.html article=article %}
-      {% if article.guest_author %}
-      <span>Guest Author: <a href="{{ article.guest_author.url }}">{{ article.guest_author.name }}</a></span>
-      {% endif %}
       {% include tags.html tags=article.tags %}
     </div>
   </header>
@@ -43,9 +40,6 @@
     <div class="post-metadata">
       <time datetime="{{ article.date | date: "%Y-%m-%d" }}">{{ article.date | date_to_string }}</time>
       {% include updated.html article=article %}
-      {% if article.guest_author %}
-      <span>Guest Author: <a href="{{ article.guest_author.url }}">{{ article.guest_author.name }}</a></span>
-      {% endif %}
       {% if article.canonical %}
       <a href="{{ article.canonical }}">
         Original
