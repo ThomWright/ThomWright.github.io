@@ -1,6 +1,9 @@
 ---
 layout: post
 title: "Connection pools: local vs shared"
+changes:
+  - date: 2026-10-03
+    summary: Corrected the restart benefit (it saves database work, not client latency) and added the cost of connecting to the pooler.
 tags: [databases, postgresql, connection pooling, performance]
 ---
 
@@ -176,6 +179,10 @@ Each process is now handling 20 RPS, averaging less than one used connection. Th
 
 The simulation is a simplification, but the principle applies to real systems. The more application processes you have, the more a shared pool helps. With a small number of processes the saving is modest, but with tens or hundreds it becomes significant.
 
-A shared pool also helps during restarts and scale-out events. When a process restarts or a new replica comes up, it doesn't need to spend time creating fresh connections – it can immediately borrow existing connections from the pool. This is especially valuable when connections are expensive to establish, as they often are with TLS and authentication overhead. For a concrete example, [PostgreSQL's SCRAM-SHA-256 authentication](https://github.com/launchbadge/sqlx/issues/4005) can add significant latency to connection establishment.
+A shared pool also helps during restarts and scale-out. A new process can use the pool's existing database connections instead of opening its own, so a wave of restarts doesn't become a wave of new connections on the database. In PostgreSQL each of those costs a TLS handshake, authentication and a new backend process.
 
-One big cost of a shared pool is the operational overhead of running another system. There's also the extra network hop – queries go through e.g. PgBouncer rather than directly to the database. Whether that's worth it depends on your setup, but for most applications with more than a handful of processes, the connection savings are substantial.
+The application itself saves little. It still opens a TCP connection to the pooler, negotiates TLS and authenticates, so connecting isn't much faster for it. Poolers are often configured with the same authentication method as the database, and [SCRAM-SHA-256](https://github.com/launchbadge/sqlx/issues/4005) is not cheap.
+
+The costs include operational overhead from running another system, and an extra network hop: queries go through PgBouncer rather than straight to the database.
+
+In the simulation, 10 processes needed around 48 connections with local pools and 14 with a shared one. Whether that outweighs the operational cost and the extra hop depends on how many processes you run and how often they restart.
