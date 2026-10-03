@@ -8,6 +8,7 @@ guest_author:
   url: https://thomwright.co.uk
 ---
 
+<!--markdownlint-disable MD059-->
 Some intro text with a [link](https://google.com).
 
 ## Sub-Heading
