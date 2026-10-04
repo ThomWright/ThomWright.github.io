@@ -15,7 +15,7 @@ Let's start by looking at the full cost of establishing a connection to a databa
   content="PostgreSQL is what I'm most familiar with. Different databases will vary on some details, but the concepts should still apply."
 %}
 
-The following assumes you're using [SCRAM-SHA](https://www.postgresql.org/docs/18/auth-password.html#AUTH-PASSWORD) as the authentication method.
+The following assumes you're using TLS 1.3, and [SCRAM-SHA](https://www.postgresql.org/docs/18/auth-password.html#AUTH-PASSWORD) as the authentication method.
 
 {% include diagram.html
   name="pg-connect"
@@ -27,7 +27,8 @@ That's six round trips to the database before we can make a query! Plus a load o
 
 Some simplifying assumptions we'll be making:
 
-- Every request opens one, and only one, connection
+- Each request acquires one connection, new or pooled, and holds it until the request finishes
+- There's a single pooler instance (for now)
 - TODO:
 
 With this in mind, let's look at a few key decisions we need to make when designing a connection pooling architecture.
@@ -80,7 +81,13 @@ Let's first look at replacing the application-side pool with a shared pooler.
 
 As discussed, this can significantly reduce the number of connections, and therefore the number of database backends. But what's the catch? Well, instead of just taking an existing connection from its own pool, the application needs to connect _to the pooler_. This can add significant latency to every request.
 
-Now, there are some optimisations to be made here. For example, PostgreSQL 17+ has `sslnegotiation=direct` (TODO: add link), which can cut down one round trip. MySQL has `caching_sha2_password` (TODO: again, link), which can cut down on some of the authentication flow. But if the application isn't pooling its own connections to the pooler, then fundamentally there's going to be some overhead, at least for TCP and TLS.
+{% include diagram.html
+  name="pool-patterns-wiring-pooler"
+  alt="Two of three applications each have one connection to the pooler, for a request in flight. Inside the pooler, each is wired straight through to its own database connection. The pooler also keeps one idle database connection spare, not wired to any client, so the database has three backends."
+  caption="Per request through a pooler: requests in flight hold a backend each, plus a spare (dashed) shared by everyone"
+%}
+
+Now, there are some potential optimisations to be made here. For example, PostgreSQL 17+ has [`sslnegotiation=direct`](https://www.postgresql.org/docs/17/libpq-connect.html#LIBPQ-CONNECT-SSLNEGOTIATION), which cuts out one round trip by starting the TLS handshake straight away. MySQL has [`caching_sha2_password`](https://dev.mysql.com/doc/refman/8.4/en/caching-sha2-pluggable-authentication.html), which caches successful authentications so that reconnecting takes a shorter path. Note that these need support from whatever the client connects to, which is now the pooler, not the database. But if the application isn't pooling its own connections to the pooler, then fundamentally there's going to be some overhead: at least two round trips (TCP and TLS) before the first query, against none with a warm local pool.
 
 OK, so what if we also pooled connections application side, would that solve the problem?
 
@@ -90,7 +97,17 @@ OK, so what if we also pooled connections application side, would that solve the
   caption="Connecting through a pooler with local pools"
 %}
 
-TODO: why this is a problem, assuming the application has exclusive use of the database connection. The high connection usage problem comes back! But we do potentially solve the cold start problem.
+Not quite. When the application releases a connection back to its local pool, the connection stays open. From the pooler's point of view, nothing has happened: there's no "I'm done" message in the protocol. The client might send another query at any moment, and that query might depend on something left on the backend, like a `SET` or a lock. So the pooler has to keep that backend reserved for that client connection until it disconnects.
+
+In practice, each connection in each local pool holds a backend, and we're back to the same number of backends as without a pooler, plus an extra hop.
+
+{% include diagram.html
+  name="pool-patterns-wiring-pooler-local"
+  alt="Three applications, each with a local pool of two connections to the pooler. Two connections are in use and four are idle. Inside the pooler, all six are wired straight through to their own database connection. The pooler also keeps one idle database connection spare, not wired to any client, so the database has seven backends, five of them idle."
+  caption="Local pools through a pooler: idle connections (dashed) still hold a backend each, on top of the pooler's spare"
+%}
+
+It's not all bad though. When an application restarts, its old connections close, and their backends go back to the pooler, ready to hand to the new process's cold pool. The new process still connects to the pooler, but the database doesn't see a burst of new connections.
 
 {% include diagram.html
   name="pool-patterns-seq-pooler"
@@ -111,8 +128,6 @@ Another, perhaps minor, disadvantage: every query goes through an extra network 
   alt="A timeline of three backends. Each is held by one client connection, A, B or C, for the whole time, including while the connection is idle between transactions."
   caption="Each client connection (A, B, C) holds a backend for its whole life, even while idle between transactions"
 %}
-
-TODO: Could we do a sort of topology diagram showing 1:1 app->pooler pooler->db connections? And then contrast that later?
 
 ...
 
@@ -136,6 +151,12 @@ TODO: Introducing: the different modes. I guess we might as well list the ones P
   name="pool-patterns-transaction"
   alt="A timeline of two backends running the same transactions from client connections A, B and C. Each transaction takes whichever backend is free, so A's third transaction runs on backend 2 after its first two ran on backend 1."
   caption="Per-transaction: the same transactions need only two backends, but a client connection's transactions can run on different backends"
+%}
+
+{% include diagram.html
+  name="pool-patterns-wiring-pooler-local-txn"
+  alt="Three applications, each with a local pool of two connections to the pooler. Two connections are in use and four are idle. Inside the pooler, only the two in use are wired to database connections. The pooler also keeps one idle database connection spare, not wired to any client, so the database has three backends."
+  caption="Local pools through a per-transaction pooler: idle connections (dashed) don't hold a backend, and one spare is shared by everyone"
 %}
 
 ## Summary
