@@ -4,6 +4,8 @@ layout: post
 tags: [databases, postgresql, connection pooling, performance, patterns]
 ---
 
+<!-- markdownlint-disable MD033 -->
+
 I've [previously discussed]({% post_url 2026-02-21-local-vs-shared-pool %}) how using local vs shared connection pools can significantly change the number of open connections to your database. This isn't the only consideration, so this post will go more in depth on different patterns and their trade-offs.
 
 Let's start by looking at the full cost of establishing a connection to a database, taking PostgreSQL as an example.
@@ -22,6 +24,11 @@ The following assumes you're using [SCRAM-SHA](https://www.postgresql.org/docs/1
 %}
 
 That's six round trips to the database before we can make a query! Plus a load of hashing. We probably don't want to do this very often if we can avoid it.
+
+Some simplifying assumptions we'll be making:
+
+- Every request opens one, and only one, connection
+- TODO:
 
 With this in mind, let's look at a few key decisions we need to make when designing a connection pooling architecture.
 
@@ -63,13 +70,27 @@ To solve these problems, what if we introduced a shared connection pooler? We th
 
 ## Adding a shared pooler
 
+Let's first look at replacing the application-side pool with a shared pooler.
+
 {% include diagram.html
   name="pool-patterns-pooler"
   alt="Three application processes connect to a shared pooler, which connects to the database."
-  name_2="pool-patterns-pooler-local"
-  alt_2="Three application processes, each with its own pool, connect to a shared pooler, which connects to the database."
-  caption="Connecting through a pooler, without and with local pools"
+  caption="Connecting through a pooler"
 %}
+
+As discussed, this can significantly reduce the number of connections, and therefore the number of database backends. But what's the catch? Well, instead of just taking an existing connection from its own pool, the application needs to connect _to the pooler_. This can add significant latency to every request.
+
+Now, there are some optimisations to be made here. For example, PostgreSQL 17+ has `sslnegotiation=direct` (TODO: add link), which can cut down one round trip. MySQL has `caching_sha2_password` (TODO: again, link), which can cut down on some of the authentication flow. But if the application isn't pooling its own connections to the pooler, then fundamentally there's going to be some overhead, at least for TCP and TLS.
+
+OK, so what if we also pooled connections application side, would that solve the problem?
+
+{% include diagram.html
+  name="pool-patterns-pooler-local"
+  alt="Three application processes, each with its own pool, connect to a shared pooler, which connects to the database."
+  caption="Connecting through a pooler with local pools"
+%}
+
+TODO: why this is a problem, assuming the application has exclusive use of the database connection. The high connection usage problem comes back! But we do potentially solve the cold start problem.
 
 {% include diagram.html
   name="pool-patterns-seq-pooler"
@@ -77,13 +98,27 @@ To solve these problems, what if we introduced a shared connection pooler? We th
   caption="Per request through a pooler: the client still pays to connect, but the database doesn't"
 %}
 
+Another, perhaps minor, disadvantage: every query goes through an extra network hop. How bad this is depends on the additional latency this adds, influenced by e.g. network topology (how close the pooler is to the application/database), and also how congested the pooler is.
+
 {% include diagram.html
   name="pool-patterns-seq-pooler-local"
   alt="A sequence diagram of one request through a pooler, with a local pool. The query goes to the pooler, which forwards it to the database, and the rows come back the same way."
   caption="A local pool through a pooler: no connect, but every query takes the extra hop"
 %}
 
+{% include diagram.html
+  name="pool-patterns-session"
+  alt="A timeline of three backends. Each is held by one client connection, A, B or C, for the whole time, including while the connection is idle between transactions."
+  caption="Each client connection (A, B, C) holds a backend for its whole life, even while idle between transactions"
+%}
+
+TODO: Could we do a sort of topology diagram showing 1:1 app->pooler pooler->db connections? And then contrast that later?
+
 ...
+
+TODO: An elephant in the room at this point is that we've assumed that there's only _one_ instance of the pooler, for simplicity. Really, we'd want at least three for redundancy. Otherwise, any downtime turns into a complete outage, and any restart reintroduces the cold start problem.
+
+TODO: Even with multiple poolers, how do they restart without affecting the application? Force close all their connections? Not a great experience. On average 1/K connections would suddenly die per application. Remove themselves from the load balancer and let the connections drain? Much better, but could take a long time? (I think there are clever things you can do to hand over sockets between two processes, but this also means the replica is somewhat pinned to a machine, so can't solve everything, right?)
 
 {% include diagram.html
   name="pool-patterns-poolers"
@@ -91,13 +126,11 @@ To solve these problems, what if we introduced a shared connection pooler? We th
   caption="Several applications sharing several poolers"
 %}
 
-{% include diagram.html
-  name="pool-patterns-session"
-  alt="A timeline of three backends. Each is held by one client connection, A, B or C, for the whole time, including while the connection is idle between transactions."
-  caption="Session-pinned: each client connection (A, B, C) holds a backend for its whole life, even while idle between transactions"
-%}
+TODO: what if we want to decouple the app->pooler conns from the pooler->db conns?
 
 ## Pooling mode
+
+TODO: Introducing: the different modes. I guess we might as well list the ones PgBouncer supports.
 
 {% include diagram.html
   name="pool-patterns-transaction"
@@ -108,7 +141,7 @@ To solve these problems, what if we introduced a shared connection pooler? We th
 ## Summary
 
 | | Per request | Local pool |
-|---|---|---|
+| --- | --- | --- |
 | **Database** | 🔴 latency<br>🔴 database load | 🟢 latency<br>🔴 backends |
 | **Pooler, session-pinned** | 🔴 latency<br>🟢 database load<br>🟢 backends<br>🟢 session state | 🟢 latency<br>🔴 backends<br>🟡 extra component<br>🟢 session state |
 | **Pooler, per-transaction** | 🔴 latency<br>🟢 database load<br>🟢 backends<br>🟡 session state | 🟢 latency<br>🟢 backends<br>🟡 extra component<br>🟡 session state |
@@ -116,7 +149,7 @@ To solve these problems, what if we introduced a shared connection pooler? We th
 <div class="table-wrapper" markdown="block">
 
 | | Connect latency | Database load | Backends | Extra component | Session state |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | **Database** | | | | | |
 | Per request | 🔴 | 🔴 | 🟢 | 🟢 | 🟢 |
 | Local pool | 🟢 | 🟢 | 🔴 | 🟢 | 🟢 |
