@@ -1,6 +1,10 @@
 ---
 layout: post
 title: Designing alerts for SLOs
+changes:
+  - date: 2024-01-29
+    summary: Corrected the 3-day error ratio, which averaged hourly ratios instead of summing counts.
+last_modified_at: 2024-01-29
 tags: [alerting, observability, reliability]
 toc: true
 redirect_from:
