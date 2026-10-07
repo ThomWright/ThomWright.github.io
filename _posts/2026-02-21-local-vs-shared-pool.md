@@ -2,9 +2,11 @@
 layout: post
 title: "Connection pools: local vs shared"
 changes:
+  - date: 2026-10-07
+    summary: Clarified that the simulation's shared pool models transaction pooling, and that the saving needs many more application processes than poolers.
   - date: 2026-10-03
     summary: Corrected the restart benefit (it saves database work, not client latency) and added the cost of connecting to the pooler.
-last_modified_at: 2026-10-03
+last_modified_at: 2026-10-07
 tags: [databases, postgresql, connection pooling, performance]
 ---
 
@@ -47,7 +49,7 @@ The parameters:
 - **~50ms** average time to create a new connection
 - **0.1%** chance of destroying a connection after each use, to simulate connection churn
 
-Assumptions: no maximum connection limit, no request queueing, and no network latency.
+Assumptions: no maximum connection limit, no request queueing, and no network latency. The shared pool effectively models a pooler using transaction pooling: a request only holds a database connection while its query runs.
 
 The [code is available on GitHub](https://github.com/ThomWright/pool-sim).
 
@@ -178,11 +180,11 @@ Each process is now handling 20 RPS, averaging less than one used connection. Th
 
 ## Practical implications
 
-The simulation is a simplification, but the principle applies to real systems. The more application processes you have, the more a shared pool helps. With a small number of processes the saving is modest, but with tens or hundreds it becomes significant.
+The simulation is a simplification, but the principle applies to real systems. The more application processes you have, the more a shared pool helps. With a small number of processes the saving is modest, but with tens or hundreds it becomes significant. In practice you'd run a few poolers for redundancy, each with its own spare connections, so the saving depends on having many more application processes than poolers.
 
 A shared pool also helps during restarts and scale-out. A new process can use the pool's existing database connections instead of opening its own, so a wave of restarts doesn't become a wave of new connections on the database. In PostgreSQL each of those costs a TLS handshake, authentication and a new backend process.
 
-The application itself saves little. It still opens a TCP connection to the pooler, negotiates TLS and authenticates, so connecting isn't much faster for it. Poolers are often configured with the same authentication method as the database, and [SCRAM-SHA-256](https://github.com/launchbadge/sqlx/issues/4005) is not cheap.
+If the application connects to the pooler per request, it saves little itself. It still opens a TCP connection to the pooler, negotiates TLS and authenticates, so connecting isn't much faster for it. Poolers are often configured with the same authentication method as the database, and [SCRAM-SHA-256](https://github.com/launchbadge/sqlx/issues/4005) is not cheap. With transaction pooling, it can avoid this by keeping its own pool of connections to the pooler.
 
 The costs include operational overhead from running another system, and an extra network hop: queries go through PgBouncer rather than straight to the database.
 
