@@ -4,7 +4,9 @@ title: Designing alerts for SLOs
 changes:
   - date: 2024-01-29
     summary: Corrected the 3-day error ratio, which averaged hourly ratios instead of summing counts.
-last_modified_at: 2024-01-29
+  - date: 2026-10-07
+    summary: Fixed the 3-day error ratio's denominator, which counted errors instead of all requests.
+last_modified_at: 2026-10-07
 tags: [alerting, observability, reliability]
 toc: true
 redirect_from:
@@ -491,10 +493,10 @@ Luckily, there's another way!
     (
       sum_over_time(service:requests_errors_total:rate1h[3d:1h])
       /
-      sum_over_time(service:requests_errors_total:rate1h[3d:1h]) > 0
+      (sum_over_time(service:requests_total:rate1h[3d:1h]) > 0)
     )
     # When we don't have data (default to 0% error rate)
-    OR (sum_over_time(service:requests_errors_total:rate1h[3d:1h]) * 0)
+    OR (sum_over_time(service:requests_total:rate1h[3d:1h]) * 0)
 ```
 
 Here we have some recording rules to pre-calculate hourly error ratios. These are quick to calculate using recording rules: Prometheus only needs to look back over the previous hour.
