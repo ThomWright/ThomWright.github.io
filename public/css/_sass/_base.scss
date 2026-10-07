@@ -38,6 +38,7 @@ h5,
 h6 {
   font: {
     family: $heading-font-family;
+    weight: 600;
   }
 
   line-height: $heading-line-height;
@@ -46,14 +47,12 @@ h6 {
 
 h1 {
   font: {
-    weight: 700;
     size: modular-scale(3);
   }
 }
 
 h2 {
   font: {
-    weight: 700;
     size: modular-scale(2);
   }
   color: var(--text-h2);
@@ -61,7 +60,6 @@ h2 {
 
 h3 {
   font: {
-    weight: 400;
     size: modular-scale(1);
   }
   color: var(--text-h3);
@@ -69,7 +67,6 @@ h3 {
 
 h4 {
   font: {
-    weight: 400;
     size: modular-scale(0);
   }
   color: var(--text-h4);
@@ -192,7 +189,6 @@ figcaption {
 .related {
   h2 {
     font: {
-      weight: 400;
       size: modular-scale(1);
     }
     color: var(--text-h3);
