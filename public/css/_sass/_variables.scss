@@ -52,7 +52,7 @@ $heading-font-family: 'Source Serif 4', serif;
 $mono-font-family: 'Inconsolata', monospace;
 
 // Font Sizes
-$base-font-size: 1em;
+$base-font-size: em(17);
 $title-font-size: modular-scale(3);
 
 // Line height
