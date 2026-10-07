@@ -14,12 +14,12 @@ Most of this can be avoided by answering two questions before adding a cache (an
 
 The first question is: what's the goal? Possible goals for a cache include:
 
-- **Increase availability** — by returning (potentially stale) data even when a system you depend on is unavailable
-- **Reduce latency** — by turning an expensive operation into a fast lookup of a previously computed value
-- **Reduce load** — by reducing the number of (potentially expensive) operations on a system
-- **Reduce cost** — by reducing the number of _billable_ operations on a system
+- **Increase availability** – by returning (potentially stale) data even when a system you depend on is unavailable
+- **Reduce latency** – by turning an expensive operation into a fast lookup of a previously computed value
+- **Reduce load** – by reducing the number of (potentially expensive) operations on a system
+- **Reduce cost** – by reducing the number of _billable_ operations on a system
 
-When you use a cache, it should be clear which of the above goals you're optimising for. These often overlap in practice — a cache that reduces load will often also reduce latency. There can be more than one, but it's often simpler to just focus on a single primary goal.
+When you use a cache, it should be clear which of the above goals you're optimising for. These often overlap in practice – a cache that reduces load will often also reduce latency. There can be more than one, but it's often simpler to just focus on a single primary goal.
 
 The second question is: why is it a real problem worth solving?
 
@@ -34,10 +34,10 @@ Similarly, if your database can easily handle the load (or could by simply using
 
 So, first define the problem. Examples:
 
-- **Availability** — the system you depend on could take you below your availability SLO. This is either likely, or has significant impact if it does happen.
-- **Latency** — the system you depend on is too slow to meet your latency SLO.
-- **Load** — the system you depend on is reaching capacity limits and you need to reduce the number of requests it receives. Overloading it would increase latency and/or reduce availability (this is sort of _availability_ and _latency_ in disguise, but I think it's worth calling out anyway).
-- **Cost** — the system you depend on is exceeding your infrastructure budget.
+- **Availability** – the system you depend on could take you below your availability SLO. This is either likely, or has significant impact if it does happen.
+- **Latency** – the system you depend on is too slow to meet your latency SLO.
+- **Load** – the system you depend on is reaching capacity limits and you need to reduce the number of requests it receives. Overloading it would increase latency and/or reduce availability (this is sort of _availability_ and _latency_ in disguise, but I think it's worth calling out anyway).
+- **Cost** – the system you depend on is exceeding your infrastructure budget.
 
 Notice that these tend to mention quantifiable metrics such as SLOs, capacity, and budget. Of course, you could just make up an SLO, but it _should_ be based on _something_ reasonable like user experience. Something meaningful to your business/product/system.
 
@@ -73,9 +73,9 @@ The downside of client-side caches is that the owner of the data has no control 
 
 Events give you fresher data, but they're not always an option. You need to:
 
-- **See changes happen** — either you own the data, or its owner publishes change events
-- **Know which entries a change affects** — not always possible, e.g. if your keys are built from search parameters
-- **Reach every copy of the cache** — much harder once there are many of them (a local cache in every instance, or a client-side cache in every caller)
+- **See changes happen** – either you own the data, or its owner publishes change events
+- **Know which entries a change affects** – not always possible, e.g. if your keys are built from search parameters
+- **Reach every copy of the cache** – much harder once there are many of them (a local cache in every instance, or a client-side cache in every caller)
 
 If any of these doesn't hold, a TTL is your only option. Even when they all do, I'd still use a TTL as a backstop, because events can get lost.
 

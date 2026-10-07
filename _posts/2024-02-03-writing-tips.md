@@ -242,7 +242,7 @@ A technical design for a project. Likely to follow a product brief, clearly just
 - **Related resources**
 - **Appendices**
 
-  *Supplementary information, stuff that's useful but not required - E.g. links to relevant blog posts.*
+  *Supplementary information, stuff that's useful but not required – E.g. links to relevant blog posts.*
 
 ## Further reading
 

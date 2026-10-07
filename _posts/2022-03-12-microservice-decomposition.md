@@ -69,7 +69,7 @@ Not only do dependency relationships make it hard to make changes, they also ope
 
 Services do have to depend on each other at some point, they will not be completely independent. That said, we need to **be careful where we introduce new dependencies**. We have several strategies for reducing these relationships.
 
-I generally like the idea of trying to **structure service dependencies as a [directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)** (DAG) - and discouraging circular dependencies. This helps avoid high coupling between services. If you have a circular dependency between two services, consider whether their domains are tightly coupled enough that they should be consolidated into a single service. Also, if a circular dependency is making it hard to **independently deploy your services**, then strongly consider fixing it.
+I generally like the idea of trying to **structure service dependencies as a [directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)** (DAG) – and discouraging circular dependencies. This helps avoid high coupling between services. If you have a circular dependency between two services, consider whether their domains are tightly coupled enough that they should be consolidated into a single service. Also, if a circular dependency is making it hard to **independently deploy your services**, then strongly consider fixing it.
 
 As a consequence, **services should know nothing about their clients**. For example, if your `internal-x` service knows anything about one of its clients named `client-service-y` then something has gone wrong. If the name `client-service-y` appears anywhere in the `internal-x` codebase, then it's an indicator that it knows too much. Even the existence of client services should be hidden. This means no special logic to change behaviour based on who is making the request.
 
@@ -91,7 +91,7 @@ As an example, services are likely to be running in several environments, e.g. s
 
 In practice, this means the environment and service are _coupled with respect to configuration changes_. If we want to change a log level, we would need to change that in the service, build a new version, then change the service version in the production environment.
 
-However, if we keep environment-specific configuration out of the service, then it means we can change this log level without having to change the service itself, or rebuild it. See [The Twelve-Factor App - Config](https://12factor.net/config) for a deeper discussion of this concept.
+However, if we keep environment-specific configuration out of the service, then it means we can change this log level without having to change the service itself, or rebuild it. See [The Twelve-Factor App – Config](https://12factor.net/config) for a deeper discussion of this concept.
 
 In truth, a lot of this advice about dependencies and coupling isn't just for microservices, it's generally applicable for many situations.
 

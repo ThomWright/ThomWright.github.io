@@ -68,7 +68,7 @@ Two fundamental properties used to reason about distributed systems:
 
 These properties often trade off against each other. A system that never acts is perfectly safe but has no liveness. A system that always acts immediately may have good liveness but risk safety violations.
 
-*Example: the [at-most-once guard]({% link _failure-patterns/at-most-once-guard.md %}) trades liveness for safety — it guarantees a side effect won't happen more than once (safety), but if the operation fails after the guard is written, it will never be retried (no liveness).*
+*Example: the [at-most-once guard]({% link _failure-patterns/at-most-once-guard.md %}) trades liveness for safety – it guarantees a side effect won't happen more than once (safety), but if the operation fails after the guard is written, it will never be retried (no liveness).*
 
 ## Definite error
 

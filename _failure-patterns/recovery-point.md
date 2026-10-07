@@ -43,17 +43,17 @@ For the example above, we might have three states: `OrderReceived`, `PaymentSucc
 1. Fetch recovery point for the idempotency key.
     - If it exists, advance to that point in the operation.
 2. Transaction:
-    - Insert recovery point - state: `OrderReceived`
+    - Insert recovery point – state: `OrderReceived`
     - Insert order details
     - Update stock availability
 3. Take payment
-4. Update recovery point - state: `PaymentSuccess`
+4. Update recovery point – state: `PaymentSuccess`
 5. Publish `NewOrder` message
     - In the background work will be scheduled to email the customer and start the shipping process
-6. Update recovery point - state: `OrderFinished`
+6. Update recovery point – state: `OrderFinished`
     - Perhaps a [Response record]({% link _failure-patterns/response-record.md %})
 
-Steps 3-5 could be consolidated into a single step using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
+Steps 3–5 could be consolidated into a single step using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
 
 {% include diagram.html
   name="recovery-point"

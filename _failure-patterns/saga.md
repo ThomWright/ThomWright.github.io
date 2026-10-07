@@ -42,9 +42,9 @@ These backwards transitions are known as **compensating actions**, and are effec
 
 For the travel booking example, we might have three states:
 
-1. Nothing booked (initial state, terminal state) - `∅`
-2. Flight booked (intermediate state) - `FB`
-3. Flight and hotel booked (terminal state) - `FB HB`
+1. Nothing booked (initial state, terminal state) – `∅`
+2. Flight booked (intermediate state) – `FB`
+3. Flight and hotel booked (terminal state) – `FB HB`
 
 And two forward operations: `book flight` and `book hotel`. If we end up in a state where we've booked the flight but cannot book the hotel (e.g. because it is full), then we need the backward operation: `cancel flight`.
 
