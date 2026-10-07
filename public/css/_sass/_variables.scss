@@ -49,7 +49,7 @@ $large-desktop-up: new-breakpoint(min-width $large-desktop-width 12);
 // Font
 $base-font-family: 'Open Sans', sans-serif;
 $heading-font-family: 'Lato', sans-serif;
-$mono-font-family: 'Inconsolata';
+$mono-font-family: 'Inconsolata', monospace;
 
 // Font Sizes
 $base-font-size: 1em;
