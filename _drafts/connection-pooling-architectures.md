@@ -1,7 +1,7 @@
 ---
-title: "Connection pools: patterns"
+title: "Connection pooling architectures"
 layout: post
-tags: [databases, postgresql, connection pooling, performance, patterns]
+tags: [databases, postgresql, connection pooling, performance, architecture]
 ---
 
 I've [previously discussed]({% post_url 2026-02-21-local-vs-shared-pool %}) how using local vs shared connection pools can significantly change the number of open connections to your database. This isn't the only consideration, so this post will go more in depth on different patterns and their trade-offs.
