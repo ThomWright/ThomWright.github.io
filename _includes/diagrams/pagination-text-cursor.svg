@@ -1,4 +1,4 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="124" height="64" viewBox="0 0 124 64" font-family="monospace" font-size="12.5">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="124" height="64" viewBox="0 0 124 64" font-family="monospace" font-size="12.5" style="--diagram-width: 124px">
   <!-- Anchored either side of the caret, so it stays between them in any font -->
   <text x="60" y="42" font-size="28" text-anchor="end" fill="currentColor">Cur</text>
   <text x="64" y="42" font-size="28" fill="currentColor">sor</text>

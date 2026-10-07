@@ -1,4 +1,4 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="620" height="225" viewBox="0 0 620 225" font-family="monospace" font-size="12.5">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="620" height="225" viewBox="0 0 620 225" font-family="monospace" font-size="12.5" style="--diagram-width: 620px">
   <!-- SELECT -->
   <g class="d-success" color="#5e9e3a">
     <text class="d-bold" x="150" y="30" fill="currentColor" font-weight="bold">ACCESS SHARE</text>

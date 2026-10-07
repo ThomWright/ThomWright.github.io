@@ -15,8 +15,13 @@
 svg.diagram {
   // Knockouts are filled with the colour behind the diagram.
   --diagram-bg: var(--card-bg);
+  // Text sizes are in the diagram's own units, so the diagram is scaled as a
+  // whole to keep its text in proportion with the body text.
+  --diagram-scale: 1.13;
 
   display: block;
+  // --diagram-width is the diagram's natural width, added by diagrams/build.ts.
+  width: calc(var(--diagram-width) * var(--diagram-scale));
   max-width: 100%;
   height: auto;
 
@@ -101,4 +106,15 @@ svg.diagram .d-bold {
 
 .diagram-container {
   max-width: 100%;
+}
+
+// Scaled up, a pair of diagrams can be too wide to sit side by side, so they
+// shrink to share the row, and only stack when the row is much narrower.
+.diagram-container:not(:only-child) {
+  flex: 1 1 0;
+  min-width: min(300px, 100%);
+
+  svg.diagram {
+    margin-inline: auto;
+  }
 }

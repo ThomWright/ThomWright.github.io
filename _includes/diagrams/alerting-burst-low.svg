@@ -1,4 +1,4 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="353" height="260" viewBox="0 0 353 260" font-family="monospace" font-size="12.5">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="353" height="260" viewBox="0 0 353 260" font-family="monospace" font-size="12.5" style="--diagram-width: 353px">
   <text class="d-heading" x="20" y="35" fill="currentColor" font-size="14.17" font-weight="bold">Error rate</text>
 
   <rect class="d-shape d-tint d-warning" x="238.17" y="186.91" width="83.33" height="29.09" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" color="#d97706"/>

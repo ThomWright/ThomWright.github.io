@@ -43,7 +43,7 @@ After adding or editing any diagram, run:
 node diagrams/build.ts
 ```
 
-This regenerates the generated diagrams, and adds fallback attributes to every diagram for feed readers, which show them without the site's CSS. Node 24 runs the TypeScript directly, with no dependencies. The diagram formats are documented in `diagrams/sequence.ts`, `diagrams/timeline.ts` and `diagrams/plot.ts`, the fallbacks in `diagrams/fallbacks.ts`, and the house style in `public/css/_sass/_diagrams.scss`.
+This regenerates the generated diagrams. It also adds two things to every diagram: fallback attributes for feed readers, which show diagrams without the site's CSS, and a width property the CSS uses to scale them. Node 24 runs the TypeScript directly, with no dependencies. The diagram formats are documented in `diagrams/sequence.ts`, `diagrams/timeline.ts` and `diagrams/plot.ts`, the fallbacks in `diagrams/fallbacks.ts`, and the house style in `public/css/_sass/_diagrams.scss`.
 
 ### Test the scripts
 

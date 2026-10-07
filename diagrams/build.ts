@@ -1,7 +1,8 @@
 /**
  * Regenerates every diagram in diagrams/plots/, diagrams/sequences/ and
  * diagrams/timelines/ as _includes/diagrams/<name>.svg, then adds feed
- * reader fallbacks to every diagram there, hand-written ones included. Run
+ * reader fallbacks and a width property for the site's CSS to every diagram
+ * there, hand-written ones included. Run
  * from anywhere:
  * node diagrams/build.ts
  */
@@ -9,6 +10,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 import { addFallbacks } from './fallbacks.ts'
+import { addWidthProperty } from './width.ts'
 import * as plot from './plot.ts'
 import * as sequence from './sequence.ts'
 import * as timeline from './timeline.ts'
@@ -28,5 +30,5 @@ for (const [dir, render] of Object.entries(kinds)) {
 
 for (const file of (await readdir(output)).filter((f) => f.endsWith('.svg'))) {
   const path = join(output, file)
-  await writeFile(path, addFallbacks(await readFile(path, 'utf8')))
+  await writeFile(path, addWidthProperty(addFallbacks(await readFile(path, 'utf8'))))
 }

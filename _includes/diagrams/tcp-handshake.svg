@@ -1,4 +1,4 @@
-<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="470" height="258" viewBox="0 0 470 258" font-family="monospace" font-size="12.5">
+<svg class="diagram" xmlns="http://www.w3.org/2000/svg" width="470" height="258" viewBox="0 0 470 258" font-family="monospace" font-size="12.5" style="--diagram-width: 470px">
   <defs>
     <marker id="tcp-handshake-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
