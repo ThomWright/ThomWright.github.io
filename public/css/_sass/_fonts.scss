@@ -1,0 +1,58 @@
+/*
+  Fonts
+
+  Fallbacks for the web fonts, shown while they load (font-display: swap).
+  Each scales a common local font to match the web font's width and vertical
+  metrics, so text barely moves when the web font arrives.
+
+  Arial and Times New Roman cover macOS and Windows, and Liberation and
+  Arimo/Tinos are metric-compatible equivalents on Linux. Where none are
+  installed, the generic family is used unadjusted.
+
+  Widths were measured in Chrome over a sample of body text. Source Serif 4's
+  is measured at heading sizes, as its optical sizing makes it narrower at
+  larger sizes. The overrides are the web font's ascent and descent (Inter
+  0.969 and 0.242 em, Source Serif 4 1.036 and 0.335 em) divided by
+  size-adjust, which also scales them.
+ */
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans-Regular'), local('Arimo');
+  font-weight: 400;
+  size-adjust: 107.22%;
+  ascent-override: 90.35%;
+  descent-override: 22.59%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Arimo Bold');
+  font-weight: 700;
+  size-adjust: 102.26%;
+  ascent-override: 94.73%;
+  descent-override: 23.68%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Source Serif 4 Fallback';
+  src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Liberation Serif'), local('LiberationSerif'), local('Tinos');
+  font-weight: 400;
+  size-adjust: 108.78%;
+  ascent-override: 95.24%;
+  descent-override: 30.8%;
+  line-gap-override: 0%;
+}
+
+// Headings are 600, which matches this face as the nearest heavier weight.
+@font-face {
+  font-family: 'Source Serif 4 Fallback';
+  src: local('Times New Roman Bold'), local('TimesNewRomanPS-BoldMT'), local('Liberation Serif Bold'), local('LiberationSerif-Bold'), local('Tinos Bold');
+  font-weight: 700;
+  size-adjust: 104.5%;
+  ascent-override: 99.14%;
+  descent-override: 32.06%;
+  line-gap-override: 0%;
+}

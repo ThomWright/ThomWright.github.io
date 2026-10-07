@@ -47,8 +47,8 @@ $desktop-down: new-breakpoint(max-width $desktop-width 12);
 $large-desktop-up: new-breakpoint(min-width $large-desktop-width 12);
 
 // Font
-$base-font-family: 'Inter', sans-serif;
-$heading-font-family: 'Source Serif 4', serif;
+$base-font-family: 'Inter', 'Inter Fallback', sans-serif;
+$heading-font-family: 'Source Serif 4', 'Source Serif 4 Fallback', serif;
 $mono-font-family: 'Inconsolata', monospace;
 
 // Font Sizes
