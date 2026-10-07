@@ -4,18 +4,20 @@ layout: post
 tags: [databases, postgresql, connection pooling, performance, patterns]
 ---
 
-<!-- markdownlint-disable MD033 -->
-
 I've [previously discussed]({% post_url 2026-02-21-local-vs-shared-pool %}) how using local vs shared connection pools can significantly change the number of open connections to your database. This isn't the only consideration, so this post will go more in depth on different patterns and their trade-offs.
 
-Let's start by looking at the full cost of establishing a connection to a database, taking PostgreSQL as an example.
+<!-- markdownlint-disable MD033 -->
 
-{% include callout.html
-  type="aside"
-  content="PostgreSQL is what I'm most familiar with. Different databases will vary on some details, but the concepts should still apply."
-%}
+Some simplifying assumptions we'll be making:
 
-The following assumes you're using TLS 1.3, and [SCRAM-SHA](https://www.postgresql.org/docs/18/auth-password.html#AUTH-PASSWORD) as the authentication method.
+- Specifics are for PostgreSQL. Other databases differ in the details, but the concepts should still apply.
+- Connections use TLS 1.3, and [SCRAM-SHA](https://www.postgresql.org/docs/18/auth-password.html#AUTH-PASSWORD) for authentication.
+- Each request acquires one connection, new or pooled, and holds it until the request finishes.
+- The pooler authenticates clients the same way as the database, though it doesn't have to.
+
+We'll call the database's end of a connection a _backend_. In PostgreSQL, each backend is a separate OS process.
+
+Let's start by looking at the full cost of establishing a connection to a database.
 
 {% include diagram.html
   name="pg-connect"
@@ -24,12 +26,6 @@ The following assumes you're using TLS 1.3, and [SCRAM-SHA](https://www.postgres
 %}
 
 That's six round trips to the database before we can make a query! Plus a load of hashing. We probably don't want to do this very often if we can avoid it.
-
-Some simplifying assumptions we'll be making:
-
-- Each request acquires one connection, new or pooled, and holds it until the request finishes
-- TODO: ...?
-  - We're using vanilla PostgreSQL?
 
 With this in mind, let's look at a few key decisions we need to make when designing a connection pooling architecture.
 
@@ -79,7 +75,7 @@ Let's first look at replacing the application-side pool with a shared pooler.
   caption="Connecting through a pooler"
 %}
 
-As discussed, this can significantly reduce the number of connections, and therefore the number of database backends. But what's the catch? Well, instead of just taking an existing connection from its own pool, the application needs to connect _to the pooler_. This can add significant latency to every request.
+As discussed, this can significantly reduce the number of connections, and therefore the number of database backends. The database also no longer sees a new connection for every request. But what's the catch? Well, instead of just taking an existing connection from its own pool, the application needs to connect _to the pooler_. This can add significant latency to every request.
 
 {% include diagram.html
   name="pool-patterns-wiring-pooler"
@@ -97,7 +93,7 @@ Let's try to solve this problem by also pooling connections application side. To
   caption="Connecting through a pooler with local pools"
 %}
 
-Does that solve the connection latency problem? Well, yes, but it also reintroduces a previous problem: high backend connection usage. All idle connections in the application pools still hold a backend connection in the pooler, so the total number of backends remains high.
+Does that solve the acquisition latency problem? Well, yes, but it also reintroduces a previous problem: high backend connection usage. All idle connections in the application pools still hold a backend connection in the pooler, so the total number of backends remains high.
 
 {% include diagram.html
   name="pool-patterns-wiring-pooler-local"
@@ -113,7 +109,7 @@ Any time a connection is idle in an application pool, it can't be used by anothe
   caption="Each client connection (A, B, C) holds a backend for its whole life, even while idle between transactions"
 %}
 
-It's not all bad though. When an application restarts, its old connections close and their backends go back to the pooler, ready to hand to the new process's cold pool. The new process still connects to the pooler, but the database doesn't see a burst of new connections.
+It's not all bad though. When an application restarts, its old connections close and their backends go back to the pooler, ready to hand to the new process's cold pool. The new process still connects to the pooler, but the pooler absorbs the burst of new connections.
 
 {% include diagram.html
   name="pool-patterns-seq-pooler"
@@ -131,7 +127,7 @@ Another, perhaps minor, disadvantage: every query goes through an extra network 
 
 ### Operating a pooling service
 
-TODO: An elephant in the room at this point is that we've assumed that there's only _one_ instance of the pooler, for simplicity. In reality, we'd want at least three for redundancy. Otherwise, any downtime turns into a complete outage, and any restart reintroduces the full cold start problem.
+A pooler is one more component to run, and running it well takes some thought. An elephant in the room at this point is that we've assumed that there's only _one_ instance of the pooler, for simplicity. In reality, we'd want at least three for redundancy. Otherwise, any downtime turns into a complete outage, and any restart reintroduces the full cold start problem.
 
 {% include diagram.html
   name="pool-patterns-poolers"
@@ -139,17 +135,20 @@ TODO: An elephant in the room at this point is that we've assumed that there's o
   caption="Several applications sharing several poolers, with load balanced connection requests"
 %}
 
-TODO: The reduction in backend connections comes from having fewer pools. Even if we could share connections efficiently, if you have N application replicas connecting to K pooler instances and N == K, then all of the efficiency gains have gone. It only really makes sense to have N >> K. This implies it's only worth it if you regularly run many more than three replicas of your application.
+The reduction in backend connections comes from having fewer pools, because fewer pools enable more connection sharing within each pool. If you have `N` application replicas connecting to `K` pooler instances and `N == K`, then most of the efficiency gains of an external pooler have gone. It only really makes sense to have `N >> K`. This implies it's only worth it if you regularly run many more than three replicas of your application.
 
-TODO: Another thing: with multiple poolers, how do they restart without affecting the application? Force close all their connections? Not a great experience. On average 1/K connections would suddenly die per application. Remove themselves from the load balancer and let the connections drain? Much better, but could take a long time? (I think there are clever things you can do to hand over sockets between two processes, but this also means the replica is somewhat pinned to a machine, so can't solve everything, right?)
+Another thing: poolers are stateful. How do they restart without affecting the application? Force close all their connections? Not a great experience: on average, `1/K` of each application's connections would suddenly die. Remove themselves from the load balancer and let the connections drain? Much better, but with local pools this could take a long time, unless the applications regularly recycle their connections, e.g. with a maximum connection lifetime. There are, in fact, clever things you can do to hand over open sockets from the old process to the new one, but only on the same machine. That helps with upgrades, but not with moving a pooler to a different machine.
 
-TODO: what if we wanted to decouple the app->pooler conns from the pooler->db conns?
+Speaking of recycling connections, probably both the application and the pooler want to configure a maximum lifetime for their connections. The pooler can only close a backend once the client connection using it disconnects, so if the lifetimes are similar, most application reconnects also mean a database reconnect. Instead, we want:
+
+- **Application -> pooler**: short, so connections drain in a reasonable time, and rebalance after a pooler restart. Add jitter, so connections opened together don't all reconnect together.
+- **Pooler -> database**: much longer, so most application reconnects reuse an existing backend. Also with jitter.
+
+Up until now we've assumed that each application connection uniquely owns a backend connection. What if we could decouple these?
 
 ## Pooling mode
 
-TODO: Introducing: the different modes. I guess we might as well list the ones PgBouncer supports.
-
-There are several modes a pooler could operate in, each with different trade-offs. See [PgBouncer's documentation](https://www.pgbouncer.org/features.html) for more details.
+Enter: pooling modes. There are several modes a pooler could operate in, each with different trade-offs. Here are the ones PgBouncer supports (see [its documentation](https://www.pgbouncer.org/features.html) for more details):
 
 - **Session pooling** – Each client connection gets a dedicated backend connection for the duration of the session. What we've been discussing until now.
 - **Transaction pooling** – Each client connection gets a backend connection only for the duration of a transaction. Once the transaction completes, the backend connection is returned to the pool and can be used by other client connections.
@@ -168,31 +167,34 @@ It seems transaction pooling could help solve our problems! When not actively in
 {% include diagram.html
   name="pool-patterns-transaction"
   alt="A timeline of two backends running the same transactions from client connections A, B and C. Each transaction takes whichever backend is free, so A's third transaction runs on backend 2 after its first two ran on backend 1."
-  caption="Per-transaction: the same transactions need only two backends, but a client connection's transactions can run on different backends"
+  caption="Transaction pooling: the same transactions need only two backends, but a client connection's transactions can run on different backends"
 %}
 
 The trade-off, of course, is that certain operations which rely on session state, like setting configuration parameters, temporary tables, or session-level advisory locks, don't work correctly with transaction pooling. If your application needs these features, you're stuck with session pooling.
 
 ## Summary
 
-| | Per request | Local pool |
-| --- | --- | --- |
-| **Database** | 🔴 latency<br>🔴 database load | 🟢 latency<br>🔴 backends |
-| **Pooler, session-pinned** | 🔴 latency<br>🟢 database load<br>🟢 backends<br>🟢 session state | 🟢 latency<br>🔴 backends<br>🟡 extra component<br>🟢 session state |
-| **Pooler, per-transaction** | 🔴 latency<br>🟢 database load<br>🟢 backends<br>🟡 session state | 🟢 latency<br>🟢 backends<br>🟡 extra component<br>🟡 session state |
+Putting it all together:
 
 <div class="table-wrapper" markdown="block">
 
-| | Connect latency | Database load | Backends | Extra component | Session state |
+| | Fast acquisition | Few backend startups | Few backends | No extra component | Full session state |
 | --- | --- | --- | --- | --- | --- |
-| **Database** | | | | | |
-| Per request | 🔴 | 🔴 | 🟢 | 🟢 | 🟢 |
-| Local pool | 🟢 | 🟢 | 🔴 | 🟢 | 🟢 |
-| **Session-pinned pooler** | | | | | |
-| Per request | 🔴 | 🟢 | 🟢 | 🟡 | 🟢 |
-| Local pool | 🟢 | 🟢 | 🔴 | 🟡 | 🟢 |
-| **Per-transaction pooler** | | | | | |
-| Per request | 🔴 | 🟢 | 🟢 | 🟡 | 🟡 |
-| Local pool | 🟢 | 🟢 | 🟢 | 🟡 | 🟡 |
+| **Direct** | | | | | |
+| Per request | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Local pool | ✅ | ❌ | ❌ | ✅ | ✅ |
+| **Session pooling** | | | | | |
+| Per request | ❌ | ✅ | ✅ | ❌ | ✅ |
+| Local pool | ✅ | ✅ | ❌ | ❌ | ✅ |
+| **Transaction pooling** | | | | | |
+| Per request | ❌ | ✅ | ✅ | ❌ | ❌ |
+| Local pool | ✅ | ✅ | ✅ | ❌ | ❌ |
 
 </div>
+
+Whichever option we choose, we'll be making some trade-offs:
+
+- **Direct, with a local pool** is the simplest, and works fine as long as you don't run too many replicas, and the database can cope with cold starts.
+- **A pooler without local pools** makes sense when applications can't keep a pool, e.g. serverless functions or short-lived processes. Otherwise, you're paying for a new connection and backend on every request.
+- **Session pooling with local pools** mostly just protects the database from cold starts. You still have as many backends as pooled connections.
+- **Transaction pooling with local pools** is the only option with both fast acquisition and few backends. The cost is running poolers, and giving up session state. It's most worth it when you run many more application replicas than poolers.
