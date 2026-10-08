@@ -62,7 +62,7 @@ Storing the data leaves us free to change the response format, e.g. across API v
 
 #### Check at the start or at the end
 
-{% include callout.html type="aside" content="Here we'll be using `INSERT ... ON CONFLICT DO UPDATE SET idempotency_key = EXCLUDED.idempotency_key RETURNING ...` (with PostgreSQL's semantics) as \"insert-or-get\" to ensure we get the existing row if there is a conflict." %}
+{% include callout.html type="aside" content="Here we'll be using `INSERT ... ON CONFLICT DO UPDATE SET idempotency_key = EXCLUDED.idempotency_key RETURNING ...` (with PostgreSQL's semantics) as \"insert-or-get\" to ensure we get the existing row if there's a conflict." %}
 
 **At the start**, look up the response record by idempotency key before doing any work, and return it if it exists. Retries skip evaluating the application entirely. The cost is an extra query on every request.
 
