@@ -131,6 +131,10 @@ article {
     }
 
     .callout-content {
+      // Flex items default to `min-width: auto`, which would let wide content
+      // (code blocks, tables) stretch the callout instead of scrolling.
+      min-width: 0;
+
       display: flex;
       flex-direction: column;
       gap: $small-spacing;
