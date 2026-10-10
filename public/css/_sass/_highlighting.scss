@@ -8,6 +8,10 @@ code.language-plaintext {
   background-color: var(--code-bg);
   border-radius: $base-border-radius;
   padding: 0.2em 0.4em;
+
+  // Long expressions have no spaces to break at, so would otherwise widen
+  // the page on narrow screens.
+  overflow-wrap: anywhere;
 }
 
 .highlight {
