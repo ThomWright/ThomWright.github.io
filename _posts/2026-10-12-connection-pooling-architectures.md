@@ -61,7 +61,7 @@ With a pool, most of the time when we request a connection we'll get an existing
   caption="With a warm pool, a request can acquire a connection immediately and send a query"
 %}
 
-The trade-off is a higher number of connections, which [scales badly]({% post_url 2026-02-21-local-vs-shared-pool %}) with respect to the number of application replicas. This is especially bad for PostgreSQL, where each connection is a separate process with its own memory.
+The trade-off is a higher number of connections, which [scales badly]({% post_url 2026-02-21-local-vs-shared-pool %}) with respect to the number of application replicas. This is especially bad for PostgreSQL, where each connection has its own backend, with its own memory.
 
 Similar to caches, pools can introduce thundering herd and [metastability](https://brooker.co.za/blog/2021/08/27/caches.html) issues. When an application restarts, it will have a cold pool and potentially need to establish many connections concurrently. The worst case is when every pool goes cold at once, e.g. after a database failover. If the database is sized for the load from warm pools, it might take longer to process connection attempts. Connections get slower, and if timeouts are set too short, connections fail. [Retries]({% post_url 2022-09-12-retries-upon-retries %}) try creating even more connections, and the database might not recover.
 
