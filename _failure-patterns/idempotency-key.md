@@ -46,6 +46,10 @@ Server-inferred keys suffer some significant issues which can make property two 
 
 In the payment creation example above, only the client app has the knowledge about which payment creation requests are for that particular user action, so it is the one responsible for telling the server this information. Since the server is most likely responsible for generating the ID for the payment, another mechanism is required to communicate which user action this request is for, hence a dedicated idempotency key is necessary.
 
+The client app should generate the key once per user action, before sending the first request, and keep it until it gets a response. If the app restarts and generates a new key, its retries will look like a new payment.
+
+Servers usually only store idempotency keys for a limited time. A retry arriving after that is treated as a new message, so keys need to be kept for longer than clients will keep retrying. See [garbage collection]({% link _failure-patterns/garbage-collection.md %}).
+
 {% include callout.html
   type="warning"
   content='Where possible, client-supplied idempotency keys should not be relied on for correctly maintaining _internal_ invariants. Servers must maintain their own internal invariants even if clients send different idempotency keys for retries.
