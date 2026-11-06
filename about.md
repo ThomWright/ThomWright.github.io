@@ -18,6 +18,5 @@ You can find out more about me here:
 
 - [LinkedIn](https://www.linkedin.com/in/thomwright0)
 - [GitHub](https://github.com/ThomWright)
-- [Twitter](https://twitter.com/ThomWright0)
 
 <a href="/atom.xml" target="_blank">Atom feed</a>
