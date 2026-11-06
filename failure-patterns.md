@@ -88,19 +88,20 @@ When consistency is important, you will generally need to choose (at least) one 
 
 <div class="table-wrapper" markdown="block">
 
-| **Pattern**                                                                        | **Number of systems** | **Synchronicity**                   | **Atomicity**                                    | **Consistency** | **Complexity** |
-|:-----------------------------------------------------------------------------------|:----------------------|:------------------------------------|:-------------------------------------------------|:----------------|:---------------|
-| [ACID transaction]({% link _failure-patterns/acid-transaction.md %})               | One                   | Sync                                | Atomic                                           | Strong          | Simple         |
-| [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %})       | Many                  | Async                               | Non-atomic[^2]                                   | Eventual        | Moderate       |
-| [Reliable retries]({% link _failure-patterns/reliable-retries.md %})               | Many                  | Async                               | Non-atomic[^2]                                   | Eventual        | Moderate       |
-| [Completer]({% link _failure-patterns/completer.md %})                             | Many                  | Success: sync<br />Error: async[^1] | Non-atomic[^2]                                   | Eventual        | Moderate       |
-| [Distributed transaction]({% link _failure-patterns/distributed-transaction.md %}) | Many                  | Success: sync<br />Error: async[^1] | Atomic                                           | Eventual        | Complex        |
-| [Saga]({% link _failure-patterns/saga.md %})                                       | Many                  | Async                               | Atomic via compensation (partial states visible) | Eventual        | Complex        |
+| **Pattern**                                                                        | **Number of systems** | **Synchronicity**                   | **Atomicity**  | **Consistency** | **Complexity** |
+|:-----------------------------------------------------------------------------------|:----------------------|:------------------------------------|:---------------|:----------------|:---------------|
+| [ACID transaction]({% link _failure-patterns/acid-transaction.md %})               | One                   | Sync                                | Atomic         | Strong          | Simple         |
+| [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %})       | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |
+| [Reliable retries]({% link _failure-patterns/reliable-retries.md %})               | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |
+| [Completer]({% link _failure-patterns/completer.md %})                             | Many                  | Success: sync<br />Error: async[^1] | Non-atomic[^2] | Eventual        | Moderate       |
+| [Distributed transaction]({% link _failure-patterns/distributed-transaction.md %}) | Many                  | Success: sync<br />Error: async[^1] | Atomic         | Eventual        | Complex        |
+| [Saga]({% link _failure-patterns/saga.md %})                                       | Many                  | Async                               | Atomic[^3]     | Eventual        | Complex        |
 
 </div>
 
 [^1]: Attempts to do all work synchronously, but will continue asynchronously in the case of failure.
 [^2]: Non-atomic because some writes might fail with no guarantee that successful writes will be rolled back.
+[^3]: Using compensating actions rather than rollback. Intermediate states are visible to other operations.
 
 ## More patterns
 
