@@ -74,6 +74,9 @@ article {
       opacity: 0.5;
       display: inline-block;
       padding-left: $base-padding / 4;
+      // Out of the flow, so a heading that nearly fills its line doesn't
+      // wrap the hidden marker onto a blank line of its own.
+      position: absolute;
 
       visibility: hidden;
     }
