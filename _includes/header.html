@@ -10,8 +10,8 @@
       <li><a class="{% if page.url == site.baseurl %}active{% endif %}" href="/{{ site.baseurl }}">Home</a></li>
 
       {% comment %}
-        The code below dynamically generates a sidebar nav of pages with
-        `layout: page` in the front-matter. See readme for usage.
+        Lists pages with `layout: page` in their front matter, in `order`.
+        A page can set `short_title` for the nav, or `public: false` to stay out.
       {% endcomment %}
 
       {% assign pages_list = site.pages | sort:"order", "last" %}
