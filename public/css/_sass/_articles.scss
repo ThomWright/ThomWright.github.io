@@ -106,6 +106,15 @@ article {
     > * {
       margin-right: 0.75em;
     }
+
+    // Links here are secondary to the post, so they stay muted until hovered.
+    a {
+      color: inherit;
+
+      &:hover {
+        color: var(--link);
+      }
+    }
   }
 
   img,
