@@ -16,8 +16,9 @@ svg.diagram {
   // Knockouts are filled with the colour behind the diagram.
   --diagram-bg: var(--page-bg);
   // Text sizes are in the diagram's own units, so the diagram is scaled as a
-  // whole to keep its text in proportion with the body text.
-  --diagram-scale: 1.13;
+  // whole to keep its text the same size as the body text.
+  $diagram-font-px: 15px;
+  --diagram-scale: #{$base-font-px / $diagram-font-px};
 
   display: block;
   // --diagram-width is the diagram's natural width, added by diagrams/build.ts.
@@ -27,7 +28,7 @@ svg.diagram {
 
   color: var(--diagram-ink);
   font-family: $mono-font-family;
-  font-size: 15px;
+  font-size: $diagram-font-px;
   font-weight: 400;
 
   text {
