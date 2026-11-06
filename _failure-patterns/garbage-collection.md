@@ -22,7 +22,7 @@ How do we limit the amount of garbage data stored?
 
 Run a periodic garbage collection process. The process can be scheduled to run as a cron job. It will need to:
 
-1. Identify which records are no longer needed.
+1. Identify which records are no longer needed. Be careful not to include records which an in-progress operation still needs. For example, newly stored data which isn't referenced *yet* can look the same as garbage. One approach is to only delete records older than a grace period. There's often no natural upper bound on how long an operation can take, so this is a trade-off: how likely an operation is to outlive the grace period, against the impact if its data is deleted. Giving operations a deadline, after which they are abandoned, can reduce the risk further, but isn't a guarantee.
 2. Delete these records.
 
 It can be worth considering performing this process in fixed-size batches so the operation doesn't overload the database, and running frequently enough that the amount of garbage doesn't grow faster than it can be collected.
