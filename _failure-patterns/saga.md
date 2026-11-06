@@ -38,7 +38,9 @@ Use a saga. Sagas are a sequence of transactions, and introduce the idea of **ba
 
 Model your operation as a set of states and transitions between those states. There will be a set of acceptable terminal states (including the initial state), and intermediate states. It must be possible to transition from any intermediate state to a terminal state. If forward progress is not possible, it should be possible to transition backwards to the initial state.
 
-These backwards transitions are known as **compensating actions**, and are effectively a rollback mechanism.
+These backwards transitions are known as **compensating actions**. Unlike a database rollback, which discards writes before anyone else can see them, a compensating action is a new write that counteracts one that has already been committed, and possibly seen or acted on. Cancelling a flight doesn't erase the booking: the customer might have received a confirmation email, and there might be a cancellation fee.
+
+Compensating actions must be retried until they succeed. Some actions can't be compensated at all, such as sending an email, so these should happen last, once the saga can no longer fail.
 
 For the travel booking example, we might have three states:
 
