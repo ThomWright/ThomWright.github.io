@@ -1,8 +1,8 @@
 ---
 layout: page
 title: 'Designing for failure: Patterns'
-short_title: 'Failure patterns'
-order: 3
+short_title: 'Patterns'
+order: 2
 ---
 
 <!-- markdownlint-disable MD033 -->

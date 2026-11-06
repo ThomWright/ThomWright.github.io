@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About
-order: 1
+order: 3
 ---
 
 <img class="img-circle" height="100" width="100" alt="Thom Wright" src="//www.gravatar.com/avatar/b5c94d56e4e52feeb6d6568c8450a6a0?s=200&amp;r=pg">

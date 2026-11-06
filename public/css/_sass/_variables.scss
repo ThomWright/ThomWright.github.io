@@ -31,11 +31,6 @@ $dark-purple:             #1e152a;
 
 $brand-color:             $blue;
 
-// The header looks the same in both themes, so it isn't part of the theme maps.
-$header-bg:               lighten(invert($gray-lighter), 15%);
-$header-font-color:       lighten(invert($gray-darker), 15%);
-$header-font-highlight:   white;
-
 // Grid
 $tablet-width: em(768);
 $desktop-width: em(992);
@@ -53,7 +48,6 @@ $mono-font-family: 'Inconsolata', monospace;
 
 // Font Sizes
 $base-font-size: em(17);
-$title-font-size: modular-scale(3);
 
 // Line height
 $base-line-height: 1.6;
@@ -68,3 +62,8 @@ $base-z-index: 0;
 $base-padding: modular-scale(2, 1rem);
 
 $max-content-width: 850px;
+// Pages wider than the text column, such as catalogues, and the header and
+// footer, which line up with them.
+$wide-width: 54em;
+// Space between the content and the edge of a narrow screen.
+$page-gutter: 1.25rem;

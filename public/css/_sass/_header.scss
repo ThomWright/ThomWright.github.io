@@ -1,69 +1,60 @@
 /*
   Header
+
+  The site name and tagline on the left, nav on the right. It spans the wide
+  layout width on every page, so it doesn't move between narrow and wide pages.
  */
 
-// Colours
-body {
-  > header {
-    color: $header-font-color;
+.site-header {
+  max-width: $wide-width;
+  margin: 0 auto;
+  padding: 2.5rem $page-gutter 3rem;
 
-    &,
-    nav {
-      background-color: $header-bg;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
 
-    a {
-      color: $header-font-color;
-      &.active {
-        font-weight: bold;
-        color: $header-font-highlight;
-      }
-    }
+.site-brand {
+  display: flex;
+  flex-direction: column;
+}
 
-    h1 a,
-    a:active,
-    a:focus,
-    a:hover {
-      color: $header-font-highlight;
-    }
+.site-name {
+  font: {
+    family: $heading-font-family;
+    weight: 600;
+    size: 1.3em;
+  }
+  line-height: $heading-line-height;
 
-    nav {
-      @include brand-border(bottom);
-    }
+  &,
+  &:hover,
+  &:focus {
+    color: var(--link);
   }
 }
 
-// Positioning & Sizing
-body {
-  > header {
-    text-align: center;
-
-    a {
-      display: block;
-      padding: 10px;
-    }
-
-    nav {
-      li {
-        display: inline-block;
-        @include horizontal-margin(3%);
-      }
-    }
-  }
+.site-tagline {
+  font-size: 0.8em;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
 }
 
-// Other
-.site-title {
-  font-size: $title-font-size;
-  font-weight: 400;
-  margin: modular-scale(-2) 0;
-}
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.9em;
 
-body {
-  > header {
-    ul {
-      margin: 0;
-      padding: 0;
+  a {
+    color: var(--text-muted);
+
+    &:hover,
+    &:focus,
+    &.active {
+      color: var(--text);
     }
   }
 }
