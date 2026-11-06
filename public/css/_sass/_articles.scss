@@ -45,10 +45,6 @@ article {
   // A post in a list of posts, showing its excerpt.
   &.summary > header {
     margin-bottom: 0.75rem;
-
-    h1 {
-      font-size: modular-scale(2);
-    }
   }
 
   // Headings link to their post or section, but read as headings.
