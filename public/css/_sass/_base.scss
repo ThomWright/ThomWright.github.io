@@ -13,6 +13,9 @@ body {
     weight: 400;
     size: $base-font-size;
   }
+  @media (max-width: $small-screen) {
+    font-size: em($small-screen-font-px);
+  }
   @include font-feature-settings("kern", "liga", "pnum");
   -webkit-font-smoothing: antialiased;
   line-height: $base-line-height;

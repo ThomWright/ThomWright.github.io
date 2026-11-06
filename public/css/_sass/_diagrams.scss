@@ -19,6 +19,9 @@ svg.diagram {
   // whole to keep its text the same size as the body text.
   $diagram-font-px: 15px;
   --diagram-scale: #{$base-font-px / $diagram-font-px};
+  @media (max-width: $small-screen) {
+    --diagram-scale: #{$small-screen-font-px / $diagram-font-px};
+  }
 
   display: block;
   // --diagram-width is the diagram's natural width, added by diagrams/build.ts.

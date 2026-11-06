@@ -35,6 +35,9 @@ $mono-font-family: 'Inconsolata', monospace;
 // Body text. Diagrams scale with it.
 $base-font-px: 20px;
 $base-font-size: em($base-font-px);
+// Smaller on phones, where 20px fits too few words on a line.
+$small-screen-font-px: 18px;
+$small-screen: 40em;
 
 // Line height
 $base-line-height: 1.6;
