@@ -36,6 +36,8 @@ How do we ensure (eventual) consistency when writing to multiple systems?
 
 Write one or more messages to a database in an [Atomic transaction]({% link _failure-patterns/acid-transaction.md %}) describing what needs to be done. A background process reads these messages and performs the work on the other systems, retrying until it succeeds.
 
+This means messages are delivered at least once. For example, the publisher might publish a message, then crash before marking it as published, and publish it again after restarting. Whatever handles the messages needs to be idempotent, e.g. by deduplicating them using a unique message ID, otherwise the user might get two welcome emails.
+
 Essentially, instead of trying to synchronously write to many systems, we instead write to just one system atomically, allowing other writes to happen asynchronously.
 
 A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS. This could be an external process or internal to the application.
