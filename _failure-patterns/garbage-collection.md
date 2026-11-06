@@ -30,3 +30,7 @@ It can be worth considering performing this process in fixed-size batches so the
 ## Alternatives
 
 In some cases it is possible to put the data in a cache with a TTL. If the data is intended to be temporary then this can work well.
+
+## See also
+
+- [AWS: Summary of the Amazon DynamoDB Service Disruption](https://aws.amazon.com/message/101925/) – a clean-up process deleted an old DNS plan which a delayed process had just applied, leaving DynamoDB's regional endpoint in us-east-1 with no IP addresses
