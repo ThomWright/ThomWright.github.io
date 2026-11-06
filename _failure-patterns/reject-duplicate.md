@@ -12,13 +12,13 @@ related:
 
 ## Problem
 
-What response should a server send when it detects a duplicate of previously processed request, e.g. because it shares the same [idempotency key]({% link _failure-patterns/idempotency-key.md %})?
+What response should a server send when it detects a duplicate of a previously processed request, e.g. because it shares the same [idempotency key]({% link _failure-patterns/idempotency-key.md %})?
 
 ## Non-solution
 
 Return an error, e.g. an HTTP 4xx.
 
-This is a poor solution, because puts an unnecessary burden on the client to handle this error case. This becomes a significant burden when the error response does not return the same information as the original successful response. Sometimes this can even make it impossible to build a client which handles this error case.
+This is a poor solution, because it puts an unnecessary burden on the client to handle this error case. This becomes a significant burden when the error response does not return the same information as the original successful response. Sometimes this can even make it impossible to build a client which handles this error case.
 
 Imagine an endpoint, `POST /bookings`, used to create a new booking on a website. Upon successful creation, the server returns the ID of the new booking in the response. However, when it detects a duplicate request, it returns HTTP 409 without any information about the booking.
 

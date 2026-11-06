@@ -41,4 +41,4 @@ One technique I use is to write out each atomic step as a series of bullet point
 
 ## Notes
 
-Resumable operations are not strictly idempotent: retries may cause additional side effects and return different responses. However, retries are **safe** -- they will not duplicate side effects and will only advance progress towards the same successful outcome. See the discussion of idempotency for incomplete operations in the [introduction]({% post_url 2023-04-06-designing-for-failure %}).
+Resumable operations are not strictly idempotent: retries may cause additional side effects and return different responses. However, retries are **safe** – they will not duplicate side effects and will only advance progress towards the same successful outcome. See the discussion of idempotency for incomplete operations in the [introduction]({% post_url 2023-04-06-designing-for-failure %}).

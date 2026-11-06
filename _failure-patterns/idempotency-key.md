@@ -20,7 +20,7 @@ A client may retry failed requests. In general, messages might arrive more than 
 
 **Posting to a social network** – A user posts "Hello world" to a chat application or a social network. They could choose to post the same text more than once, and the system would need to be able to distinguish between a retried request and someone deliberately sending the same message more than once.
 
-**Creating a payment** – A user presses “Pay” on an app, which triggers a request to a server. The invariant the client app cares about is that only one payment gets created per user action, no matter how many times it retries sending the request to the server.
+**Creating a payment** – A user presses "Pay" on an app, which triggers a request to a server. The invariant the client app cares about is that only one payment gets created per user action, no matter how many times it retries sending the request to the server.
 
 ## Problem
 

@@ -16,7 +16,7 @@ It can be important to return exactly the same response every time for the same 
 
 ## Example
 
-The Stripe API models the status of a [payout](https://stripe.com/docs/api/payouts/object) as a state machine with the following states: `paid`, `pending`, `in_transit`, `canceled` or `failed`. Some operations, e.g. `cancel`, are only valid when the payout in certain states. Retries of successful `cancel` requests should return the same successful response, even if the status of the payout has since changed.
+The Stripe API models the status of a [payout](https://stripe.com/docs/api/payouts/object) as a state machine with the following states: `paid`, `pending`, `in_transit`, `canceled` or `failed`. Some operations, e.g. `cancel`, are only valid when the payout is in certain states. Retries of successful `cancel` requests should return the same successful response, even if the status of the payout has since changed.
 
 ## Problem
 

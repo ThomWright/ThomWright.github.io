@@ -9,7 +9,7 @@ sort_key: 1
 
 ## Context
 
-Message are usually not guaranteed to arrive in order. However, sometimes messages have logical ordering. When there is a hard dependency between messages, it might not be possible to process later messages (in the logical ordering) without information from earlier messages.
+Messages are usually not guaranteed to arrive in order. However, sometimes messages have logical ordering. When there is a hard dependency between messages, it might not be possible to process later messages (in the logical ordering) without information from earlier messages.
 
 In many cases the messages arrive in the expected order _almost_ all of the time, so if a system is unable to handle out of order messages it might go unnoticed for a long time.
 
@@ -55,7 +55,7 @@ Several solutions exist to this problem, each with their own trade-offs.
 
 ### Independently processable messages
 
-If possible, design the messages such that they can be processed in any order. For example, the `PaymentSucceeded` event could contains all the necessary information to be processed without any preceding events.
+If possible, design the messages such that they can be processed in any order. For example, the `PaymentSucceeded` event could contain all the necessary information to be processed without any preceding events.
 
 ```proto
 message PaymentCreated {

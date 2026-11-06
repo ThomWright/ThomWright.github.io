@@ -12,7 +12,7 @@ It is generally not possible to 100% ensure consistency between independent syst
 
 ## Example
 
-A e-wallet company stores users’ e-money transactions and balances in their own systems. These are linked to underlying transactions and balances with their banking partner in fiat currency. It is essential that these match.
+An e-wallet company stores users' e-money transactions and balances in their own systems. These are linked to underlying transactions and balances with their banking partner in fiat currency. It is essential that these match.
 
 ## Problem
 

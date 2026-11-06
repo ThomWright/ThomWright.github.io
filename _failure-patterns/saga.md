@@ -30,7 +30,7 @@ A travel booking system needs to book a hotel and a flight. It must end up eithe
 
 ## Problem
 
-How do we perform multiple operations such that either they all (eventually) either succeed or get rolled back?
+How do we perform multiple operations such that either they all (eventually) succeed or get rolled back?
 
 ## Solution
 
