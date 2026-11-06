@@ -21,9 +21,9 @@ The operation has something acting as an idempotency key, and the result of rede
 
 ## Example
 
-An app implements "Sign in with X" via OAuth. After the user authenticates, X redirects back with a one-time authorization code. The app exchanges this code for an access token via a POST request, and X guarantees the code can be exchanged exactly once.
+An app lets users redeem gift cards from a partner retailer. The partner's API takes a gift card code, and returns the amount credited. Each code can only be redeemed once: a second attempt is rejected with an "already redeemed" error. The API doesn't support idempotency keys.
 
-If the app's process [crashes]({% link _failure-patterns/glossary.md %}#crash) after a successful exchange but before storing the access token, the code is worthless and the token is lost for good. Separately, a duplicate redirect – for example, the user's browser retrying the callback – could cause two requests to race to exchange the same code.
+If the app's process [crashes]({% link _failure-patterns/glossary.md %}#crash) after a successful redemption but before storing the result, the result is lost for good. Separately, a duplicate request – for example, the user's browser retrying the form submission – could cause two requests to race to redeem the same code.
 
 ## Problem
 
@@ -46,8 +46,10 @@ On rejection (token already used), don't treat it as a failure for the whole ope
   content="If the process crashes after redeeming the token but before persisting the result, that data is usually gone permanently: the token can't be redeemed again, and there's often no way to read back its result. This is an inherent limitation of single-use tokens."
 %}
 
+Catch-up relies on a rejected attempt being harmless. Some providers punish reuse instead. For example, [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2) recommends that reusing an authorization code revokes any tokens already issued from it, so the losing request would invalidate the winner's token. In this case, prevent the second attempt instead, using an [idempotency key lock]({% link _failure-patterns/idempotency-key-lock.md %}) or an [at-most-once guard]({% link _failure-patterns/at-most-once-guard.md %}).
+
 ## Alternatives
 
 An [idempotency key lock]({% link _failure-patterns/idempotency-key-lock.md %}) around the redemption step prevents the race entirely: only one concurrent attempt ever calls the API, and others wait, then find the recovery point already written. This avoids needing catch-up logic at all, but trades this for the lock's own complexity and failure modes – timeout versus API latency, crashing while holding it, added latency for waiters.
 
-Prefer catch-up where possible. It needs no lock lifecycle, and stays safe under concurrency by construction.
+Prefer catch-up where a rejected attempt is harmless. It needs no lock lifecycle, and stays safe under concurrency by construction.
