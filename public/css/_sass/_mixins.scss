@@ -33,13 +33,6 @@
   }
 }
 
-@mixin fix-left {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
 @mixin single-side-border($side, $color) {
   @include single-side-border-width($side, $color, 5px);
 
@@ -55,10 +48,6 @@
       style: solid;
     }
   }
-}
-
-@mixin remove-border($side) {
-  border-#{$side}-style: none;
 }
 
 @mixin vertical-margin($size) {
@@ -87,29 +76,4 @@
     left: $size;
     right: $size;
   }
-}
-
-/*
-  Cards - from https://css-tricks.com/snippets/sass/material-shadows-mixin/
- */
-/// Computes a top-shadow for a card effect.
-/// @param {Number} $depth - depth level
-/// @return {List}
-@function top-shadow($depth) {
-  $primary-offset: nth(1.5 3 10 14 19, $depth) * 1px;
-  $blur: nth(1.5 3 10 14 19, $depth) * 4px;
-  $color: rgba(black, nth(.12 .16 .19 .25 .30, $depth));
-
-  @return 0 $primary-offset $blur $color;
-}
-
-/// Computes a bottom-shadow for a card effect.
-/// @param {Number} $depth - depth level
-/// @return {List}
-@function bottom-shadow($depth) {
-  $primary-offset: nth(1.5 3 6 10 15, $depth) * 1px;
-  $blur: nth(1 3 3 5 6, $depth) * 4px;
-  $color: rgba(black, nth(.24 .23 .23 .22 .22, $depth));
-
-  @return 0 $primary-offset $blur $color;
 }

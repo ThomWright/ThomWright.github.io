@@ -4,7 +4,17 @@
 $modular-scale-ratio: 1.2;
 
 @import "bourbon/bourbon";
-@import "neat/neat";
+
+// Widths include padding and borders, so a column's max-width is its full
+// width on the page.
+html {
+  box-sizing: border-box;
+}
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
 
 @import "variables";
 @import "fonts";
