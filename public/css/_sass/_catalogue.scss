@@ -1,0 +1,86 @@
+/*
+  Catalogue
+
+  A page that indexes other pages, such as the failure patterns. It's wider
+  than the text column, to fit a grid of entries, with prose kept at reading
+  width. Set `catalogue: true` in a page's front matter to use it.
+ */
+
+body > main.catalogue {
+  max-width: $wide-width;
+
+  p,
+  aside,
+  ol,
+  ul:not(.pattern-grid) {
+    max-width: calc(#{$content-width} - #{2 * $page-gutter});
+  }
+
+  article > header h1 {
+    font-size: modular-scale(5);
+  }
+
+  // The page's opening line.
+  article > div > p:first-child {
+    font-size: modular-scale(1);
+    line-height: 1.4;
+    color: var(--text-h3);
+  }
+
+  // Groups of entries. Their intros are context, so they're quieter than the
+  // entries they introduce.
+  h2 {
+    border-top: 1px solid var(--rule);
+    padding-top: 1em;
+    margin-top: 3em;
+    margin-bottom: 0.3em;
+  }
+
+  h2 + p {
+    font-size: 0.85em;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin-top: 0;
+  }
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14em, 1fr));
+  gap: 1.75em 2.5em;
+
+  margin: 1.5em 0 2.5em;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    text-decoration-line: none;
+
+    &:hover .pattern-title {
+      color: var(--link);
+    }
+  }
+}
+
+.pattern-title {
+  font: {
+    family: $heading-font-family;
+    weight: 600;
+    size: 1.05em;
+  }
+  line-height: 1.25;
+  color: var(--text-h2);
+}
+
+.pattern-description {
+  font-size: 0.8em;
+  line-height: 1.45;
+  color: var(--text-muted);
+}

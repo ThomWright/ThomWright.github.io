@@ -2,6 +2,7 @@
 layout: page
 title: 'Designing for failure: Patterns'
 short_title: 'Patterns'
+catalogue: true
 order: 2
 ---
 
@@ -20,67 +21,37 @@ See the [introductory post]({% post_url 2023-04-06-designing-for-failure %}) and
 
 Rather than internal details, these patterns describe the API as seen by clients.
 
-{% assign api_design = site.failure-patterns | where: 'group', 'api-design' | sort: "sort_key", "last" %}
-{% for pattern in api_design %}[{{ pattern.title }}]({{ pattern.url }})
-
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
-
-{% endfor %}
+{% include pattern_grid.html group="api-design" %}
 
 ## Writing to a single system
 
 Patterns for writing to a single system. Most patterns assume this system is an ACID database. This is the simplest topology, and the easiest to work with. It's worth trying to design systems like this where possible, to avoid the complexity that arises from trying to maintain consistency between multiple systems.
 
-{% assign single_system = site.failure-patterns | where: 'group', 'single-system' | sort: "sort_key", "last" %}
-{% for pattern in single_system %}[{{ pattern.title }}]({{ pattern.url }})
-
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
-
-{% endfor %}
+{% include pattern_grid.html group="single-system" %}
 
 ## Writing to multiple systems
 
 When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don't have these guarantees: we might not be able to perform all writes atomically, and so can end up in an inconsistent state.
 
-{% assign multiple_systems = site.failure-patterns | where: 'group', 'multiple-systems' | sort: "sort_key", "last" %}
-{% for pattern in multiple_systems %}[{{ pattern.title }}]({{ pattern.url }})
-
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
-
-{% endfor %}
+{% include pattern_grid.html group="multiple-systems" %}
 
 ## Background processes
 
 Sometimes inconsistency is unavoidable, whether by design, or simply because of a buggy implementation. Background processes can identify these inconsistencies and handle them in various ways.
 
-{% assign background_processes = site.failure-patterns | where: 'group', 'background-processes' | sort: "sort_key", "last" %}
-{% for pattern in background_processes %}[{{ pattern.title }}]({{ pattern.url }})
-
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
-
-{% endfor %}
+{% include pattern_grid.html group="background-processes" %}
 
 ## Other
 
 Other patterns for handling failure or edge cases.
 
-{% assign other = site.failure-patterns | where: 'group', 'other' | sort: "sort_key", "last" %}
-{% for pattern in other %}[{{ pattern.title }}]({{ pattern.url }})
-
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
-
-{% endfor %}
+{% include pattern_grid.html group="other" %}
 
 ## Antipatterns
 
 Some patterns exist which should be avoided. They may seem to offer benefits, but either do not deliver what they seem to or have other serious drawbacks.
 
-{% assign antipatterns = site.failure-patterns | where: 'group', 'antipattern' | sort: "sort_key", "last" %}
-{% for pattern in antipatterns %}[{{ pattern.title }}]({{ pattern.url }})
-
-: {% if pattern.incomplete %} **[WIP]**{% endif %} {{ pattern.description }}
-
-{% endfor %}
+{% include pattern_grid.html group="antipattern" %}
 
 ## Comparisons
 
@@ -88,7 +59,7 @@ When consistency is important, you will generally need to choose (at least) one 
 
 <div class="table-wrapper" markdown="block">
 
-| **Pattern**                                                                        | **Number of systems** | **Synchronicity**                   | **Atomicity**  | **Consistency** | **Complexity** |
+| **Pattern**                                                                        | **Systems**           | **Synchronicity**                   | **Atomicity**  | **Consistency** | **Complexity** |
 |:-----------------------------------------------------------------------------------|:----------------------|:------------------------------------|:---------------|:----------------|:---------------|
 | [ACID transaction]({% link _failure-patterns/acid-transaction.md %})               | One                   | Sync                                | Atomic         | Strong          | Simple         |
 | [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %})       | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |

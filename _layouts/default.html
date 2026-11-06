@@ -9,7 +9,7 @@
     <![endif]-->
     {% include header.html %}
 
-    <main>
+    <main{% if page.catalogue %} class="catalogue"{% endif %}>
       {{ content }}
     </main>
 
