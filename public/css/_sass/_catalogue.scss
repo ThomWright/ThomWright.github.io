@@ -34,6 +34,12 @@ body > main.catalogue {
     padding-top: 1em;
     margin-top: 3em;
     margin-bottom: 0.3em;
+
+    // Phones show the entries in one column, which already separates the
+    // groups more.
+    @media (max-width: $small-screen) {
+      margin-top: 1.75em;
+    }
   }
 
   h2 + p {
@@ -52,6 +58,10 @@ body > main.catalogue {
   margin: 1.5em 0 2.5em;
   padding: 0;
   list-style: none;
+
+  @media (max-width: $small-screen) {
+    margin-bottom: 1.75em;
+  }
 
   li {
     margin: 0;
