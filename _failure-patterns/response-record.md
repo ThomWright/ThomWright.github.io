@@ -24,7 +24,9 @@ How do we return the same response, even when the underlying state changes?
 
 ## Solution
 
-Before sending a response to the client, write it to a database. This could be indexed by an [idempotency key]({% link _failure-patterns/idempotency-key.md %}). When handling a request, first check whether a response record exists for this request. If it does, simply return that response.
+Before sending a response to the client, write it to a database, in the same transaction as the state changes that produced it. This could be indexed by an [idempotency key]({% link _failure-patterns/idempotency-key.md %}) in a unique column. When handling a request, first check whether a response record exists for this request. If it does, simply return that response.
+
+If two requests race, both might find no response record. The unique index means only one of their transactions can commit. The other fails, and can then re-read and return the response from the winning request.
 
 This is a special case of a [recovery point]({% link _failure-patterns/recovery-point.md %}).
 
