@@ -31,7 +31,7 @@ How do we increase the proportion of operations which eventually succeed, even w
 
 ## Solution
 
-Design your operation such that repeated attempts to perform the operation do not fail, and use retries or a [Completer]({% link _failure-patterns/completer.md %}) to drive the operation to completeness.
+Design your operation such that repeated attempts to perform the operation do not fail, and each step is idempotent: repeating a step that has already succeeded has no further effect, e.g. using upserts, or [idempotency keys]({% link _failure-patterns/idempotency-key-external.md %}) for external calls. Use retries or a [Completer]({% link _failure-patterns/completer.md %}) to drive the operation to completion.
 
 If relying on retries, be aware that most clients won't retry forever, and so the operation might end up incomplete indefinitely.
 
