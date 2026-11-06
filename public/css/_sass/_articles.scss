@@ -30,10 +30,16 @@ article {
     margin-top: 3rem;
   }
 
+  // Faint underlines, so passages with many links stay readable.
   a {
-    text-decoration: underline;
-    text-decoration-color: currentcolor;
-    text-decoration-thickness: 5%;
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+
+    &:hover {
+      text-decoration-color: currentColor;
+    }
   }
 
   // A post in a list of posts, showing its excerpt.
@@ -45,18 +51,23 @@ article {
     }
   }
 
+  // Headings link to their post or section, but read as headings.
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    a {
+    a,
+    a:hover {
+      color: inherit;
       text-decoration-line: none;
-      &:hover {
-        text-decoration-line: underline;
-      }
     }
+  }
+
+  // Titles lead to the post, so they respond to hover like other links.
+  > header h1 a:hover {
+    color: var(--link);
   }
 
   a.heading_anchor {
