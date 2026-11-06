@@ -35,7 +35,9 @@ There are various ways to design systems which reliably retry until completion.
 
 A common example would be a messaging system which retries for a given duration or number of attempts, after which it puts the message into a dead letter queue. Messages in the dead letter queue can be manually retried as necessary.
 
-For the password reset system above, if a `PasswordUpdated` event is published (e.g. using a [transactional outbox]({% link _failure-patterns/transactional-outbox.md %})), then the messaging system could guarantee that the email sending gets retried until success.
+For the password reset system above, if a `PasswordUpdated` event is published (e.g. using a [transactional outbox]({% link _failure-patterns/transactional-outbox.md %})), then the messaging system will retry sending the email. If it still fails, the message ends up in the dead letter queue, which needs monitoring so someone can retry it.
+
+Retrying until success means some work might happen more than once, e.g. if the email is sent but the acknowledgement is lost. The work needs to be idempotent, or duplicates need to be acceptable. A second "password changed" email might worry the user, but it should be rare, and the impact is small.
 
 Other examples include:
 
