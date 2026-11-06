@@ -38,7 +38,7 @@ Write one or more messages to a database in an [Atomic transaction]({% link _fai
 
 Essentially, instead of trying to synchronously write to many systems, we instead write to just one system atomically, allowing other writes to happen asynchronously.
 
- A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS. This could be an external process or internal to the application.
+A common approach is for the background process to publish the messages to a dedicated messaging system, e.g. RabbitMQ or AWS SNS/SQS. This could be an external process or internal to the application.
 
 {% include diagram.html
   name="outbox-ext-pub"
@@ -50,9 +50,9 @@ Essentially, instead of trying to synchronously write to many systems, we instea
 
 There are several ways to trigger the publisher:
 
-1. On a schedule, by running as a cron job or a process [polling](https://microservices.io/patterns/data/transaction-log-tailing.html) the database. This introduces some latency.
+1. On a schedule, by running as a cron job or a process [polling](https://microservices.io/patterns/data/polling-publisher.html) the database. This introduces some latency.
 2. By explicitly notifying it when a new message is ready. Simple if the publisher runs in the same process as the application itself.
-3. By [tailing the transaction log](https://microservices.io/patterns/data/transaction-log-tailing.html). Arguaby  more complex.
+3. By [tailing the transaction log](https://microservices.io/patterns/data/transaction-log-tailing.html). Arguably more complex.
 
 Can be paired with [Callbacks]({% link _failure-patterns/callback.md %}) to notify clients of the result (e.g. success/failure) on completion.
 
