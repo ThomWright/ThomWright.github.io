@@ -46,14 +46,16 @@ For the example above, we might have three states: `OrderReceived`, `PaymentSucc
     - Insert recovery point – state: `OrderReceived`
     - Insert order details
     - Update stock availability
-3. Take payment
+3. Take payment, using an idempotency key derived from the operation's idempotency key (see [Idempotency key (external)]({% link _failure-patterns/idempotency-key-external.md %}))
 4. Update recovery point – state: `PaymentSuccess`
 5. Publish `NewOrder` message
     - In the background work will be scheduled to email the customer and start the shipping process
 6. Update recovery point – state: `OrderFinished`
     - Perhaps a [Response record]({% link _failure-patterns/response-record.md %})
 
-Steps 3–5 could be consolidated into a single step using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
+Steps 4–6 could be consolidated into a single transaction using a [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %}).
+
+Concurrent retries might both read the same recovery point and attempt the same step. Make each update conditional on the expected state, e.g. `UPDATE … WHERE state = 'OrderReceived'`, and stop if no rows were updated: another request has got there first. Steps outside the database, such as taking payment, could still be attempted twice, which is why they need to be idempotent.
 
 {% include diagram.html
   name="recovery-point"
