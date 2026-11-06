@@ -61,7 +61,9 @@ $base-z-index: 0;
 
 $base-padding: modular-scale(2, 1rem);
 
-$max-content-width: 850px;
+// The text column. In em, so it holds about the same number of characters
+// per line at any text size.
+$content-width: 38em;
 // Pages wider than the text column, such as catalogues, and the header and
 // footer, which line up with them.
 $wide-width: 54em;

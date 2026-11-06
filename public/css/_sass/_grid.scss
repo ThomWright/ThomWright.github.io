@@ -1,28 +1,12 @@
 /*
-  Main grid
+  Layout
+
+  Content sits in one centred column of text. The header and footer span the
+  wider layout width.
  */
-// $grid-columns : 12
 
-body {
-  @include outer-container(100%);
-
-  > header,
-  > main,
-  > footer {
-    @include span-columns($grid-columns);
-  }
-
-  > main,
-  > footer {
-    @include media($tablet-up) {
-      @include span-columns($grid-columns - 2);
-      @include shift(1);
-    }
-  }
-
-
-  > main,
-  > footer {
-    padding: $gutter;
-  }
+body > main {
+  max-width: $content-width;
+  margin: 0 auto;
+  padding: 0 $page-gutter;
 }

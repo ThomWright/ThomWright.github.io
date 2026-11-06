@@ -26,11 +26,7 @@ $palette-dark: (
 $callout-types: aside, info, warning, alert, success;
 
 $theme-light: (
-  body-bg: $gray-lighter,
-  card-bg: white,
-  card-footer-bg: darken(white, 2%),
-  card-footer-border: $gray-lighter,
-  card-shadow: (bottom-shadow(1), top-shadow(1)),
+  page-bg: white,
 
   text: $gray-darker,
   text-h2: lighten($gray-darker, 5%),
@@ -64,18 +60,7 @@ $theme-light: (
 );
 
 $theme-dark: (
-  body-bg: darken($dark-surface, 7.3%),
-  card-bg: $dark-surface,
-  card-footer-bg: darken($dark-surface, 2%),
-  card-footer-border: lighten($dark-surface, 3.7%),
-  // A shadow barely shows on a dark page, so the card is lifted by being
-  // lighter than the page. A hairline outline and top highlight define its edge.
-  card-shadow: (
-    0 0 0 1px rgba(white, 0.035),
-    0 2px 4px rgba(black, 0.5),
-    0 8px 24px rgba(black, 0.45),
-    inset 0 1px 0 rgba(white, 0.06)
-  ),
+  page-bg: $dark-surface,
 
   text: $dark-text,
   text-h2: lighten($dark-text, 5.9%),

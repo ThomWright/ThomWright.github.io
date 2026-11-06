@@ -14,7 +14,7 @@
 
 svg.diagram {
   // Knockouts are filled with the colour behind the diagram.
-  --diagram-bg: var(--card-bg);
+  --diagram-bg: var(--page-bg);
   // Text sizes are in the diagram's own units, so the diagram is scaled as a
   // whole to keep its text in proportion with the body text.
   --diagram-scale: 1.13;

@@ -1,13 +1,15 @@
 /*
   Footer
  */
-body {
-  > footer {
-    padding-top: 0;
 
-    > * {
-      @include horizontal-margin(auto);
-      max-width: $max-content-width;
-    }
+body > footer {
+  max-width: $wide-width;
+  margin: 3rem auto 0;
+  padding: 0 $page-gutter 3rem;
+  color: var(--text-muted);
+
+  > * {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
   }
 }
