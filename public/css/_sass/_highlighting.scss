@@ -42,6 +42,12 @@ pre.highlight {
   .c, .ch, .cd, .cm, .cp, .cpf, .c1, .cs {
     color: var(--code-comment);
   }
+
+  // The dark theme gives whitespace the theme's own background, which shows
+  // as patches on ours.
+  .w {
+    background: none;
+  }
 }
 
 $languages: (
