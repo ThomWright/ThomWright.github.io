@@ -24,6 +24,10 @@ How do we ensure that side effects produced by the API are not repeated, even wh
 
 ## Solution
 
-If the API supports it, send an idempotency key so identical requests can be detected. This allows them to reduce the probability (or eliminate the possibility) of producing the side effect more than once.
+If the API supports it, send an idempotency key so identical requests can be detected. This allows the API to reduce the probability (or eliminate the possibility) of producing the side effect more than once.
 
-If the API does not support idempotency keys, consider using an [at-most-once guard]({% link _failure-patterns/at-most-once-guard.md %}) to prevent calling it more than once.
+Use the same key for every attempt, including after a crash. A key generated in memory for each attempt would be lost in a crash, so either store it before the first attempt (e.g. in a [recovery point]({% link _failure-patterns/recovery-point.md %})), or derive it from something which is already stored, such as the operation's own idempotency key.
+
+APIs usually only remember keys for a limited time, e.g. [24 hours for Stripe](https://docs.stripe.com/api/idempotent_requests). A retry after that is treated as a new request.
+
+If the API does not support idempotency keys, consider using an [at-most-once guard]({% link _failure-patterns/at-most-once-guard.md %}) to prevent calling it more than once. The trade-off is that the side effect might never happen: if a call fails with an [indefinite error]({% link _failure-patterns/glossary.md %}#indefinite-error), we can't safely retry it.
