@@ -144,6 +144,12 @@ article {
       &:last-child {
         padding-right: 0;
       }
+
+      // Code split across lines is hard to read, and its wrapping isn't
+      // limited to spaces. A table too wide for it scrolls instead.
+      code {
+        white-space: nowrap;
+      }
     }
 
     th {
