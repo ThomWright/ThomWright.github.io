@@ -51,9 +51,7 @@
     </div>
   </header>
 
-  {% if article.toc %}
-    {% include contents.html html=content %}
-  {% endif %}
+  {% include contents.html html=content %}
 
   <div class="article-content">
     {% include with_anchor_headings.html

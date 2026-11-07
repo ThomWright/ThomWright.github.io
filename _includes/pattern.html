@@ -9,9 +9,11 @@
     </h1>
   </header>
 
-  <span class="breadcrumb">
+  <p class="breadcrumb">
     <a href="{% link failure-patterns.md %}">Failure {% if article.group == "antipattern" %}anti{% endif %}pattern</a> – {{ article.description }}
-  </span>
+  </p>
+
+  {% include contents.html html=content %}
 
   <div class="article-content">
     {% include with_anchor_headings.html

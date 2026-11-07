@@ -2,7 +2,6 @@
 layout: post
 title: Pagination
 tags: [reliability, databases, incidents]
-toc: true
 ---
 
 A common cause of incidents I see is lack of pagination. Or, more precisely, APIs returning an unbounded number of items. Really it's the lack of a limit which is the problem, which I think is an important distinction. When returning multiple items, pagination is optional but limits are arguably not.

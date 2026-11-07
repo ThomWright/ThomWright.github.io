@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Writing tips: style and structure"
-toc: true
 tags: [writing, communication]
 ---
 

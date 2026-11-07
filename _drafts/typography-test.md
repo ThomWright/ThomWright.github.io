@@ -2,7 +2,6 @@
 layout: post
 title: Typography Test
 tags: [test, typography]
-toc: true
 ---
 
 <!--markdownlint-disable MD059-->

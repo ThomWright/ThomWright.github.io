@@ -3,12 +3,23 @@
   they sit in the left margin. On narrow screens they are a collapsed bar above
   the text, which sticks to the top of the screen while reading.
 
-  Place this directly before the page's `.article-content`, so the margin
-  version lines up with the start of the text.
+  Only long pages with several sections get contents, and this renders nothing
+  for the rest. A short page can be taken in at a glance, so contents would
+  only get in the way.
+
+  Place this directly before the element holding the page's content, so the
+  margin version lines up with the start of the text.
 
   Parameters:
     html: the page's rendered content
 {% endcomment %}
+{% assign contents_min_headings = 3 %}
+{% assign contents_min_words = 750 %}
+{% assign contents_h2s = include.html | split: "<h2" | size | minus: 1 %}
+{% assign contents_h3s = include.html | split: "<h3" | size | minus: 1 %}
+{% assign contents_headings = contents_h2s | plus: contents_h3s %}
+{% assign contents_words = include.html | strip_html | number_of_words %}
+{% if contents_headings >= contents_min_headings and contents_words >= contents_min_words %}
 {% capture contents_list %}{% include toc.html html=include.html h_min=2 h_max=3 %}{% endcapture %}
 <nav class="contents contents-bar" aria-label="Contents">
   <details>
@@ -20,3 +31,4 @@
   <div class="contents-label">Contents</div>
   {{ contents_list }}
 </nav>
+{% endif %}

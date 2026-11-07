@@ -8,7 +8,6 @@ changes:
     summary: Fixed the 3-day error ratio's denominator, which counted errors instead of all requests.
 last_modified_at: 2026-10-07
 tags: [alerting, observability, reliability]
-toc: true
 redirect_from:
   - /wip/alerting-for-slos
   - /wip/alerting-for-slos/

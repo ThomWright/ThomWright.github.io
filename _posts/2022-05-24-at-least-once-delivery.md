@@ -6,7 +6,6 @@ changes:
     summary: Added a note on an article that defines exactly-once processing differently.
 last_modified_at: 2023-03-04
 tags: [reliability, queues]
-toc: true
 ---
 
 One of the big problems in distributed systems is reliably sending, processing and acknowledging messages. As such, message delivery systems such as queues often come with some guarantees about delivery. You might see terms such as "at-least-once" or "at-most-once".

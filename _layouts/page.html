@@ -12,6 +12,10 @@ layout: default
       </h1>
     </header>
   {% endif %}
+  {% comment %}Catalogues lay out their own sections across a wider page.{% endcomment %}
+  {% unless page.catalogue %}
+    {% include contents.html html=content %}
+  {% endunless %}
   <div>
     {% include with_anchor_headings.html
       html=content anchorBody="%heading%"
