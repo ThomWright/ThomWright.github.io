@@ -12,7 +12,9 @@ tags:
   content="I'm not particularly happy with this as analogy for auto-scaling. One day I might try writing something better, but this will do for now."
 %}
 
+<!-- begin_excerpt -->
 Let’s imagine a scenario where I’m trying to decide how many chairs I need for my new flat. In this imaginary scenario I live with a partner, and I have two types of chair to choose from:
+<!-- end_excerpt -->
 
 - A normal chair. This takes up some space in the flat.
 - A magic fold-up chair. This takes up space when unfolded, but zero space when folded.
