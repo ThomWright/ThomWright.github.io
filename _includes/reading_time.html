@@ -1,0 +1,9 @@
+{% comment %}
+  Shows roughly how long a post takes to read, in whole minutes.
+
+  Parameters:
+    article: the post
+{% endcomment %}
+{% assign words_per_minute = 200.0 %}
+{% assign minutes = include.article.content | strip_html | number_of_words | divided_by: words_per_minute | ceil %}
+<span>{{ minutes }} min read</span>
