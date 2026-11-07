@@ -1,0 +1,64 @@
+/*
+  Asides
+
+  On screens wide enough for the text column to sit centred between the
+  contents and a matching right margin, asides become side notes in that
+  margin: small muted text, without the callout's box and icon. Elsewhere
+  they're callouts in the text.
+
+  A side note sits beside the text it comments on, which comes before it in
+  the page, so on narrow screens the callout follows that text.
+ */
+
+$aside-font-scale: 0.8;
+
+@media (min-width: $contents-centred-min) {
+  // Floated out into the right margin like the contents into the left, so
+  // the article keeps its usual flow.
+  .article-content > aside.callout.aside {
+    float: right;
+    clear: right;
+    // Converted from body text em to the aside's own, smaller em.
+    width: $contents-width / $aside-font-scale;
+    margin: 0 (-($contents-width + $contents-gap) / $aside-font-scale) 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: $aside-font-scale * 1em;
+    line-height: 1.4;
+    color: var(--text-muted);
+
+    .icon {
+      display: none;
+    }
+  }
+
+  // Lines each side note up with the element before it, which is the text
+  // it comments on. An aside that opens the text has nothing before it, and
+  // floats beside what follows. So do asides after the first
+  // `$max-anchored-asides` <aside>s in the text, and all asides where anchors
+  // aren't supported.
+  @supports (anchor-name: --a) {
+    .article-content {
+      position: relative;
+    }
+
+    // A name shared by several anchors means the last of them in the page,
+    // so each aside needs its own, numbered among the text's <aside>s.
+    $max-anchored-asides: 10;
+    @for $i from 1 through $max-anchored-asides {
+      $aside: "aside.callout.aside:nth-of-type(#{$i})";
+
+      .article-content > :has(+ #{$aside}) {
+        anchor-name: --aside-#{$i};
+      }
+
+      .article-content > #{$aside}:not(:first-child) {
+        position: absolute;
+        top: anchor(--aside-#{$i} top);
+        left: 100%;
+        margin: 0 0 0 ($contents-gap / $aside-font-scale);
+      }
+    }
+  }
+}
