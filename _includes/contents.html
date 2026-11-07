@@ -23,7 +23,7 @@
 {% capture contents_list %}{% include toc.html html=include.html h_min=2 h_max=3 %}{% endcapture %}
 <nav class="contents contents-bar" aria-label="Contents">
   <details>
-    <summary><span class="contents-label">Contents</span></summary>
+    <summary><span class="contents-label">Contents</span><span class="contents-current"></span></summary>
     {{ contents_list }}
   </details>
 </nav>
@@ -31,4 +31,6 @@
   <div class="contents-label">Contents</div>
   {{ contents_list }}
 </nav>
+{% assign contents_cache_bust = site.time | date: '?v=%s' %}
+<script src="{{ '/public/js/contents.js' | append: contents_cache_bust }}" defer></script>
 {% endif %}

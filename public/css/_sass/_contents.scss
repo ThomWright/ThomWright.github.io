@@ -58,12 +58,21 @@ $column-fills-screen-max: at-text-size($content-width);
   a {
     display: block;
     padding: 0.3em 0 0.3em 1em;
+    // Overlaps the rule, so the current section's border sits on it.
+    margin-left: -1px;
+    border-left: 2px solid transparent;
     color: var(--text-muted);
     // A list of navigation links, not prose, so no underlines.
     text-decoration-line: none;
 
     &:hover {
       color: var(--link);
+    }
+
+    // The section being read, marked by script.
+    &.current {
+      color: var(--text);
+      border-left-color: var(--link);
     }
   }
 
@@ -146,6 +155,22 @@ $column-fills-screen-max: at-text-size($content-width);
       border-bottom: 1.5px solid var(--text-muted);
       transform: rotate(45deg);
     }
+  }
+
+  // The section being read, after the label while the bar is closed.
+  .contents-current {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--text-muted);
+
+    &:not(:empty)::before {
+      content: "· ";
+    }
+  }
+
+  details[open] .contents-current {
+    display: none;
   }
 
   details[open] summary::after {
