@@ -70,7 +70,7 @@ $column-fills-screen-max: at-text-size($content-width);
     }
 
     // The section being read, marked by script.
-    &.current {
+    &[aria-current] {
       color: var(--text);
       border-left-color: var(--link);
     }

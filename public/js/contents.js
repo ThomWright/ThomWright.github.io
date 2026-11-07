@@ -45,7 +45,7 @@
   var barList = bar.querySelector('ul');
 
   function currentLink(container) {
-    return container && container.querySelector('a.current');
+    return container && container.querySelector('a[aria-current]');
   }
 
   function update() {
@@ -53,8 +53,12 @@
     var label = '';
     links.forEach(function (link, i) {
       var isCurrent = current !== null && linkTargets[i] === current;
-      link.classList.toggle('current', isCurrent);
-      if (isCurrent) label = link.textContent;
+      if (isCurrent) {
+        link.setAttribute('aria-current', 'location');
+        label = link.textContent;
+      } else {
+        link.removeAttribute('aria-current');
+      }
     });
     barLabel.textContent = label;
     scrollIntoList(currentLink(marginList), marginList);
