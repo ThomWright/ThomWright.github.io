@@ -1,12 +1,17 @@
-
 .tags {
+  display: inline;
+  padding: 0;
   color: var(--text-muted);
-  ul {
-    padding: 0;
-    display: inline;
-  }
+
   li {
     display: inline;
     list-style: none;
+  }
+
+  // The separator is decoration, so screen readers skip it where the
+  // alternative text syntax is supported.
+  li + li::before {
+    content: " · ";
+    content: " · " / "";
   }
 }
