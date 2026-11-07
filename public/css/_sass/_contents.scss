@@ -1,0 +1,182 @@
+/*
+  Contents
+
+  A page's contents come in two versions, and one shows at a time:
+
+  - The margin version sits beside the text column, on screens wide enough to
+    fit it. Where there's room, the text column stays centred and the contents
+    sit in its left margin. On narrower laptops, the column moves right so the
+    contents and column together fill the header's width.
+  - The bar sits above the text on narrower screens. It's collapsed, and sticks
+    to the top of the screen while reading.
+
+  Both share the list styles: small muted links beside a rule.
+ */
+
+// In em of body text.
+$contents-width: 13em;
+$contents-gap: 3em;
+// The contents' text size, relative to body text.
+$contents-font-scale: 0.8;
+
+// The px width of a length in em of body text. Media queries need px because
+// em in a media query means the browser's 16px, not the body text size.
+@function at-text-size($length) {
+  @return $length / 1em * $base-font-px;
+}
+
+// The contents and column fill the header's width.
+$contents-beside-min: at-text-size($wide-width);
+// The column, with room for the contents in the margin on both sides.
+$contents-centred-min: at-text-size($content-width + 2 * ($contents-width + $contents-gap));
+// Up to this width, the text column fills the screen.
+$column-fills-screen-max: at-text-size($content-width);
+
+.contents {
+  font-size: $contents-font-scale * 1em;
+  line-height: 1.4;
+
+  .contents-label {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--rule);
+
+    ul {
+      border-left: 0;
+    }
+  }
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    padding: 0.3em 0 0.3em 1em;
+    color: var(--text-muted);
+    // A list of navigation links, not prose, so no underlines.
+    text-decoration-line: none;
+
+    &:hover {
+      color: var(--link);
+    }
+  }
+
+  ul ul a {
+    padding-left: 2em;
+  }
+}
+
+/* ---------- Margin ---------- */
+
+.contents-margin {
+  display: none;
+
+  .contents-label {
+    margin-bottom: 0.75em;
+  }
+}
+
+@media (min-width: $contents-beside-min) {
+  // Floated out into the left margin, so the article keeps its usual flow
+  // and spacing, with the contents taking no room from the text column.
+  .contents-margin {
+    display: block;
+    float: left;
+    // Converted from body text em to the contents' own, smaller em.
+    width: $contents-width / $contents-font-scale;
+    margin: 0 0 0 (-($contents-width + $contents-gap) / $contents-font-scale);
+
+    // A long list scrolls on its own rather than running off the screen.
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+  }
+
+  .contents-bar {
+    display: none;
+  }
+}
+
+// Where the margin is too narrow for the contents, the column moves right to
+// make room, so the contents and column together fill the header's width.
+@media (min-width: $contents-beside-min) and (max-width: $contents-centred-min - 0.02px) {
+  body > main:has(.contents-margin) {
+    max-width: $wide-width;
+    padding-left: calc(#{$page-gutter} + #{$contents-width + $contents-gap});
+  }
+}
+
+/* ---------- Bar ---------- */
+
+.contents-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--page-bg);
+  border-bottom: 1px solid var(--rule);
+
+  summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5em;
+    padding: 0.75em 0;
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    // A chevron, pointing down when closed and up when open.
+    &::after {
+      content: "";
+      flex: none;
+      align-self: center;
+      width: 0.45em;
+      height: 0.45em;
+      margin: -0.2em 0.25em 0 auto;
+      border-right: 1.5px solid var(--text-muted);
+      border-bottom: 1.5px solid var(--text-muted);
+      transform: rotate(45deg);
+    }
+  }
+
+  details[open] summary::after {
+    margin-top: 0.2em;
+    transform: rotate(-135deg);
+  }
+
+  details > ul {
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 0.75em;
+  }
+
+  // Bigger tap targets than in the margin.
+  a {
+    padding-top: 0.45em;
+    padding-bottom: 0.45em;
+  }
+
+  // Where the column fills the screen, the bar spans it edge to edge, so the
+  // text scrolls under it rather than beside it.
+  @media (max-width: $column-fills-screen-max) {
+    margin-left: -$page-gutter;
+    margin-right: -$page-gutter;
+    padding: 0 $page-gutter;
+  }
+}
+
+// Keeps headings clear of the bar when jumping to them.
+@media (max-width: $contents-beside-min - 0.02px) {
+  article:has(.contents-bar) :is(h2, h3) {
+    scroll-margin-top: 3.5rem;
+  }
+}

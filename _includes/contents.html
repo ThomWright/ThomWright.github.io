@@ -1,0 +1,22 @@
+{% comment %}
+  The page's contents: links to its sections and subsections. On wide screens
+  they sit in the left margin. On narrow screens they are a collapsed bar above
+  the text, which sticks to the top of the screen while reading.
+
+  Place this directly before the page's `.article-content`, so the margin
+  version lines up with the start of the text.
+
+  Parameters:
+    html: the page's rendered content
+{% endcomment %}
+{% capture contents_list %}{% include toc.html html=include.html h_min=2 h_max=3 %}{% endcapture %}
+<nav class="contents contents-bar" aria-label="Contents">
+  <details>
+    <summary><span class="contents-label">Contents</span></summary>
+    {{ contents_list }}
+  </details>
+</nav>
+<nav class="contents contents-margin" aria-label="Contents">
+  <div class="contents-label">Contents</div>
+  {{ contents_list }}
+</nav>
