@@ -138,6 +138,12 @@ article {
     td {
       padding: 0.75em 1em 0.75em 0;
       text-align: left;
+
+      // Padding only separates columns, so right-aligned figures in the last
+      // one reach the table's edge.
+      &:last-child {
+        padding-right: 0;
+      }
     }
 
     th {
