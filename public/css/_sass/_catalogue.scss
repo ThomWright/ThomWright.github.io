@@ -73,7 +73,8 @@ body > main.catalogue {
     gap: 0.3em;
     text-decoration-line: none;
 
-    &:hover .pattern-title {
+    &:hover .pattern-title,
+    &:focus-visible .pattern-title {
       color: var(--link);
     }
   }

@@ -37,7 +37,8 @@ article {
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       text-decoration-color: currentColor;
     }
   }
@@ -55,14 +56,16 @@ article {
   h5,
   h6 {
     a,
-    a:hover {
+    a:hover,
+    a:focus-visible {
       color: inherit;
       text-decoration-line: none;
     }
   }
 
   // Titles lead to the post, so they respond to hover like other links.
-  > header h1 a:hover {
+  > header h1 a:hover,
+  > header h1 a:focus-visible {
     color: var(--link);
   }
 
@@ -81,7 +84,8 @@ article {
       visibility: hidden;
     }
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       &::after {
         visibility: visible;
       }
@@ -104,7 +108,8 @@ article {
     a {
       color: inherit;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
         color: var(--link);
       }
     }

@@ -65,8 +65,14 @@ $column-fills-screen-max: at-text-size($content-width);
     // A list of navigation links, not prose, so no underlines.
     text-decoration-line: none;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       color: var(--link);
+    }
+
+    // Inside the link, as the lists scroll, which clips anything outside.
+    &:focus-visible {
+      outline-offset: -2px;
     }
 
     // The section being read, marked by script.
