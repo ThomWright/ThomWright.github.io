@@ -205,9 +205,10 @@ $column-fills-screen-max: at-text-size($content-width);
   }
 }
 
-// Keeps headings clear of the bar when jumping to them.
+// Keeps whatever the page scrolls to clear of the bar: headings jumped to
+// from the contents, and links reached with the keyboard.
 @media (max-width: $contents-beside-min - 0.02px) {
-  article:has(.contents-bar) :is(h2, h3) {
-    scroll-margin-top: 3.5rem;
+  html:has(.contents-bar) {
+    scroll-padding-top: 3.5rem;
   }
 }
