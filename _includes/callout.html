@@ -1,16 +1,23 @@
-
 {% comment %}
-Values:
-- aside
-- info
-- warning
-- alert
-- success
+  A note set apart from the text, marked by an icon and colour for its type.
+
+  Parameters:
+    type:    aside, info, warning, alert or success
+    content: the note (Markdown)
 {% endcomment %}
 {% assign type = include.type %}
 {% assign content = include.content %}
+{% case type %}
+  {% when "aside" %}{% assign label = "Aside" %}
+  {% when "info" %}{% assign label = "Note" %}
+  {% when "warning" %}{% assign label = "Warning" %}
+  {% when "alert" %}{% assign label = "Important" %}
+  {% when "success" %}{% assign label = "Tip" %}
+{% endcase %}
 
 <aside class="callout {{ type }}">
-  <div class="icon"></div>
+  <div class="icon" aria-hidden="true"></div>
+  {% comment %}The icon shows the type, so its name is only for screen readers.{% endcomment %}
+  <span class="visually-hidden">{{ label }}:</span>
   <div class="callout-content">{{ content | markdownify }}</div>
 </aside>
