@@ -139,6 +139,19 @@ article {
     > table {
       margin: 0;
     }
+
+    // Shadows on the edges that have more table to scroll to. Each shadow
+    // stays on its edge, while page-coloured covers scroll with the table
+    // and hide the shadow once that end is reached.
+    background-image:
+      linear-gradient(to right, var(--page-bg) 30%, transparent),
+      linear-gradient(to left, var(--page-bg) 30%, transparent),
+      radial-gradient(farthest-side at 0 50%, var(--scroll-shadow), transparent),
+      radial-gradient(farthest-side at 100% 50%, var(--scroll-shadow), transparent);
+    background-position: left, right, left, right;
+    background-size: 3em 100%, 3em 100%, 1em 100%, 1em 100%;
+    background-repeat: no-repeat;
+    background-attachment: local, local, scroll, scroll;
   }
   table {
     font-size: $table-font-scale * 1em;

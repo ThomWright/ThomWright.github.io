@@ -40,6 +40,7 @@ $theme-light: (
   quote-bg: $gray-lightest,
   quote-border: $lighter-blue,
   rule: $gray-light,
+  scroll-shadow: rgba(black, 0.12),
 
   code-bg: $gray-lightest,
   code-label-bg: $gray-light,
@@ -74,6 +75,8 @@ $theme-dark: (
   quote-bg: lighten($dark-surface, 2.9%),
   quote-border: $lighter-blue,
   rule: lighten($dark-surface, 7.8%),
+  // Stronger than in light, to show on a dark background.
+  scroll-shadow: rgba(black, 0.5),
 
   code-bg: darken($dark-surface, 3.5%),
   code-label-bg: lighten($dark-surface, 7.8%),
