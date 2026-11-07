@@ -124,14 +124,26 @@ article {
     font-weight: bold;
   }
 
+  // Tables' text size, relative to body text.
+  $table-font-scale: 0.85;
+  $table-margin-top: 1em;
+  $table-margin-bottom: $small-spacing;
+
   .table-wrapper {
     width: 100%;
     overflow-x: auto;
+    // It scrolls, so the table's margins can't collapse with the text around
+    // it. The wrapper takes them instead, converted to body text em.
+    margin: ($table-margin-top * $table-font-scale) 0 ($table-margin-bottom * $table-font-scale);
+
+    > table {
+      margin: 0;
+    }
   }
   table {
-    font-size: 0.85em;
+    font-size: $table-font-scale * 1em;
     border-spacing: 0;
-    margin: 1em 0 $small-spacing;
+    margin: $table-margin-top 0 $table-margin-bottom;
     border-bottom: 1px solid var(--rule);
 
     th,
