@@ -91,6 +91,7 @@ body > main.catalogue {
 }
 
 .pattern-description {
+  font-family: $interface-font-family;
   font-size: 0.8em;
   line-height: 1.45;
   color: var(--text-muted);

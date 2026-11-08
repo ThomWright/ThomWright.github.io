@@ -6,6 +6,7 @@ body > footer {
   max-width: $wide-width;
   margin: 3rem auto 0;
   padding: 0 $page-gutter 3rem;
+  font-family: $interface-font-family;
   color: var(--text-muted);
 
   > * {

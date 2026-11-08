@@ -31,8 +31,12 @@ $red:                     #e5484d;
 $brand-color:             $blue;
 
 // Font
-$base-font-family: 'Inter', 'Inter Fallback', 'Inter Fallback Android', sans-serif;
-$heading-font-family: 'Source Serif 4', 'Source Serif 4 Fallback', 'Source Serif 4 Fallback Android', serif;
+// The writing: body text and headings.
+$text-font-family: 'Source Serif 4', 'Source Serif 4 Fallback', 'Source Serif 4 Fallback Android', serif;
+$heading-font-family: $text-font-family;
+// The site around the writing, such as navigation, metadata and contents,
+// and small text that reads better in sans, such as captions.
+$interface-font-family: 'Inter', 'Inter Fallback', 'Inter Fallback Android', sans-serif;
 $mono-font-family: 'Inconsolata', monospace;
 
 // Font Sizes

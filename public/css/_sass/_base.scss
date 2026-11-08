@@ -9,7 +9,7 @@ body {
   color: var(--text);
 
   font: {
-    family: $base-font-family;
+    family: $text-font-family;
     weight: 400;
     size: $base-font-size;
   }
@@ -163,6 +163,7 @@ figure.multi-img {
 }
 
 figcaption {
+  font-family: $interface-font-family;
   font-size: 0.9em;
   font-style: italic;
 }
@@ -205,6 +206,7 @@ figcaption {
   }
 
   .date {
+    font-family: $interface-font-family;
     color: var(--text-muted);
   }
 
@@ -215,6 +217,7 @@ figcaption {
 }
 
 .breadcrumb {
+  font-family: $interface-font-family;
   font-style: italic;
   color: var(--text-muted);
 }

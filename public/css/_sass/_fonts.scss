@@ -11,9 +11,9 @@
   A family with none of its local fonts installed is skipped, and with none
   at all, the generic family is used unadjusted.
 
-  Widths were measured in Chrome over a sample of body text. Source Serif 4's
-  is measured at heading sizes, as its optical sizing makes it narrower at
-  larger sizes. The overrides are the web font's ascent and descent (Inter
+  Widths were measured in Chrome over a sample of body text, at the body text
+  size. Source Serif 4's optical sizing makes it narrower at larger sizes, so
+  its bold, used mostly by headings, is measured at heading sizes. The overrides are the web font's ascent and descent (Inter
   0.969 and 0.242 em, Source Serif 4 1.036 and 0.335 em) divided by
   size-adjust, which also scales them.
  */
@@ -42,9 +42,20 @@
   font-family: 'Source Serif 4 Fallback';
   src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Liberation Serif'), local('LiberationSerif'), local('Tinos');
   font-weight: 400;
-  size-adjust: 108.78%;
-  ascent-override: 95.24%;
-  descent-override: 30.8%;
+  size-adjust: 110.05%;
+  ascent-override: 94.14%;
+  descent-override: 30.44%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Source Serif 4 Fallback';
+  src: local('Times New Roman Italic'), local('TimesNewRomanPS-ItalicMT'), local('Liberation Serif Italic'), local('LiberationSerif-Italic'), local('Tinos Italic');
+  font-weight: 400;
+  font-style: italic;
+  size-adjust: 102.73%;
+  ascent-override: 100.85%;
+  descent-override: 32.61%;
   line-gap-override: 0%;
 }
 
@@ -85,9 +96,20 @@
   font-family: 'Source Serif 4 Fallback Android';
   src: local('Noto Serif'), local('NotoSerif');
   font-weight: 400;
-  size-adjust: 91.49%;
-  ascent-override: 113.24%;
-  descent-override: 36.62%;
+  size-adjust: 93.18%;
+  ascent-override: 111.18%;
+  descent-override: 35.95%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Source Serif 4 Fallback Android';
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic');
+  font-weight: 400;
+  font-style: italic;
+  size-adjust: 89.28%;
+  ascent-override: 116.04%;
+  descent-override: 37.52%;
   line-gap-override: 0%;
 }
 

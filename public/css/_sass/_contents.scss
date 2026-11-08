@@ -33,6 +33,7 @@ $contents-centred-min: at-text-size($content-width + 2 * ($contents-width + $con
 $column-fills-screen-max: at-text-size($content-width);
 
 .contents {
+  font-family: $interface-font-family;
   font-size: $contents-font-scale * 1em;
   line-height: 1.4;
 
