@@ -6,7 +6,7 @@ catalogue: true
 order: 2
 ---
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD022 MD033 -->
 
 Reusable building blocks to help design reliable systems in the presence of failures.
 
@@ -18,36 +18,42 @@ See the [introductory post]({% post_url 2023-04-06-designing-for-failure %}) and
 %}
 
 ## API design
+{: data-group="api-design"}
 
 Rather than internal details, these patterns describe the API as seen by clients.
 
 {% include pattern_grid.html group="api-design" %}
 
 ## Writing to a single system
+{: data-group="single-system"}
 
 Patterns for writing to a single system. Most patterns assume this system is an ACID database. This is the simplest topology, and the easiest to work with. It's worth trying to design systems like this where possible, to avoid the complexity that arises from trying to maintain consistency between multiple systems.
 
 {% include pattern_grid.html group="single-system" %}
 
 ## Writing to multiple systems
+{: data-group="multiple-systems"}
 
 When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don't have these guarantees: we might not be able to perform all writes atomically, and so can end up in an inconsistent state.
 
 {% include pattern_grid.html group="multiple-systems" %}
 
 ## Background processes
+{: data-group="background-processes"}
 
 Sometimes inconsistency is unavoidable, whether by design, or simply because of a buggy implementation. Background processes can identify these inconsistencies and handle them in various ways.
 
 {% include pattern_grid.html group="background-processes" %}
 
 ## Other
+{: data-group="other"}
 
 Other patterns for handling failure or edge cases.
 
 {% include pattern_grid.html group="other" %}
 
 ## Antipatterns
+{: data-group="antipattern"}
 
 Some patterns exist which should be avoided. They may seem to offer benefits, but either do not deliver what they seem to or have other serious drawbacks.
 

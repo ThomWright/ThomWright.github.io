@@ -1,4 +1,4 @@
-<article>
+<article{% if page.group %} data-group="{{ page.group }}"{% endif %}>
   {% assign article = page %}
 
   <header>

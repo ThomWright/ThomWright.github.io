@@ -3,7 +3,7 @@
   Usage: {% include pattern_grid.html group="api-design" %}
 {% endcomment %}
 {% assign patterns = site.failure-patterns | where: 'group', include.group | sort: "sort_key", "last" %}
-<ul class="pattern-grid">
+<ul class="pattern-grid" data-group="{{ include.group }}">
   {% for pattern in patterns %}
   <li>
     <a href="{{ pattern.url }}">

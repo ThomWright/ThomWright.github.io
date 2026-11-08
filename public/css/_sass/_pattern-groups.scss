@@ -1,0 +1,68 @@
+/*
+  Pattern groups
+
+  Each group of failure patterns has its own colour (see `$pattern-groups`).
+  It marks the group on the patterns page, and the group a pattern belongs
+  to on the pattern's own page: a short line over the rule above the group
+  heading or pattern title, the headings' " #", pattern titles on hover, and
+  the current section in the contents.
+
+  Elements belonging to a group carry `data-group`, with the group's id.
+ */
+
+@each $group, $_ in $pattern-groups {
+  [data-group="#{$group}"] {
+    --group-mark: var(--group-#{$group}-mark);
+    --group-text: var(--group-#{$group}-text);
+  }
+}
+
+// In em of body text: three of the group heading's em.
+$group-line-length: 3 * type-scale(2);
+$group-line-width: 3px;
+
+@mixin group-line {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: $group-line-length;
+  height: $group-line-width;
+  background: var(--group-mark);
+}
+
+// Over the start of the rule above the group's heading.
+body > main.catalogue h2[data-group] {
+  position: relative;
+
+  &::before {
+    @include group-line;
+    top: -1px;
+    // Converted from body text em to the heading's own, larger em.
+    width: $group-line-length / (type-scale(2) / 1em);
+  }
+}
+
+// Above the title, where a pattern's page has no rule.
+article[data-group] > header {
+  position: relative;
+  padding-top: 1.25rem;
+
+  &::before {
+    @include group-line;
+    top: 0;
+  }
+}
+
+// A link, so in the text shade.
+[data-group] a.heading_anchor::after {
+  color: var(--group-text);
+  opacity: 1;
+}
+
+.pattern-grid[data-group] a:is(:hover, :focus-visible) .pattern-title {
+  color: var(--group-text);
+}
+
+article[data-group] .contents a[aria-current] {
+  border-left-color: var(--group-mark);
+}

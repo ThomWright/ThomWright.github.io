@@ -25,6 +25,19 @@ $palette-dark: (
 
 $callout-types: aside, info, warning, alert, success;
 
+// Each group of failure patterns has its own colour, in two shades per theme:
+// `mark` for lines, and `text` for text, which needs a contrast of 4.5:1
+// with the page (WCAG AA). On white, marks are lighter than the colour and
+// text darker; on the dark theme, both are lighter. Amounts are tuned by eye.
+$pattern-groups: (
+  api-design:           (color: $blue,       light-mark: 10%, light-text: 4%,  dark: 14%),
+  single-system:        (color: $terracotta, light-mark: 14%, light-text: 8%,  dark: 12%),
+  multiple-systems:     (color: $violet,     light-mark: 14%, light-text: 5%,  dark: 9%),
+  background-processes: (color: $pink,       light-mark: 17%, light-text: 15%, dark: 10%),
+  other:                (color: $leaf,       light-mark: 24%, light-text: 8%,  dark: 15%),
+  antipattern:          (color: $red,        light-mark: 8%,  light-text: 14%, dark: 8%),
+);
+
 $theme-light: (
   page-bg: white,
 
@@ -102,6 +115,19 @@ $theme-dark: (
     callout-#{$type}-border: $dark,
     // 5% (as in light) disappears on a dark background.
     callout-#{$type}-bg: rgba($dark, 0.1),
+  ));
+}
+
+@each $group, $shades in $pattern-groups {
+  $color: map-get($shades, color);
+  $dark: lighten($color, map-get($shades, dark));
+  $theme-light: map-merge($theme-light, (
+    group-#{$group}-mark: lighten($color, map-get($shades, light-mark)),
+    group-#{$group}-text: darken($color, map-get($shades, light-text)),
+  ));
+  $theme-dark: map-merge($theme-dark, (
+    group-#{$group}-mark: $dark,
+    group-#{$group}-text: $dark,
   ));
 }
 
