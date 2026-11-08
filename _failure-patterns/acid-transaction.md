@@ -12,7 +12,7 @@ sort_key: 1
 
 ## Context
 
-Many operations perform multiple writes on a single database, all of which must be applied (or none of them) to ensure consistency. These writes should not be observable in an inconsistent state, and should not be lost as a result of a [crash]({% link _failure-patterns/glossary.md %}#crash).
+Many operations perform multiple writes on a single database, all of which must be applied (or none of them) to ensure [consistency]({% link _failure-patterns/glossary.md %}#consistency). These writes should not be observable in an inconsistent state, and should not be lost as a result of a [crash]({% link _failure-patterns/glossary.md %}#crash).
 
 ## Example
 
@@ -28,7 +28,7 @@ Perform all writes inside a transaction in an ACID database. Either all writes w
 
 {% include callout.html
   type="warning"
-  content="Be aware that the default isolation level in many databases (e.g. `READ COMMITTED` in PostgreSQL) may not provide the level of isolation you expect. See [Transaction isolation in PostgreSQL](/2022/01/11/postgres-isolation-levels/) for more."
+  content="Be aware that the default [isolation](/failure-patterns/glossary/#isolation) level in many databases (e.g. `READ COMMITTED` in PostgreSQL) may not provide the level of isolation you expect. See [Transaction isolation in PostgreSQL](/2022/01/11/postgres-isolation-levels/) for more."
 %}
 
 ## See also

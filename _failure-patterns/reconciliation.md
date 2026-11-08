@@ -8,7 +8,7 @@ description: Detect and resolve inconsistencies
 
 ## Context
 
-It is generally not possible to 100% ensure consistency between independent systems. Even in the best-designed systems, bugs can exist or be introduced. In some cases it can be important to know when any inconsistencies appear so they can be corrected.
+It is generally not possible to 100% ensure [consistency]({% link _failure-patterns/glossary.md %}#consistency) between independent systems. Even in the best-designed systems, bugs can exist or be introduced. In some cases it can be important to know when any inconsistencies appear so they can be corrected.
 
 ## Example
 

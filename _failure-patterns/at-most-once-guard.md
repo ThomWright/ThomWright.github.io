@@ -15,7 +15,7 @@ related:
 
 Some operations involve calling an external system which produces side effects. Ideally the external system supports [idempotency keys]({% link _failure-patterns/idempotency-key.md %}), allowing the call to be safely retried. When it does not, we need to decide what to do when the call returns an [indefinite error]({% link _failure-patterns/glossary.md %}#indefinite-error) – for example a network timeout or a [crash]({% link _failure-patterns/glossary.md %}#crash).
 
-Sometimes it's possible to check by reading from the external system (e.g. a GET request), but a suitable read API might not exist, or the external system might be eventually consistent, making the result unreliable.
+Sometimes it's possible to check by reading from the external system (e.g. a GET request), but a suitable read API might not exist, or the external system might be [eventually consistent]({% link _failure-patterns/glossary.md %}#eventual-consistency), making the result unreliable.
 
 Without a reliable way to determine the outcome, retrying the call risks producing the side effect again.
 

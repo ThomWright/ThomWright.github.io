@@ -34,7 +34,7 @@ Patterns for writing to a single system. Most patterns assume this system is an 
 ## Writing to multiple systems
 {: data-group="multiple-systems"}
 
-When writing to a single ACID database, we get atomicity and consistency built in. Things get more complicated when writing to multiple systems where we don't have these guarantees: we might not be able to perform all writes atomically, and so can end up in an inconsistent state.
+When writing to a single ACID database, we get atomicity and [consistency]({% link _failure-patterns/glossary.md %}#consistency) built in. Things get more complicated when writing to multiple systems where we don't have these guarantees: we might not be able to perform all writes atomically, and so can end up in an inconsistent state.
 
 {% include pattern_grid.html group="multiple-systems" %}
 

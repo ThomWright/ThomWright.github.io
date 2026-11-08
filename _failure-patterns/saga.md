@@ -20,7 +20,7 @@ Some operations need to write to two or more transactional systems, and require 
 
 ## Prerequisites
 
-Eventual consistency is acceptable.
+[Eventual consistency]({% link _failure-patterns/glossary.md %}#eventual-consistency) is acceptable.
 
 It is worth introducing extra complexity.
 

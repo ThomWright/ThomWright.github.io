@@ -17,7 +17,7 @@ Some requests need to write to several independent systems. Write operations on 
 
 ## Prerequisites
 
-Eventual consistency is acceptable. Performing the operation (or part of the operation) asynchronously is acceptable.
+[Eventual consistency]({% link _failure-patterns/glossary.md %}#eventual-consistency) is acceptable. Performing the operation (or part of the operation) asynchronously is acceptable.
 
 ## Example
 
