@@ -29,9 +29,8 @@ $theme-light: (
   page-bg: white,
 
   text: $gray-darker,
-  text-h2: lighten($gray-darker, 5%),
-  text-h3: lighten($gray-darker, 10%),
-  text-h4: $gray-mid,
+  // A touch stronger than the text, so headings lead whatever their size.
+  heading: darken($gray-darker, 10%),
   text-muted: $gray-mid,
 
   link: darken($brand-color, 4%),
@@ -65,9 +64,7 @@ $theme-dark: (
   page-bg: $dark-surface,
 
   text: $dark-text,
-  text-h2: lighten($dark-text, 5.9%),
-  text-h3: darken($dark-text, 4.3%),
-  text-h4: darken($dark-text, 9%),
+  heading: lighten($dark-text, 7%),
   text-muted: darken($dark-text, 20.8%),
 
   link: lighten($brand-color, 14%),

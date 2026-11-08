@@ -24,7 +24,7 @@ body > main.catalogue {
   article > div > p:first-child {
     font-size: type-scale(1);
     line-height: 1.4;
-    color: var(--text-h3);
+    color: var(--text);
   }
 
   // Groups of entries. Their intros are context, so they're quieter than the
@@ -87,7 +87,7 @@ body > main.catalogue {
     size: 1.05em;
   }
   line-height: 1.25;
-  color: var(--text-h2);
+  color: var(--heading);
 }
 
 .pattern-description {
