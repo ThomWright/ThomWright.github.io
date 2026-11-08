@@ -10,7 +10,6 @@ related:
   - completer
   - idempotency-key
   - idempotency-key-external
-  - reconciliation
   - response-record
   - resumable-operation
   - saga
