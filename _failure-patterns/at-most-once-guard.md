@@ -5,10 +5,13 @@ short: at-most-once-guard
 group: multiple-systems
 description: Write to a system at most once
 related:
+  - atomic-read-then-write
+  - idempotency-key
+  - idempotency-key-external
+  - idempotency-key-lock
   - recovery-point
   - response-record
-  - idempotency-key
-  - atomic-read-then-write
+  - single-use-token-recovery
 ---
 
 ## Context

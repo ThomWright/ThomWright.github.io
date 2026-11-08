@@ -5,10 +5,12 @@ short: completer
 group: background-processes
 description: Complete unfinished operations, even if clients give up retrying
 related:
-  - transactional-outbox
+  - idempotency-key-lock
   - recovery-point
-  - resumable-operation
   - reliable-retries
+  - resumable-operation
+  - saga
+  - transactional-outbox
 ---
 
 ## Context

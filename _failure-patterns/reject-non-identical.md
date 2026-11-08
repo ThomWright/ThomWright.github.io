@@ -5,6 +5,8 @@ short: reject-non-identical
 group: api-design
 description: Detect changes in request content between retries
 sort_key: 2
+related:
+  - reject-duplicate
 ---
 
 ## Context

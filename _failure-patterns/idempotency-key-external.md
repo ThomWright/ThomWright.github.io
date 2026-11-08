@@ -6,8 +6,10 @@ group: single-system
 description: Send a request to an external system at-least-once with only a single side effect
 sort_key: 3
 related:
+  - at-most-once-guard
   - idempotency-key
   - recovery-point
+  - resumable-operation
 ---
 
 ## Context

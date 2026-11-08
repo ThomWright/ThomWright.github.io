@@ -4,6 +4,10 @@ title: Garbage collection
 short: garbage-collection
 group: background-processes
 description: Find and delete unused data
+related:
+  - idempotency-key
+  - recovery-point
+  - store-then-reference
 ---
 
 ## Context

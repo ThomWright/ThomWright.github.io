@@ -5,6 +5,7 @@ short: reject-duplicate
 group: antipattern
 description: Return an error when a duplicate request is detected
 related:
+  - change-record
   - idempotency-key
   - reject-non-identical
   - response-record

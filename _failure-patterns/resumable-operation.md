@@ -6,11 +6,14 @@ group: multiple-systems
 description: Allow operations to continue from where the previous attempt failed
 sort_key: 4
 related:
-  - transactional-outbox
-  - recovery-point
-  - store-then-reference
   - completer
   - idempotency-key
+  - idempotency-key-external
+  - recovery-point
+  - reliable-retries
+  - saga
+  - store-then-reference
+  - transactional-outbox
 ---
 
 ## Context

@@ -5,10 +5,11 @@ short: single-use-token-recovery
 group: multiple-systems
 description: Handle concurrent use of a single-use token
 related:
-  - resumable-operation
-  - recovery-point
+  - at-most-once-guard
   - idempotency-key-lock
+  - recovery-point
   - reject-duplicate
+  - resumable-operation
 ---
 
 ## Context

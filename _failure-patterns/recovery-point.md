@@ -6,14 +6,16 @@ group: multiple-systems
 description: Record current progress to allow recovery with minimal rework
 sort_key: 5
 related:
-  - saga
-  - transactional-outbox
   - at-most-once-guard
-  - store-then-reference
+  - completer
+  - idempotency-key
+  - idempotency-key-external
+  - reconciliation
   - response-record
   - resumable-operation
-  - completer
-  - reconciliation
+  - saga
+  - store-then-reference
+  - transactional-outbox
 ---
 
 ## Context

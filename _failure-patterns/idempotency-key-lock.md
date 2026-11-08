@@ -5,11 +5,12 @@ short: idempotency-key-lock
 group: multiple-systems
 description: Protect against concurrent retries
 related:
-  - idempotency-key
-  - atomic-read-then-write
   - at-most-once-guard
-  - response-record
+  - atomic-read-then-write
+  - completer
+  - idempotency-key
   - recovery-point
+  - response-record
   - single-use-token-recovery
 ---
 

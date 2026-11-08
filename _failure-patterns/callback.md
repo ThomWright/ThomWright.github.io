@@ -6,6 +6,7 @@ group: api-design
 description: Inform clients about the results of asynchronous operations
 sort_key: 3
 related:
+  - idempotency-key
   - transactional-outbox
 ---
 

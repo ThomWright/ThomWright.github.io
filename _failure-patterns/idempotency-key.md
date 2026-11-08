@@ -8,8 +8,9 @@ sort_key: 1
 related:
   - atomic-read-then-write
   - change-record
-  - response-record
+  - garbage-collection
   - recovery-point
+  - response-record
 ---
 
 ## Context

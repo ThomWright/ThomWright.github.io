@@ -6,8 +6,11 @@ group: single-system
 description: Return the same response for every retry
 related:
   - acid-transaction
+  - at-most-once-guard
   - idempotency-key
+  - idempotency-key-lock
   - recovery-point
+  - reject-duplicate
 ---
 
 ## Context

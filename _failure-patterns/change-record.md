@@ -7,6 +7,7 @@ description: Record that a change has been made so it doesn't happen again
 related:
   - acid-transaction
   - idempotency-key
+  - reject-duplicate
 ---
 
 ## Context
