@@ -65,20 +65,22 @@ When consistency is important, you will generally need to choose (at least) one 
 
 <div class="table-wrapper" markdown="block">
 
-| **Pattern**                                                                        | **Systems**           | **Synchronicity**                   | **Atomicity**  | **Consistency** | **Complexity** |
-|:-----------------------------------------------------------------------------------|:----------------------|:------------------------------------|:---------------|:----------------|:---------------|
-| [ACID transaction]({% link _failure-patterns/acid-transaction.md %})               | One                   | Sync                                | Atomic         | Strong          | Simple         |
-| [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %})       | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |
-| [Reliable retries]({% link _failure-patterns/reliable-retries.md %})               | Many                  | Async                               | Non-atomic[^2] | Eventual        | Moderate       |
-| [Completer]({% link _failure-patterns/completer.md %})                             | Many                  | Success: sync<br />Error: async[^1] | Non-atomic[^2] | Eventual        | Moderate       |
-| [Distributed transaction]({% link _failure-patterns/distributed-transaction.md %}) | Many                  | Success: sync<br />Error: async[^1] | Atomic         | Eventual        | Complex        |
-| [Saga]({% link _failure-patterns/saga.md %})                                       | Many                  | Async                               | Atomic[^3]     | Eventual        | Complex        |
+| **Pattern**                                                                        | **Systems** | **Synchronicity**                                 | **Atomicity**           | **Isolation**               | **Consistency**             | **Complexity** |
+|:-----------------------------------------------------------------------------------|:------------|:--------------------------------------------------|:------------------------|:----------------------------|:----------------------------|:---------------|
+| [ACID transaction]({% link _failure-patterns/acid-transaction.md %})               | One         | Sync                                              | Atomic                  | Isolated[^isolation-level]  | Immediate[^isolation-level] | Simple         |
+| [Transactional outbox]({% link _failure-patterns/transactional-outbox.md %})       | Many        | Async                                             | Non-atomic[^non-atomic] | None                        | Eventual                    | Moderate       |
+| [Reliable retries]({% link _failure-patterns/reliable-retries.md %})               | Many        | Async                                             | Non-atomic[^non-atomic] | None                        | Eventual                    | Moderate       |
+| [Completer]({% link _failure-patterns/completer.md %})                             | Many        | Success: sync<br />Error: async[^sync-then-async] | Non-atomic[^non-atomic] | None                        | Eventual                    | Moderate       |
+| [Distributed transaction]({% link _failure-patterns/distributed-transaction.md %}) | Many        | Success: sync<br />Error: async[^sync-then-async] | Atomic                  | Partial[^partial-isolation] | Eventual                    | Complex        |
+| [Saga]({% link _failure-patterns/saga.md %})                                       | Many        | Async                                             | Atomic[^compensation]   | None                        | Eventual                    | Complex        |
 
 </div>
 
-[^1]: Attempts to do all work synchronously, but will continue asynchronously in the case of failure.
-[^2]: Non-atomic because some writes might fail with no guarantee that successful writes will be rolled back.
-[^3]: Using compensating actions rather than rollback. Intermediate states are visible to other operations.
+[^isolation-level]: Depending on the isolation level. See [Transaction isolation in PostgreSQL]({% post_url 2022-01-11-postgres-isolation-levels %}).
+[^non-atomic]: Non-atomic because some writes might fail with no guarantee that successful writes will be rolled back.
+[^sync-then-async]: Attempts to do all work synchronously, but will continue asynchronously in the case of failure.
+[^partial-isolation]: Other operations never see changes that get rolled back, but while the systems are committing they can see one system's changes before another's.
+[^compensation]: Using compensating actions rather than rollback.
 
 ## More patterns
 
