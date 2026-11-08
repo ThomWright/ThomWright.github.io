@@ -14,7 +14,7 @@
     html: the page's rendered content
 {% endcomment %}
 {% assign contents_min_headings = 3 %}
-{% assign contents_min_words = 750 %}
+{% assign contents_min_words = 600 %}
 {% assign contents_h2s = include.html | split: "<h2" | size | minus: 1 %}
 {% assign contents_h3s = include.html | split: "<h3" | size | minus: 1 %}
 {% assign contents_headings = contents_h2s | plus: contents_h3s %}
