@@ -58,9 +58,11 @@ $column-fills-screen-max: at-text-size($content-width);
   a {
     display: block;
     padding: 0.3em 0 0.3em 1em;
-    // Overlaps the rule, so the current section's border sits on it.
+    // Starts on the rule, so the current section's border covers it. It
+    // grows rightwards, as the margin list scrolls, which clips anything left
+    // of the rule.
     margin-left: -1px;
-    border-left: 2px solid transparent;
+    border-left: 3px solid transparent;
     color: var(--text-muted);
     // A list of navigation links, not prose, so no underlines.
     text-decoration-line: none;
