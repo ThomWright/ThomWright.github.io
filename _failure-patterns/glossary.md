@@ -51,13 +51,68 @@ A break in communication between parts of a distributed system, where messages b
 
 See also: [Antithesis – Network partition](https://antithesis.com/docs/resources/reliability_glossary/#network-partition)
 
+## Consistency
+
+The property that data satisfies its invariants, e.g.:
+
+- Every user has a unique email address.
+- An account balance never goes negative.
+- Every order in the `orders` service has a stock reservation in the `inventory` service.
+
+This is the C in ACID. A database can enforce some invariants itself, using unique, check or foreign key constraints. No single database can enforce invariants spanning several systems, like the last one, so the application has to maintain those.
+
+> Consistency is also an overloaded word in data systems: consistency in the sense of ACID is a very different property from consistency in CAP
+>
+> – Martin Kleppmann, [A Critique of the CAP Theorem](https://arxiv.org/abs/1509.05393)
+
+In CAP, and in distributed systems generally, "consistency" refers to [consistency models](#consistency-model).
+
+## Consistency model
+
+A guarantee about which values reads can return, given the writes before them and those happening at the same time, usually when data is replicated. Models vary in strength, e.g. linearizability, sequential consistency, causal consistency and [eventual consistency](#eventual-consistency).
+
+Transaction [isolation](#isolation) levels, such as serializability, are closely related. They describe transactions that read and write several objects, usually in a single copy of the data.
+
+Stronger models allow fewer surprising outcomes. That makes systems easier to reason about, but usually slower or less available.
+
+See also: [A Critique of the CAP Theorem](https://arxiv.org/abs/1509.05393), [Antithesis – Consistency model](https://antithesis.com/docs/resources/reliability_glossary/#consistency-model), [Jepsen – Consistency models](https://jepsen.io/consistency)
+
 ## Eventual consistency
 
-A consistency model in which, if no new updates are made, all nodes in a distributed system will eventually converge to the same value. Reads may return stale data in the interim.
+A [consistency model](#consistency-model) in which, once no new writes are being made, all replicas eventually converge to the same value. Until then, reads may return stale data.
 
 *Example: after a user updates their profile picture, some servers may briefly serve the old image until the change propagates.*
 
+These patterns also use the term more loosely, for invariants spanning several systems that hold eventually rather than immediately.
+
+*Example: an order is saved in the `orders` service, and stock is reserved in the `inventory` service asynchronously. Until the reservation is made, the order has no stock reserved.*
+
 See also: [Antithesis – Eventual consistency](https://antithesis.com/docs/resources/reliability_glossary/#eventual-consistency)
+
+## Isolation
+
+The property that concurrent [operations](#operation) don't interfere with each other: the result is the same as if they had run one at a time.
+
+*Example: two operations each debit £10 from a £50 balance. With isolation, the balance ends at £30. Without it, both might read £50 and then both write £40, losing one debit.*
+
+This is the I in ACID. Full isolation (serializability) is costly, so databases offer weaker *isolation levels*, which allow some anomalies, such as lost updates or [fractured reads](#fractured-read). The default level is often weaker than people expect, e.g. `READ COMMITTED` in PostgreSQL. Isolation levels are closely related to [consistency models](#consistency-model).
+
+A database only isolates its own transactions. Operations spanning several systems get no isolation from each other unless something coordinates them.
+
+See also: [Wikipedia – Isolation](https://en.wikipedia.org/wiki/Isolation_(database_systems)), [Transaction isolation in PostgreSQL]({% post_url 2022-01-11-postgres-isolation-levels %})
+
+## Fractured read
+
+A read that sees some of another operation's writes, but not the rest.
+
+*Examples:*
+
+- *A transfer moves £10 from account A to account B in one transaction. A report reads A's balance, then B's, in separate queries, with the transfer committing in between. It sees A before the transfer and B after, so £10 appears from nowhere.*
+- *During a distributed transaction, a read sees a new order in the `orders` service, but not its stock reservation in the `inventory` service.*
+
+The guarantee that prevents fractured reads is *atomic visibility*: either all of an operation's writes are visible, or none are.
+
+See also: [Antithesis – Fractured read](https://antithesis.com/docs/resources/reliability_glossary/#fractured-read), [Scalable Atomic Visibility with RAMP Transactions](https://www.bailis.org/blog/scalable-atomic-visibility-with-ramp-transactions/)
 
 ## Safety and liveness
 
